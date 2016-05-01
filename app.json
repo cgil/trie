@@ -1,0 +1,8 @@
+{
+  "name": "Trie",
+  "description": "The future of mcommerce.",
+  "image": "heroku/python",
+  "repository": "https://github.com/cgil/trie",
+  "keywords": ["python", "flask" ],
+  "addons": [ "heroku-postgresql" ]
+}
