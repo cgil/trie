@@ -1,0 +1,32 @@
+@mixin size($pixel-size) {
+    size: $pixel-size;
+    size: to-rem($pixel-size);
+}
+
+@mixin line-height($pixel-size) {
+    line-height: $pixel-size;
+    line-height: to-rem($pixel-size);
+}
+
+@mixin font-default {
+    font: {
+        family: $lato;
+        size: $font-size-default;
+        weight: 400;
+    }
+}
+
+@mixin font-small {
+    font: {
+        @include size(22px);
+    }
+    @include line-height(27px);
+}
+
+$image-path: '../images' !default;
+@mixin background-image($name, $size:false){
+    background-image: url(#{$image-path}/#{$name}.svg);
+    @if($size){
+        background-size: $size;
+    }
+}

@@ -1,0 +1,42 @@
+@import "helpers/mixins";
+@import "helpers/variables";
+
+h1 {
+    font: {
+        @include size(40px);
+        family: $lato;
+        weight: 400;
+    }
+    @include line-height(42px);
+    color: $white;
+    text-align: center;
+    padding: to-rem(8px) 0;
+}
+
+h4 {
+    font: {
+        @include size(30px);
+        family: $lato;
+        weight: 400;
+    }
+    @include line-height(32px);
+    color: $blue-dianne;
+    text-align: center;
+    padding: to-rem(8px) 0;
+}
+
+p {
+    font: {
+        @include size(26px);
+        family: $lato;
+        weight: 400;
+    }
+    @include line-height(32px);
+    color: $white;
+}
+
+section {
+    max-width: to-rem(1440px);
+    width: 100%;
+    margin: 0 auto;
+}

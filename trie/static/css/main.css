@@ -1,8 +1,9 @@
+/* Fonts */
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300);
 /* http://meyerweb.com/eric/tools/css/reset/
 v2.0 | 20110126
 License: none (public domain)
 */
-@import url(https://fonts.googleapis.com/css?family=Lato:400,300);
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
@@ -36,41 +37,41 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-body {
-  font-family: "Lato", sans-serif;
-  font-size: 16px;
-  font-weight: 400; }
-
 h1 {
-  font-family: "Lato", sans-serif;
   font-size: 40px;
-  font-size: 2.5rem;
+  font-size: to-rem(40px);
+  font-family: "Lato", sans-serif;
   font-weight: 400;
   line-height: 42px;
-  line-height: 2.625rem;
+  line-height: to-rem(42px);
   color: #FFFFFF;
   text-align: center;
-  padding: 0.5rem 0; }
+  padding: to-rem(8px) 0; }
 
 h4 {
-  font-family: "Lato", sans-serif;
   font-size: 30px;
-  font-size: 1.875rem;
+  font-size: to-rem(30px);
+  font-family: "Lato", sans-serif;
   font-weight: 400;
   line-height: 32px;
-  line-height: 2rem;
+  line-height: to-rem(32px);
   color: #213E52;
   text-align: center;
-  padding: 0.5rem 0; }
+  padding: to-rem(8px) 0; }
 
 p {
-  font-family: "Lato", sans-serif;
   font-size: 26px;
-  font-size: 1.625rem;
+  font-size: to-rem(26px);
+  font-family: "Lato", sans-serif;
   font-weight: 400;
   line-height: 32px;
-  line-height: 2rem;
+  line-height: to-rem(32px);
   color: #FFFFFF; }
+
+section {
+  max-width: to-rem(1440px);
+  width: 100%;
+  margin: 0 auto; }
 
 input[type='button'] {
   font-size: 22px;
@@ -78,19 +79,6 @@ input[type='button'] {
   line-height: 27px;
   line-height: 1.6875rem;
   color: #0079FF; }
-
-section {
-  max-width: 90rem;
-  width: 100%;
-  margin: 0 auto; }
-
-.clearfix:after {
-  content: "";
-  display: table;
-  clear: both; }
-
-.jumbo {
-  color: #737377; }
 
 #hero {
   background-image: url(../images/header.svg);
@@ -153,7 +141,8 @@ section {
     max-width: 11.8125rem;
     margin: 0 0.625rem; }
   #team .team-summary h4 {
-    margin: 1.875rem auto; }
+    margin: 1.875rem auto;
+    color: #737377; }
   #team .team-summary p {
     max-width: 39.25rem;
     color: #737377;
@@ -186,3 +175,8 @@ section {
   #footer .contact-us {
     float: right;
     margin: 0.625rem 3.3% 0 0; }
+
+body {
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  font-weight: 400; }
