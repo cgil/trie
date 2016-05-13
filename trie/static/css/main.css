@@ -39,37 +39,37 @@ table {
 
 h1 {
   font-size: 40px;
-  font-size: to-rem(40px);
+  font-size: 2.5rem;
   font-family: "Lato", sans-serif;
   font-weight: 400;
   line-height: 42px;
-  line-height: to-rem(42px);
+  line-height: 2.625rem;
   color: #FFFFFF;
   text-align: center;
-  padding: to-rem(8px) 0; }
+  padding: 0.5rem 0; }
 
 h4 {
   font-size: 30px;
-  font-size: to-rem(30px);
+  font-size: 1.875rem;
   font-family: "Lato", sans-serif;
   font-weight: 400;
   line-height: 32px;
-  line-height: to-rem(32px);
+  line-height: 2rem;
   color: #213E52;
   text-align: center;
-  padding: to-rem(8px) 0; }
+  padding: 0.5rem 0; }
 
 p {
   font-size: 26px;
-  font-size: to-rem(26px);
+  font-size: 1.625rem;
   font-family: "Lato", sans-serif;
   font-weight: 400;
   line-height: 32px;
-  line-height: to-rem(32px);
+  line-height: 2rem;
   color: #FFFFFF; }
 
 section {
-  max-width: to-rem(1440px);
+  max-width: 90rem;
   width: 100%;
   margin: 0 auto; }
 
