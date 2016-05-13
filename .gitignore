@@ -58,5 +58,13 @@ docs/_build/
 # PyBuilder
 target/
 
-#Ipython Notebook
+# Ipython Notebook
 .ipynb_checkpoints
+
+# IDE configs and trash
+.DS_Store
+config.codekit
+
+# sass
+.sass-cache/
+*.css.map

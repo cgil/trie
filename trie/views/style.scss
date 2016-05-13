@@ -1,0 +1,235 @@
+// Imports
+@import "reset";
+@import "colors";
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300);
+
+$font-size-default: 16px;
+$lato: 'Lato', sans-serif;
+
+@function to-rem($pixel-size) {
+    $rem-size: $pixel-size / $font-size-default;
+    @return $rem-size * 1rem;
+}
+
+@mixin size($pixel-size) {
+    size: $pixel-size;
+    size: to-rem($pixel-size);
+}
+
+@mixin line-height($pixel-size) {
+    line-height: $pixel-size;
+    line-height: to-rem($pixel-size);
+}
+
+@mixin font-default {
+    font: {
+        family: $lato;
+        size: $font-size-default;
+        weight: 400;
+    }
+}
+
+@mixin font-small {
+    font: {
+        @include size(22px);
+    }
+    @include line-height(27px);
+}
+
+$image-path: '../images' !default;
+@mixin background-image($name, $size:false){
+    background-image: url(#{$image-path}/#{$name}.svg);
+    @if($size){
+        background-size: $size;
+    }
+}
+
+body {
+    @include font-default;
+}
+
+h1 {
+    font: {
+        family: $lato;
+        @include size(40px);
+        weight: 400;
+    }
+    @include line-height(42px);
+    color: $white;
+    text-align: center;
+    padding: to-rem(8px) 0;
+}
+
+h4 {
+    font: {
+        family: $lato;
+        @include size(30px);
+        weight: 400;
+    }
+    @include line-height(32px);
+    color: $blue-dianne;
+    text-align: center;
+    padding: to-rem(8px) 0;
+}
+
+p {
+    font: {
+        family: $lato;
+        @include size(26px);
+        weight: 400;
+    }
+    @include line-height(32px);
+    color: $white;
+}
+
+input[type='button'] {
+    @include font-small;
+    color: $azure-radiance;
+}
+
+section {
+    max-width: to-rem(1440px);
+    width: 100%;
+    margin: 0 auto;
+}
+
+// Clearfix
+.clearfix {
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+// Class color references
+.jumbo {
+    color: $jumbo;
+}
+
+#hero {
+    @include background-image('header');
+    background: {
+        repeat: no-repeat;
+        position: center 0;
+        size: cover;
+    }
+    display: inline-block;
+    height: to-rem(764px);
+    width: 100%;
+    .slogan {
+        max-width: to-rem(940px);
+        margin: to-rem(450px) auto 0;
+        h1 {
+            color: $white;
+        }
+        h4 {
+            color: $white;
+            font-weight: 300;
+        }
+    }
+    #account-cta {
+        margin: to-rem(70px) auto;
+        text-align: center;
+        #signup, #login {
+            border: {
+                radius: to-rem(8px);
+                color: $white;
+            }
+            padding: to-rem(6px) to-rem(35px) to-rem(6px) to-rem(25px);
+            background: $white;
+            width: to-rem(156px);
+            display: inline-block;
+            margin: to-rem(2px);
+            &:hover {
+                border-color: $azure-radiance + 40;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+#banner {
+    background-color: $viking;
+    height: to-rem(553px);
+    width: 100%;
+    margin: to-rem(141px) auto;
+    display: flex;
+    .image {
+        display: flex;
+        height: 100%;
+        max-width: to-rem(407px);
+        align-items: flex-end;
+        margin-left: 10%;
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+    .marketing {
+        margin-left: 15%;
+        max-width: to-rem(406px);
+        margin-top: to-rem(180px);
+        h1, h4 {
+            text-align: left;
+        }
+    }
+}
+
+#team {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    .team-summary {
+        .profiles {
+            img {
+                max-width: to-rem(189px);
+                margin: 0 to-rem(10px);
+            }
+        }
+        h4 {
+            margin: to-rem(30px) auto;
+        }
+        p {
+            max-width: to-rem(628px);
+            color: $jumbo;
+            display: inline-block;
+            text-align: left;
+        }
+    }
+    .photo-booth {
+        text-align: center;
+        margin: to-rem(144px) auto;
+        width: 100%;
+        height: auto;
+        display: inline-block;
+        img {
+            max-width: to-rem(406.15px);
+            width: 30%;
+            margin: 0.7%;
+        }
+    }
+}
+
+#footer {
+    background-color: $mine-shaft;
+    float: left;
+    display: inline-block;
+    margin: 0 auto;
+    width: 100%;
+    height: to-rem(30px);
+    a {
+        text-decoration: none;
+        color: $jumbo;
+    }
+    .copyright {
+        float: left;
+        margin: to-rem(10px) 0 0 3.3%;
+    }
+    .contact-us {
+        float: right;
+        margin: to-rem(10px) 3.3% 0 0;
+    }
+}
