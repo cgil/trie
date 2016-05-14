@@ -1,4 +1,11 @@
+@import 'base/colors';
+@import 'helpers/mixins';
+
 input[type='button'] {
+    @include font-small;
+    color: $azure-radiance;
+}
+input[type='email'], input[type='password'] {
     @include font-small;
     color: $azure-radiance;
 }

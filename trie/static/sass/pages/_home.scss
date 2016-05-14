@@ -1,3 +1,5 @@
+@import 'helpers/mixins';
+
 #hero {
     @include background-image('header');
     background: {
@@ -20,18 +22,33 @@
         }
     }
     #account-cta {
-        margin: to-rem(70px) auto;
+        margin: to-rem(60px) auto;
         text-align: center;
+        .block {
+            margin: to-rem(10px) auto;
+
+            #email, #password {
+                border: {
+                    radius: to-rem(8px);
+                    color: $white;
+                }
+                padding: to-rem(6px) to-rem(35px) to-rem(6px) to-rem(40px);
+                background: $white;
+                width: to-rem(235px);
+                display: block;
+                margin: to-rem(2px) auto;
+            }
+        }
         #signup, #login {
             border: {
                 radius: to-rem(8px);
                 color: $white;
             }
-            padding: to-rem(6px) to-rem(35px) to-rem(6px) to-rem(25px);
+            padding: to-rem(6px) to-rem(35px) to-rem(6px) to-rem(35px);
             background: $white;
             width: to-rem(156px);
             display: inline-block;
-            margin: to-rem(2px);
+            margin: to-rem(2px) auto;
             &:hover {
                 border-color: $azure-radiance + 40;
                 cursor: pointer;
@@ -39,7 +56,6 @@
         }
     }
 }
-
 #banner {
     background-color: $viking;
     height: to-rem(553px);
@@ -61,12 +77,12 @@
         margin-left: 15%;
         max-width: to-rem(406px);
         margin-top: to-rem(180px);
-        h1, h4 {
+        h1,
+        h4 {
             text-align: left;
         }
     }
 }
-
 #team {
     display: inline-block;
     text-align: center;
@@ -102,7 +118,6 @@
         }
     }
 }
-
 #footer {
     background-color: $mine-shaft;
     float: left;
