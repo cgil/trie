@@ -2,3 +2,7 @@ Flask==0.10.1
 gunicorn==19.4.5
 
 alembic==0.8.6
+
+# postgres
+psycopg2==2.6.1
+Flask-SQLAlchemy===2.1
