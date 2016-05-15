@@ -9,7 +9,7 @@ from app import db
 from trie.utils.convert import camel_case_to_snake_case
 
 
-class Base(db):
+class Base(object):
 
     @declared_attr
     def __tablename__(cls):

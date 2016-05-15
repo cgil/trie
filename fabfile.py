@@ -1,8 +1,10 @@
 import os
 import sys
 
-from fabric.api import task, local
-from fabric.colors import green, red
+from fabric.api import local
+from fabric.api import task
+from fabric.colors import green
+from fabric.colors import red
 from fabric.context_managers import settings
 
 DEFAULT_ENV = 'development'
@@ -105,7 +107,7 @@ def bootstrap_database(env=DEFAULT_ENV):
             return
 
         # Migrate tables
-        res = local('alembic upgrade head')
+        res = local('python manage.py db upgrade head')
         if not res.succeeded:
             print red('Failed to migrate tables.')
             return
