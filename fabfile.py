@@ -5,9 +5,6 @@ from fabric.api import task, local
 from fabric.colors import green, red
 from fabric.context_managers import settings
 
-from trie.utils.configuration import config
-from trie.utils.fab_utils import localenv
-
 DEFAULT_ENV = 'development'
 
 
@@ -54,41 +51,64 @@ def lint():
 
 
 @task
+def db(env=DEFAULT_ENV):
+    """Connect to the database."""
+    os.environ['CONFIG_ENV'] = './config/%s.yaml' % env
+    from trie.utils.configuration import config
+    local(
+        'psql -h {} -p {} -U {} {}'.format(
+            config.get('database.host'),
+            config.get('database.port'),
+            config.get('database.user'),
+            config.get('database.name'),
+        ),
+    )
+
+
+@task
 def bootstrap_database(env=DEFAULT_ENV):
     """Bootstrap the database."""
-
+    os.environ['CONFIG_ENV'] = './config/%s.yaml' % env
+    from trie.utils.configuration import config
     with settings(warn_only=True):
         # Create a new role
         local(
-            'psql -c "CREATE ROLE {} WITH ENCRYPTED PASSWORD \'{}\' '
+            'psql -h {} -p {} -c "CREATE ROLE {} WITH ENCRYPTED PASSWORD \'{}\' '
             'SUPERUSER CREATEDB CREATEROLE LOGIN;"'.format(
-                config.get('database.username'),
-                config.get('database.username'),
+                config.get('database.host'),
+                config.get('database.port'),
+                config.get('database.user'),
                 config.get('database.password'),
             )
         )
         # Drop the existing database if it exists
         local(
-            'dropdb -U {} -w {} --if-exists'.format(
-                config.get('database.username'),
+            'dropdb -U {} -h {} -p {} -w {} --if-exists'.format(
+                config.get('database.user'),
+                config.get('database.host'),
+                config.get('database.port'),
                 config.get('database.name'),
             )
         )
         # Create the database
         res = local(
-            'createdb -h localhost -U {} -w -E UTF8 -O {} {}'.format(
-                config.get('database.username'),
-                config.get('database.username'),
+            'createdb -h {} -p {} -U {} -w -E UTF8 -O {} {}'.format(
+                config.get('database.host'),
+                config.get('database.port'),
+                config.get('database.user'),
+                config.get('database.user'),
                 config.get('database.name'),
             )
         )
         if not res.succeeded:
             print red('Failed to bootstrap the database.')
+            return
 
         # Migrate tables
         res = local('alembic upgrade head')
         if not res.succeeded:
             print red('Failed to migrate tables.')
+            return
 
         print green('Successfully bootstrapped the database.')
 
@@ -108,4 +128,4 @@ def bootstrap(env=DEFAULT_ENV):
 def serve(env=DEFAULT_ENV):
     """Start the server."""
     os.environ['CONFIG_ENV'] = './config/%s.yaml' % env
-    localenv('python app.py', environment=env)
+    local('python app.py')
