@@ -68,3 +68,6 @@ config.codekit
 # sass
 .sass-cache/
 *.css.map
+
+# config
+config/profile_default

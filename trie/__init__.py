@@ -6,7 +6,7 @@ from trie.views.health import health
 from trie.views.home import home
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{}:{}@{}:{}/{}'.format(
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://{}:{}@{}:{}/{}'.format(
     config.get('database.user'),
     config.get('database.password'),
     config.get('database.host'),
