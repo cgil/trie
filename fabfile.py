@@ -56,8 +56,9 @@ def lint():
 @task
 def bootstrap_database(env=DEFAULT_ENV):
     """Bootstrap the database."""
-    # Create a new role
+
     with settings(warn_only=True):
+        # Create a new role
         local(
             'psql -c "CREATE ROLE {} WITH ENCRYPTED PASSWORD \'{}\' '
             'SUPERUSER CREATEDB CREATEROLE LOGIN;"'.format(
@@ -84,6 +85,7 @@ def bootstrap_database(env=DEFAULT_ENV):
         if not res.succeeded:
             print red('Failed to bootstrap the database.')
 
+        # Migrate tables
         res = local('alembic upgrade head')
         if not res.succeeded:
             print red('Failed to migrate tables.')
