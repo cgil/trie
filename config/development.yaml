@@ -1,3 +1,7 @@
+---
 debug: True
 
-
+database:
+  username: trie
+  password: trie
+  name: trie_development

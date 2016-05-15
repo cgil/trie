@@ -32,12 +32,11 @@ class Configuration(object):
 
     def load(self):
         """Loads the configuration file."""
-        env = os.environ.get('CONFIG_ENV') or 'development'
-        path = 'config/{}.yaml'.format(env)
-        if not os.path.exists(path):
-            raise Exception('{0} does not exist'.format(path))
+        env_path = os.environ.get('CONFIG_ENV') or 'config/development.yaml'
+        if not os.path.exists(env_path):
+            raise Exception('{0} does not exist'.format(env_path))
 
-        stream = open(path, 'r')
+        stream = open(env_path, 'r')
         return yaml.safe_load(stream)
 
 

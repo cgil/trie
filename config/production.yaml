@@ -1,1 +1,9 @@
+---
 debug: False
+
+
+# TODO: Remove secrets.
+database:
+  username: trie
+  password: trietrietrie
+  name: trie

@@ -5,6 +5,8 @@ from fabric.api import task, local
 from fabric.colors import green, red
 from fabric.context_managers import settings
 
+from trie.utils.fab_utils import localenv
+
 DEFAULT_ENV = 'development'
 
 
@@ -59,3 +61,10 @@ def bootstrap(env=DEFAULT_ENV):
     local('pip install -r requirements-development.txt')
     local('pip install -r requirements.txt')
     local('python setup.py develop')
+
+
+@task
+def serve(env=DEFAULT_ENV):
+    """Start the server."""
+    os.environ['CONFIG_ENV'] = './config/%s.yaml' % env
+    localenv('python app.py', environment=env)
