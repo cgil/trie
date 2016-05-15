@@ -3,6 +3,7 @@ gunicorn==19.4.5
 
 alembic==0.8.6
 
-# postgres
-psycopg2==2.6.1
+# database
 Flask-SQLAlchemy===2.1
+SQLAlchemy-Utils==0.32.6
+psycopg2==2.6.1

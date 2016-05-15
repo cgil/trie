@@ -5,6 +5,7 @@ from fabric.api import task, local
 from fabric.colors import green, red
 from fabric.context_managers import settings
 
+from trie.utils.configuration import config
 from trie.utils.fab_utils import localenv
 
 DEFAULT_ENV = 'development'
@@ -50,6 +51,44 @@ def lint():
     print green('Checking for lints')
     return local("flake8 `find . -name '*.py' -not -path '*env/*'` "
                  "--ignore=E711,E712 --max-line-length=100").succeeded
+
+
+@task
+def bootstrap_database(env=DEFAULT_ENV):
+    """Bootstrap the database."""
+    # Create a new role
+    with settings(warn_only=True):
+        local(
+            'psql -c "CREATE ROLE {} WITH ENCRYPTED PASSWORD \'{}\' '
+            'SUPERUSER CREATEDB CREATEROLE LOGIN;"'.format(
+                config.get('database.username'),
+                config.get('database.username'),
+                config.get('database.password'),
+            )
+        )
+        # Drop the existing database if it exists
+        local(
+            'dropdb -U {} -w {} --if-exists'.format(
+                config.get('database.username'),
+                config.get('database.name'),
+            )
+        )
+        # Create the database
+        res = local(
+            'createdb -h localhost -U {} -w -E UTF8 -O {} {}'.format(
+                config.get('database.username'),
+                config.get('database.username'),
+                config.get('database.name'),
+            )
+        )
+        if not res.succeeded:
+            print red('Failed to bootstrap the database.')
+
+        res = local('alembic upgrade head')
+        if not res.succeeded:
+            print red('Failed to migrate tables.')
+
+        print green('Successfully bootstrapped the database.')
 
 
 @task

@@ -25,6 +25,7 @@ def upgrade():
         sa.Column('created_at', sa.DateTime, nullable=False),
         sa.Column('deleted_at', sa.DateTime),
         sa.Column('email', sa.String(), nullable=False),
+        sa.Column('password', sa.String(), nullable=False),
         sa.Column('updated_at', sa.DateTime, nullable=False),
     )
 
