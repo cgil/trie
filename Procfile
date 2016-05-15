@@ -1,2 +1,5 @@
 web: gunicorn app:app --log-file -
-init: python scripts/create_database.py
+migrate: alembic upgrade head
+upgrade: alembic upgrade +1
+downgrade: alembic downgrade -1
+
