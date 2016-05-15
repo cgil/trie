@@ -4,6 +4,8 @@ debug: False
 
 # TODO: Remove secrets.
 database:
-  username: trie
-  password: trietrietrie
-  name: trie
+  user: ryggjtvibtptdu
+  password: KdvOum45rBbANgOBWSv20Kjl9s
+  host: ec2-54-243-231-255.compute-1.amazonaws.com
+  port: 5432
+  name: dj348po9s33o9
