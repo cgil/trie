@@ -116,6 +116,7 @@ def bootstrap_database(env=DEFAULT_ENV):
 @task
 def bootstrap(env=DEFAULT_ENV):
     """Bootstrap the environment."""
+    os.environ['CONFIG_ENV'] = './config/%s.yaml' % env
     local('mkdir -p logs')
     print green('\nInstalling requirements')
     local('pip install -r requirements-test.txt')
