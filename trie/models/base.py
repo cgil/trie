@@ -16,9 +16,11 @@ class Base(db):
         return camel_case_to_snake_case(cls.__name__)
 
     id = Column(UUIDType, server_default=text('uuid_generate_v4()'), primary_key=True)
-    created_at = Column(DateTime, server_default=db.func.now())
+    created_at = Column(DateTime, server_default=db.func.now(), required=True)
     deleted_at = Column(DateTime)
-    updated_at = Column(DateTime, server_default=db.func.now(), onupdate=db.func.now())
+    updated_at = Column(
+        DateTime, server_default=db.func.now(), onupdate=db.func.now(), required=True
+    )
 
 
 Base = declarative_base(cls=Base)
