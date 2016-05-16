@@ -97,23 +97,29 @@ header {
   background-color: #0274F3; }
 
 #hero {
-  background-image: url(../images/header.svg);
+  background-image: url(../images/header.png);
   background-repeat: no-repeat;
   background-position: center 0;
-  background-size: cover;
+  background-size: contain;
   display: inline-block;
-  height: 47.75rem;
-  width: 100%; }
+  width: 100%;
+  height: 100vh; }
   #hero .slogan {
     max-width: 58.75rem;
-    margin: 28.125rem auto 0; }
+    margin: 28% auto 0; }
     #hero .slogan h1 {
       color: #FFFFFF; }
     #hero .slogan h4 {
       color: #FFFFFF;
       font-weight: 300; }
+    @media only screen and (max-width: 62rem) {
+      #hero .slogan {
+        margin: 80% auto 0; } }
+    @media only screen and (max-width: 48rem) {
+      #hero .slogan {
+        margin: 55% auto 0; } }
   #hero #account-cta {
-    margin: 3.75rem auto;
+    margin: 3.125rem auto;
     text-align: center;
     overflow: hidden; }
     #hero #account-cta .block {
@@ -137,6 +143,10 @@ header {
       #hero #account-cta #signup:hover, #hero #account-cta #login:hover {
         border-color: #28a1ff;
         cursor: pointer; }
+    @media only screen and (max-width: 48rem) {
+      #hero #account-cta {
+        margin-bottom: 0;
+        margin-top: 5%; } }
 
 #banner {
   background-color: #64BEE0;
@@ -186,6 +196,9 @@ header {
       max-width: 25.384375rem;
       width: 30%;
       margin: 0.7%; }
+    @media only screen and (max-width: 62rem) {
+      #team .photo-booth img {
+        width: 45%; } }
 
 #footer {
   background-color: #2E2E2E;
