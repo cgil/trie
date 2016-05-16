@@ -1,7 +1,7 @@
 @import 'base/colors';
 @import 'helpers/mixins';
 
-input[type='button'] {
+input[type='button'], input[type='submit'] {
     @include font-small;
     color: $azure-radiance;
 }

@@ -8,5 +8,9 @@ Flask-Migrate==1.8.0
 Flask-SQLAlchemy===2.1
 SQLAlchemy-Utils==0.32.6
 psycopg2==2.6.1
+passlib==1.6.5
 
 PyYAML==3.11
+
+# forms
+Flask-WTF==0.12

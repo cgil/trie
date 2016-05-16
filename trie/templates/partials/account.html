@@ -1,0 +1,14 @@
+{% from 'partials/_formhelpers.html' import render_field %}
+<form method=post action='/'>
+    {{ form.hidden_tag() }}
+    <div id="account-cta">
+        <div class="block">
+            {{ render_field(form.email, type='email', id='email', placeholder='email') }}
+            {{ render_field(form.password, type='password', id='password', placeholder='password') }}
+        </div>
+        <div class="block">
+            {{ render_field(form.signup, type='submit', id='signup', value='sign up') }}
+            {{ render_field(form.login, type='submit', id='login', value='log in') }}
+        </div>
+    </div>
+</form>

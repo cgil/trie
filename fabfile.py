@@ -112,7 +112,7 @@ def bootstrap_database(env=DEFAULT_ENV):
             print red('Failed to migrate tables.')
             return
 
-        print green('Successfully bootstrapped the database.')
+        print green('Successfully migrated the database.')
 
 
 @task

@@ -1,2 +1,5 @@
 ---
 debug: False
+
+# TODO: Remove secrets
+secret_key: jhbVYTgyvgHUByg6745SJs67s6GVC7dcsbd8

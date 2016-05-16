@@ -7,3 +7,5 @@ database:
   host: localhost
   port: 5432
   name: trie_test
+
+secret_key: trie

@@ -24,16 +24,7 @@
                     <h1>Mobile Stores. Simple.</h1>
                     <h4>Drag-and-drop stores that enhance your user's experience.</h4>
                 </div>
-                <div id="account-cta">
-                    <div class="block">
-                        <input type="email" id="email" placeholder="email">
-                        <input type="password" id="password" placeholder="password">
-                    </div>
-                    <div class="block">
-                        <input type="button" id="signup" value="sign up">
-                        <input type="button" id="login" value="log in">
-                    </div>
-                </div>
+                {% include 'partials/account.html' %}
             </section>
         </header>
 
@@ -81,7 +72,7 @@
                     <a id="copyright" href="#">Tote &copy; 2016</a>
                 </div>
                 <div class="contact-us">
-                    <a id="contact-us" href="#">Contact us</a>
+                    <a id="contact-us" href="mailto:support@totestore.com">Contact us</a>
                 </div>
             </section>
         </footer>

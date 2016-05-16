@@ -1,0 +1,37 @@
+#welcome {
+    background-color: $viking;
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    .block {
+        margin: 10% 20%;
+        h1, h4 {
+            text-align: left;
+        }
+    }
+}
+#welcome-footer {
+    width: 100%;
+    height: to-rem(30px);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    background-color: $mine-shaft;
+    a {
+        text-decoration: none;
+        color: $jumbo;
+    }
+    .copyright {
+        float: left;
+        margin: to-rem(10px) 0 0 3.3%;
+    }
+    .contact-us {
+        float: right;
+        margin: to-rem(10px) 3.3% 0 0;
+    }
+}
