@@ -1,5 +1,9 @@
 @import 'helpers/mixins';
 
+header{
+    background-color: $azure-radiance-dark;
+}
+
 #hero {
     @include background-image('header');
     background: {
@@ -24,6 +28,7 @@
     #account-cta {
         margin: to-rem(60px) auto;
         text-align: center;
+        overflow: hidden;
         .block {
             margin: to-rem(10px) auto;
 
@@ -56,6 +61,7 @@
         }
     }
 }
+
 #banner {
     background-color: $viking;
     height: to-rem(553px);
@@ -137,4 +143,19 @@
         float: right;
         margin: to-rem(10px) 3.3% 0 0;
     }
+}
+
+.input-error {
+    @include font-small;
+    border: {
+        radius: to-rem(8px);
+        color: $white;
+    }
+    color: $monza;
+    background-color: $your-pink;
+    padding: to-rem(6px) to-rem(35px) to-rem(6px) to-rem(40px);
+    width: to-rem(238px);
+    display: block;
+    margin: to-rem(-2px) auto to-rem(4px) auto;
+    text-align: left;
 }

@@ -28,6 +28,7 @@ def index():
             known_member = Member.get_known_member(form.email.data, form.password.data)
             if known_member:
                 return handle_authenticated_member(known_member)
+            form.password.errors.append('email or password is incorrect')
         elif form.signup.data:
             if not Member.email_exists(form.email.data):
                 known_member = Member(
@@ -40,8 +41,10 @@ def index():
                 except IntegrityError:
                     # TODO: Log failure
                     db.session.rollback()
+                    form.password.errors.appen('email or password is incorrect')
                     return render_template('index.html', form=form)
                 return handle_authenticated_member(known_member)
+            form.email.errors.append('an account already exists with that email')
     return render_template('index.html', form=form)
 
 

@@ -7,12 +7,12 @@ from wtforms import validators
 
 class AccountForm(Form):
     email = TextField('email', [
-        validators.Required(),
-        validators.Length(min=6, max=35)
+        validators.Required(message="* an email is required"),
+        validators.Length(min=3, max=256, message="are you sure that's right?")
     ])
     password = PasswordField('password', [
-        validators.Required(),
-        validators.Length(min=6, max=256)
+        validators.Required(message='* a password is required'),
+        validators.Length(min=6, max=256, message='* required length of 6 - 256 characters')
     ])
     signup = SubmitField(label='sign up')
     login = SubmitField(label='log in')
