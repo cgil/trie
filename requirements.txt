@@ -14,3 +14,6 @@ PyYAML==3.11
 
 # forms
 Flask-WTF==0.12
+
+# user session manager
+Flask-Login==0.3.2

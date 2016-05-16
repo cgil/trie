@@ -3,6 +3,7 @@ import os
 from flask import Flask
 
 from trie.database import db
+from trie.login_manager import login_manager
 from trie.utils.configuration import config
 from trie.views.health import health
 from trie.views.home import home
@@ -24,6 +25,9 @@ def create_app():
 
     # Set up the database
     db.init_app(app)
+
+    # Set up the user session
+    login_manager.init_app(app)
 
     # register blueprints
     app.register_blueprint(health)

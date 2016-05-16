@@ -30,5 +30,10 @@ class Base(object):
         default=db.func.now()
     )
 
+    @classmethod
+    def get(cls, id):
+        """Get the object by id."""
+        return cls.query.filter_by(id=id)
+
 Base = declarative_base(cls=Base)
 Base.query = db.session.query_property()
