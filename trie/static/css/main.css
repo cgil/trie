@@ -205,7 +205,8 @@ header {
 #team {
   display: inline-block;
   text-align: center;
-  width: 100%; }
+  width: 100%;
+  margin-top: 8.8125rem; }
   #team .team-summary .profiles img {
     max-width: 11.8125rem;
     margin: 0 0.625rem; }
