@@ -271,6 +271,8 @@ header {
     #mc_embed_signup {
       margin: 0 auto;
       max-width: 18.75rem; } }
+  #mc_embed_signup h4 {
+    color: #50E3C2; }
   #mc_embed_signup #mce-EMAIL {
     border-radius: 0.5rem;
     border-color: #FFFFFF;

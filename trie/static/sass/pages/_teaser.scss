@@ -6,6 +6,9 @@
         margin: 0 auto;
         max-width: to-rem(300px);
     }
+    h4 {
+        color: $turquoise;
+    }
     #mce-EMAIL {
         border: {
             radius: to-rem(8px);
