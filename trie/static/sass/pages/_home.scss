@@ -85,6 +85,7 @@ header{
     display: inline-block;
     @media #{$med} {
         height: auto;
+        margin: to-rem(80px) auto 0 auto;
     }
     .image {
         position: relative;

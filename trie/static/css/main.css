@@ -160,7 +160,8 @@ header {
   display: inline-block; }
   @media only screen and (max-width: 62rem) {
     .banner {
-      height: auto; } }
+      height: auto;
+      margin: 5rem auto 0 auto; } }
   .banner .image {
     position: relative;
     display: inline-block;
