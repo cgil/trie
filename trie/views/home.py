@@ -52,3 +52,8 @@ def index():
 @login_required
 def loggedin():
     return render_template('loggedin.html')
+
+
+@home.route('/contact')
+def contact():
+    return render_template('contact.html')
