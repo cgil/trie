@@ -42,10 +42,10 @@ def index():
                     # TODO: Log failure
                     db.session.rollback()
                     form.password.errors.appen('email or password is incorrect')
-                    return render_template('index.html', form=form)
+                    return render_template('teaser.html', form=form)
                 return handle_authenticated_member(known_member)
             form.email.errors.append('an account already exists with that email')
-    return render_template('index.html', form=form)
+    return render_template('teaser.html', form=form)
 
 
 @home.route('/loggedin')
