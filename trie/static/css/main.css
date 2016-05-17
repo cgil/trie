@@ -38,6 +38,9 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+html {
+  font-size: 100%; }
+
 h1 {
   font-size: 40px;
   font-size: 2.5rem;
@@ -151,24 +154,53 @@ header {
 .banner {
   background-color: #64BEE0;
   height: 34.5625rem;
+  position: relative;
   width: 100%;
-  margin: 8.8125rem auto;
-  display: flex; }
+  margin: 8.8125rem auto 0 auto;
+  display: inline-block; }
+  @media only screen and (max-width: 62rem) {
+    .banner {
+      height: auto; } }
   .banner .image {
-    display: flex;
-    height: 100%;
-    align-items: flex-end;
-    margin-left: 10%; }
+    position: relative;
+    display: inline-block;
+    width: 50%;
+    height: 100%; }
+    @media only screen and (max-width: 62rem) {
+      .banner .image {
+        width: 100%;
+        height: 70vw; } }
     .banner .image img {
-      width: 100%;
-      height: auto; }
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      max-width: 90%;
+      max-height: 85%; }
+      @media only screen and (max-width: 62rem) {
+        .banner .image img {
+          max-width: 95%;
+          max-height: 100%; } }
   .banner .marketing {
-    margin-left: 15%;
-    max-width: 25.375rem;
-    margin-top: 11.25rem; }
-    .banner .marketing h1,
-    .banner .marketing h4 {
-      text-align: left; }
+    width: 50%;
+    position: relative;
+    display: inline-block;
+    height: 100%; }
+    @media only screen and (max-width: 62rem) {
+      .banner .marketing {
+        width: 100%; } }
+    .banner .marketing .blurb {
+      max-width: 25rem;
+      margin: 8.75rem auto;
+      position: relative; }
+      .banner .marketing .blurb h1, .banner .marketing .blurb h4 {
+        text-align: left;
+        bottom: 0; }
+      @media only screen and (max-width: 62rem) {
+        .banner .marketing .blurb {
+          max-width: 95%;
+          margin: 0 auto; } }
 
 #team {
   display: inline-block;
@@ -230,6 +262,12 @@ header {
   display: block;
   margin: -0.125rem auto 0.25rem auto;
   text-align: left; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
 
 #welcome {
   background-color: #64BEE0;

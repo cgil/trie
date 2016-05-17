@@ -79,26 +79,56 @@ header{
 .banner {
     background-color: $viking;
     height: to-rem(553px);
+    position: relative;
     width: 100%;
-    margin: to-rem(141px) auto;
-    display: flex;
+    margin: to-rem(141px) auto 0 auto;
+    display: inline-block;
+    @media #{$med} {
+        height: auto;
+    }
     .image {
-        display: flex;
+        position: relative;
+        display: inline-block;
+        width: 50%;
         height: 100%;
-        align-items: flex-end;
-        margin-left: 10%;
-        img {
+        @media #{$med} {
             width: 100%;
-            height: auto;
+            height: 70vw;
+        }
+        img {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            max-width: 90%;
+            max-height: 85%;
+            @media #{$med} {
+                max-width: 95%;
+                max-height: 100%;
+            }
         }
     }
     .marketing {
-        margin-left: 15%;
-        max-width: to-rem(406px);
-        margin-top: to-rem(180px);
-        h1,
-        h4 {
-            text-align: left;
+        width: 50%;
+        position: relative;
+        display: inline-block;
+        height: 100%;
+        @media #{$med} {
+            width: 100%;
+        }
+        .blurb {
+            max-width: to-rem(400px);
+            margin: to-rem(140px) auto;
+            position: relative;
+            h1, h4 {
+                text-align: left;
+                bottom: 0;
+            }
+            @media #{$med} {
+                max-width: 95%;
+                margin: 0 auto;
+            }
         }
     }
 }
@@ -176,4 +206,12 @@ header{
     display: block;
     margin: to-rem(-2px) auto to-rem(4px) auto;
     text-align: left;
+}
+
+.left {
+    float:left;
+}
+
+.right {
+    float: right;
 }
