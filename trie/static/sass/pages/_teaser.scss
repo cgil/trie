@@ -1,0 +1,40 @@
+#mc_embed_signup {
+    margin: to-rem(80px) auto;
+    max-width: to-rem(380px);
+    text-align: center;
+    @media #{$sml} {
+        margin: 0 auto;
+        max-width: to-rem(300px);
+    }
+    #mce-EMAIL {
+        border: {
+            radius: to-rem(8px);
+            color: $white;
+        }
+        text-align: center;
+        width: 98%;
+        padding: to-rem(6px) 0 to-rem(6px) 0;
+        text-indent: to-rem(35px);
+        background: $white;
+        //width: 100%;
+        display: inline-block;
+        margin: to-rem(2px) auto;
+    }
+
+    #mc-embedded-subscribe {
+        border: {
+            radius: to-rem(8px);
+            color: $white;
+        }
+        width: 99.5%;
+        padding: to-rem(6px) to-rem(35px) to-rem(6px) to-rem(35px);
+        background: $white;
+        display: inline-block;
+        //width: 100%;
+        margin: to-rem(2px) auto;
+        &:hover {
+            border-color: $azure-radiance + 40;
+            cursor: pointer;
+        }
+    }
+}

@@ -148,27 +148,26 @@ header {
         margin-bottom: 0;
         margin-top: 5%; } }
 
-#banner {
+.banner {
   background-color: #64BEE0;
   height: 34.5625rem;
   width: 100%;
   margin: 8.8125rem auto;
   display: flex; }
-  #banner .image {
+  .banner .image {
     display: flex;
     height: 100%;
-    max-width: 25.4375rem;
     align-items: flex-end;
     margin-left: 10%; }
-    #banner .image img {
+    .banner .image img {
       width: 100%;
       height: auto; }
-  #banner .marketing {
+  .banner .marketing {
     margin-left: 15%;
     max-width: 25.375rem;
     margin-top: 11.25rem; }
-    #banner .marketing h1,
-    #banner .marketing h4 {
+    .banner .marketing h1,
+    .banner .marketing h4 {
       text-align: left; }
 
 #team {
@@ -263,3 +262,33 @@ header {
   #welcome-footer .contact-us {
     float: right;
     margin: 0.625rem 3.3% 0 0; }
+
+#mc_embed_signup {
+  margin: 5rem auto;
+  max-width: 23.75rem;
+  text-align: center; }
+  @media only screen and (max-width: 48rem) {
+    #mc_embed_signup {
+      margin: 0 auto;
+      max-width: 18.75rem; } }
+  #mc_embed_signup #mce-EMAIL {
+    border-radius: 0.5rem;
+    border-color: #FFFFFF;
+    text-align: center;
+    width: 98%;
+    padding: 0.375rem 0 0.375rem 0;
+    text-indent: 2.1875rem;
+    background: #FFFFFF;
+    display: inline-block;
+    margin: 0.125rem auto; }
+  #mc_embed_signup #mc-embedded-subscribe {
+    border-radius: 0.5rem;
+    border-color: #FFFFFF;
+    width: 99.5%;
+    padding: 0.375rem 2.1875rem 0.375rem 2.1875rem;
+    background: #FFFFFF;
+    display: inline-block;
+    margin: 0.125rem auto; }
+    #mc_embed_signup #mc-embedded-subscribe:hover {
+      border-color: #28a1ff;
+      cursor: pointer; }

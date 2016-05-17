@@ -76,7 +76,7 @@ header{
     }
 }
 
-#banner {
+.banner {
     background-color: $viking;
     height: to-rem(553px);
     width: 100%;
@@ -85,7 +85,6 @@ header{
     .image {
         display: flex;
         height: 100%;
-        max-width: to-rem(407px);
         align-items: flex-end;
         margin-left: 10%;
         img {
