@@ -254,6 +254,9 @@ header {
   height: 1.875rem;
   float: left;
   padding: 0.9375rem 0 0.625rem 0; }
+  @media only screen and (max-width: 48rem) {
+    #footer {
+      height: 3.75rem; } }
   #footer a {
     text-decoration: none;
     color: #737377; }

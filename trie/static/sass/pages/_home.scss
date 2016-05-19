@@ -198,6 +198,9 @@ header{
     height: to-rem(30px);
     float: left;
     padding: to-rem(15px) 0 to-rem(10px) 0;
+    @media #{$sml} {
+        height: to-rem(60px);
+    }
     a {
         text-decoration: none;
         color: $jumbo;
