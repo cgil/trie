@@ -81,16 +81,15 @@ header{
     height: to-rem(553px);
     position: relative;
     width: 100%;
-    margin: to-rem(141px) auto 0 auto;
+    margin: 0 auto;
     display: inline-block;
     @media #{$med} {
         height: auto;
-        margin: to-rem(80px) auto 0 auto;
     }
     .image {
         position: relative;
         display: inline-block;
-        width: 50%;
+        width: 60%;
         height: 100%;
         @media #{$med} {
             width: 100%;
@@ -98,7 +97,7 @@ header{
         }
         img {
             position: absolute;
-            bottom: 0;
+            bottom: 10%;
             left: 0;
             right: 0;
             margin: 0 auto;
@@ -111,20 +110,36 @@ header{
         }
     }
     .marketing {
-        width: 50%;
+        width: 40%;
         position: relative;
         display: inline-block;
         height: 100%;
         @media #{$med} {
             width: 100%;
         }
+        img {
+            display: block;
+            margin: 5% auto;
+        }
         .blurb {
             max-width: to-rem(400px);
-            margin: to-rem(140px) auto;
+            margin: 5% auto;
             position: relative;
-            h1, h4 {
-                text-align: left;
-                bottom: 0;
+            .copy {
+                margin: 0 auto;
+                width: 90%;
+                h1, h4 {
+                    text-align: left;
+                    bottom: 0;
+                }
+                @media #{$med} {
+                    p {
+                        margin: 0 4%;
+                    }
+                    h4 {
+                        margin: 0 4%;
+                    }
+                }
             }
             @media #{$med} {
                 max-width: 95%;
@@ -210,10 +225,30 @@ header{
     text-align: left;
 }
 
+.empty {
+    height: to-rem(141px);
+    width: 100%;
+    @media #{$med} {
+        height: to-rem(80px);
+    }
+}
+
 .left {
     float:left;
 }
 
 .right {
     float: right;
+}
+
+#bottom {
+    bottom: 0;
+}
+
+.burnt-sienna {
+    background-color: $burnt-sienna;
+}
+
+.turquoise {
+    background-color: $turquoise;
 }

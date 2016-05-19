@@ -3,7 +3,7 @@
 @import "helpers/variables";
 
 html {
-    font-size: 100%;
+    font-size: 75%;
 }
 
 h1 {
@@ -43,6 +43,8 @@ p {
 section {
     width: 100%;
     margin: 0 auto;
+    margin-bottom: to-rem(40px);
+    vertical-align: bottom;
 }
 
 body {

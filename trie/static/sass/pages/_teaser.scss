@@ -1,5 +1,5 @@
 #mc_embed_signup {
-    margin: to-rem(75px) auto;
+    margin: to-rem(70px) auto;
     max-width: to-rem(380px);
     text-align: center;
     @media #{$sml} {
@@ -8,16 +8,22 @@
     }
     h4 {
         color: $turquoise;
+        margin-bottom: to-rem(12px);
+    }
+    .mc-field-group {
+        width: 75%;
+        text-align: center;
+        margin: 0 auto;
     }
     #mce-EMAIL {
         border: {
-            radius: to-rem(8px);
+            radius: to-rem(4px);
             color: $white;
+            style: None;
         }
         text-align: center;
-        width: 98%;
+        width: 99%;
         padding: to-rem(6px) 0 to-rem(6px) 0;
-        text-indent: to-rem(35px);
         background: $white;
         //width: 100%;
         display: inline-block;
@@ -26,10 +32,11 @@
 
     #mc-embedded-subscribe {
         border: {
-            radius: to-rem(8px);
+            radius: to-rem(4px);
             color: $white;
+            style: None;
         }
-        width: 99.5%;
+        width: 75%;
         padding: to-rem(6px) to-rem(35px) to-rem(6px) to-rem(35px);
         background: $white;
         display: inline-block;
