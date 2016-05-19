@@ -166,7 +166,7 @@ header {
   .banner .image {
     position: relative;
     display: inline-block;
-    width: 60%;
+    width: 55%;
     height: 100%; }
     @media only screen and (max-width: 62rem) {
       .banner .image {
@@ -177,15 +177,16 @@ header {
       bottom: 10%;
       left: 0;
       right: 0;
-      margin: 0 auto;
+      margin: 0 auto auto 6.25rem;
       max-width: 90%;
       max-height: 85%; }
       @media only screen and (max-width: 62rem) {
         .banner .image img {
           max-width: 95%;
-          max-height: 100%; } }
+          max-height: 100%;
+          margin: 0 auto; } }
   .banner .marketing {
-    width: 40%;
+    width: 45%;
     position: relative;
     display: inline-block;
     height: 100%; }
@@ -197,7 +198,7 @@ header {
       margin: 5% auto; }
     .banner .marketing .blurb {
       max-width: 25rem;
-      margin: 5% auto;
+      margin: 5% auto auto 100px;
       position: relative; }
       .banner .marketing .blurb .copy {
         margin: 0 auto;

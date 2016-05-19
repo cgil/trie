@@ -89,7 +89,7 @@ header{
     .image {
         position: relative;
         display: inline-block;
-        width: 60%;
+        width: 55%;
         height: 100%;
         @media #{$med} {
             width: 100%;
@@ -100,17 +100,18 @@ header{
             bottom: 10%;
             left: 0;
             right: 0;
-            margin: 0 auto;
+            margin: 0 auto auto to-rem(100px);
             max-width: 90%;
             max-height: 85%;
             @media #{$med} {
                 max-width: 95%;
                 max-height: 100%;
+                margin: 0 auto;
             }
         }
     }
     .marketing {
-        width: 40%;
+        width: 45%;
         position: relative;
         display: inline-block;
         height: 100%;
@@ -123,7 +124,7 @@ header{
         }
         .blurb {
             max-width: to-rem(400px);
-            margin: 5% auto;
+            margin: 5% auto auto 100px;
             position: relative;
             .copy {
                 margin: 0 auto;
