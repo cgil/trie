@@ -248,20 +248,25 @@ header {
 
 #footer {
   background-color: #2E2E2E;
-  float: left;
   display: inline-block;
   margin: 0 auto;
   width: 100%;
-  height: 1.875rem; }
+  height: 1.875rem;
+  float: left;
+  padding: 0.9375rem 0 0.625rem 0; }
   #footer a {
     text-decoration: none;
     color: #737377; }
   #footer .copyright {
     float: left;
-    margin: 0.625rem 0 0 3.3%; }
+    text-align: left;
+    margin-left: 3%; }
   #footer .contact-us {
     float: right;
-    margin: 0.625rem 3.3% 0 0; }
+    text-align: right;
+    margin-right: 3%; }
+  #footer .social {
+    text-align: center; }
 
 .input-error {
   font-size: 22px;
