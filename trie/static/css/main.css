@@ -267,6 +267,9 @@ header {
     margin-right: 3%; }
   #footer .social {
     text-align: center; }
+    #footer .social .fb-like {
+      position: relative;
+      bottom: 2px; }
 
 .input-error {
   font-size: 22px;
