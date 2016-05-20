@@ -16,8 +16,27 @@
         <!--[if lt IE 9]>
             <script src="bower_components/html5shiv/dist/html5shiv.js"></script>
         <![endif]-->
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                                    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-37005617-2', 'auto');
+            ga('send', 'pageview');
+
+        </script>
     </head>
     <body>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=1685956335003205";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
         <main>
             <section id="welcome">
                 <div class="block">
@@ -38,7 +57,12 @@
                     <a id="copyright" href="#">Tote &copy; 2016</a>
                 </div>
                 <div class="contact-us">
-                    <a id="contact-us" href="mailto:support@totestore.com">Contact us</a>
+                    <a id="contact-us" href="contact">Contact us</a>
+                </div>
+                <div class="social">
+                    <a href="https://twitter.com/hello_tote" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false">Follow @hello_tote</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                    <div class="fb-like" data-href="https://www.facebook.com/totestore/" data-layout="button" data-action="like" data-show-faces="false" data-share="true"></div>
                 </div>
             </section>
         </footer>

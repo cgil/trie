@@ -333,15 +333,25 @@ header {
   bottom: 0;
   left: 0;
   background-color: #2E2E2E; }
+  @media only screen and (max-width: 48rem) {
+    #welcome-footer {
+      height: 3.75rem; } }
   #welcome-footer a {
     text-decoration: none;
     color: #737377; }
   #welcome-footer .copyright {
     float: left;
-    margin: 0.625rem 0 0 3.3%; }
+    text-align: left;
+    margin-left: 3%; }
   #welcome-footer .contact-us {
     float: right;
-    margin: 0.625rem 3.3% 0 0; }
+    text-align: right;
+    margin-right: 3%; }
+  #welcome-footer .social {
+    text-align: center; }
+    #welcome-footer .social .fb-like {
+      position: relative;
+      bottom: 2px; }
 
 #mc_embed_signup {
   margin: 4.375rem auto;
