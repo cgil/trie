@@ -7,13 +7,13 @@ from trie.models.base import Base
 
 class Product(Base):
 
-    title = Column(String, nullable=False)
     description = Column(String, nullable=False)
     image = Column(String, nullable=False)
     price = Column(Numeric, nullable=False)
+    title = Column(String, nullable=False)
 
-    def __init__(self, title, description, image, price):
-        self.title = title
+    def __init__(self, title=None, description=None, image=None, price=None):
         self.description = description
         self.image = image
         self.price = price
+        self.title = title

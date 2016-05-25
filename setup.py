@@ -9,4 +9,3 @@ setup(
     version=__version__,
     packages=find_packages(),
 )
-
