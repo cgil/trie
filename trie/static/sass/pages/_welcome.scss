@@ -22,6 +22,7 @@
     bottom: 0;
     left: 0;
     background-color: $mine-shaft;
+    padding: to-rem(15px) 0 to-rem(10px) 0;
     @media #{$sml} {
         height: to-rem(60px);
     }
