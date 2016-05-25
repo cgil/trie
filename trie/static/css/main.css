@@ -39,7 +39,7 @@ table {
   border-spacing: 0; }
 
 html {
-  font-size: 75%; }
+  font-size: 80%; }
 
 h1 {
   font-size: 40px;
@@ -108,7 +108,7 @@ header {
   background-size: contain;
   display: inline-block;
   width: 100%;
-  height: 100vh; }
+  height: 696px; }
   #hero .slogan {
     max-width: 58.75rem;
     margin: 28% auto 0; }
@@ -155,7 +155,7 @@ header {
 
 .banner {
   background-color: #64BEE0;
-  height: 34.5625rem;
+  height: 696px;
   position: relative;
   width: 100%;
   margin: 0 auto;
@@ -171,15 +171,18 @@ header {
     @media only screen and (max-width: 62rem) {
       .banner .image {
         width: 100%;
+        height: 50vw; } }
+    @media only screen and (max-width: 62rem) {
+      .banner .image {
         height: 70vw; } }
     .banner .image img {
       position: absolute;
       bottom: 10%;
       left: 0;
       right: 0;
-      margin: 0 auto auto 6.25rem;
+      margin: 0 auto;
       max-width: 90%;
-      max-height: 85%; }
+      max-height: 378px; }
       @media only screen and (max-width: 62rem) {
         .banner .image img {
           max-width: 95%;
@@ -190,18 +193,21 @@ header {
     position: relative;
     display: inline-block;
     height: 100%; }
-    @media only screen and (max-width: 62rem) {
-      .banner .marketing {
-        width: 100%; } }
     .banner .marketing img {
       display: block;
       margin: 5% auto; }
+    @media only screen and (max-width: 62rem) {
+      .banner .marketing {
+        width: 100%; } }
+    @media only screen and (max-width: 48rem) {
+      .banner .marketing img {
+        margin: 15% auto; } }
     .banner .marketing .blurb {
-      max-width: 25rem;
-      margin: 5% auto auto 100px;
+      max-width: 339px;
+      margin: 20% auto;
       position: relative; }
       .banner .marketing .blurb .copy {
-        margin: 0 auto;
+        margin: 3.75rem auto;
         width: 90%; }
         .banner .marketing .blurb .copy h1, .banner .marketing .blurb .copy h4 {
           text-align: left;

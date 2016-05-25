@@ -17,7 +17,7 @@ header{
     }
     display: inline-block;
     width: 100%;
-    height: 100vh;
+    height: 696px;
     .slogan {
         max-width: to-rem(940px);
         margin: 28% auto 0;
@@ -78,7 +78,7 @@ header{
 
 .banner {
     background-color: $viking;
-    height: to-rem(553px);
+    height: 696px;
     position: relative;
     width: 100%;
     margin: 0 auto;
@@ -93,6 +93,9 @@ header{
         height: 100%;
         @media #{$med} {
             width: 100%;
+            height: 50vw;
+        }
+        @media #{$med} {
             height: 70vw;
         }
         img {
@@ -100,9 +103,9 @@ header{
             bottom: 10%;
             left: 0;
             right: 0;
-            margin: 0 auto auto to-rem(100px);
+            margin: 0 auto;
             max-width: 90%;
-            max-height: 85%;
+            max-height: 378px;
             @media #{$med} {
                 max-width: 95%;
                 max-height: 100%;
@@ -115,19 +118,24 @@ header{
         position: relative;
         display: inline-block;
         height: 100%;
-        @media #{$med} {
-            width: 100%;
-        }
         img {
             display: block;
             margin: 5% auto;
         }
+        @media #{$med} {
+            width: 100%;
+        }
+        @media #{$sml} {
+            img {
+                margin: 15% auto;
+            }
+        }
         .blurb {
-            max-width: to-rem(400px);
-            margin: 5% auto auto 100px;
+            max-width: 339px;
+            margin: 20% auto;
             position: relative;
             .copy {
-                margin: 0 auto;
+                margin: to-rem(60px) auto;
                 width: 90%;
                 h1, h4 {
                     text-align: left;
