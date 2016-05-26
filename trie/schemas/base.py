@@ -10,3 +10,6 @@ def not_empty(data):
 
 class BaseSchema(Schema):
     """Base schema."""
+
+    class Meta:
+        strict = True

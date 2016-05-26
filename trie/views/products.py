@@ -1,5 +1,4 @@
 from flask import Blueprint
-from flask import jsonify
 from flask import make_response
 from flask import request
 from flask_restful import Api
@@ -35,21 +34,17 @@ class ProductsListAPI(Resource):
                 image=product_dict['image'],
                 price=product_dict['price'],
             )
-            product.add(product)
+            product.save(product)
             query = Product.query.get(product.id)
             result = products_schema.dump(query).data
             return result, 201
 
         except ValidationError as err:
-                resp = jsonify({'error': err.messages})
-                resp.status_code = 403
-                return resp
+                return {'error': err.messages}, 403
 
         except SQLAlchemyError as e:
                 db.session.rollback()
-                resp = jsonify({'error': str(e)})
-                resp.status_code = 403
-                return resp
+                return {'error': str(e)}, 403
 
 
 class ProductsAPI(Resource):
@@ -69,9 +64,7 @@ class ProductsAPI(Resource):
 
         except SQLAlchemyError as e:
                 db.session.rollback()
-                resp = jsonify({'error': str(e)})
-                resp.status_code = 401
-                return resp
+                return {'error': str(e)}, 401
 
     def patch(self, product_id):
         product = Product.query.get_or_404(product_id)
@@ -87,15 +80,11 @@ class ProductsAPI(Resource):
             return self.get(product_id)
 
         except ValidationError as err:
-                resp = jsonify({'error': err.messages})
-                resp.status_code = 401
-                return resp
+                return {'error': err.messages}, 401
 
         except SQLAlchemyError as e:
                 db.session.rollback()
-                resp = jsonify({'error': str(e)})
-                resp.status_code = 401
-                return resp
+                return {'error': str(e)}, 401
 
 
 api.add_resource(ProductsListAPI, '/')

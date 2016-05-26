@@ -25,7 +25,7 @@ class Base(db.Model):
         default=db.func.now()
     )
 
-    def add(self, resource):
+    def save(self, resource):
         db.session.add(resource)
         return db.session.commit()
 

@@ -6,10 +6,10 @@ from trie.schemas.base import not_empty
 
 class ProductsSchema(BaseSchema):
 
-    id = fields.Integer(dump_only=True)
+    id = fields.UUID(dump_only=True)
     description = fields.String(required=True, validate=not_empty)
     image = fields.String(required=True, validate=not_empty)
-    price = fields.Decimal(required=True, validate=not_empty)
+    price = fields.Decimal(required=True, validate=not_empty, as_string=True)
     title = fields.String(required=True, validate=not_empty)
 
     # self links
