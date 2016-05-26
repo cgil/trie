@@ -7,6 +7,7 @@ from trie.login_manager import login_manager
 from trie.utils.configuration import config
 from trie.views.health import health
 from trie.views.home import home
+from trie.views.products import products_blueprint
 
 
 def create_app():
@@ -32,4 +33,5 @@ def create_app():
     # register blueprints
     app.register_blueprint(health)
     app.register_blueprint(home)
+    app.register_blueprint(products_blueprint)
     return app

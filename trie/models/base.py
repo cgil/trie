@@ -2,19 +2,14 @@ from uuid import uuid4
 
 from sqlalchemy import Column
 from sqlalchemy import DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils import UUIDType
 
 from trie.database import db
-from trie.utils.convert import camel_case_to_snake_case
 
 
-class Base(object):
+class Base(db.Model):
 
-    @declared_attr
-    def __tablename__(cls):
-        return camel_case_to_snake_case(cls.__name__)
+    __abstract__ = True
 
     id = Column(UUIDType, default=str(uuid4()), primary_key=True)
     created_at = Column(
@@ -30,10 +25,13 @@ class Base(object):
         default=db.func.now()
     )
 
-    @classmethod
-    def get(cls, id):
-        """Get the object by id."""
-        return cls.query.filter_by(id=id)
+    def add(self, resource):
+        db.session.add(resource)
+        return db.session.commit()
 
-Base = declarative_base(cls=Base)
-Base.query = db.session.query_property()
+    def update(self):
+        return db.session.commit()
+
+    def delete(self, resource):
+        db.session.delete(resource)
+        return db.session.commit()

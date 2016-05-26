@@ -16,7 +16,7 @@ class ProductTestCase(BaseTestCase):
 
         db.session.add(product)
         db.session.commit()
-        res = Product.get(product.id).one()
+        res = Product.query.get(product.id)
         assert res.title == 'title'
         assert res.description == 'description'
         assert res.image == 'https://www.image.com/123'
