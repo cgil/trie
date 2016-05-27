@@ -15,6 +15,17 @@ class ProductTestCase(ViewTestCase):
         assert res.data['id'] == str(product.id)
         assert res.status_code == 200
 
+    def test_get(self):
+        """Test that we can get a product 404's."""
+        product = factories.ProductFactory()
+        res = self.get(
+            '/products/{}'.format(str(product.id)),
+        )
+        assert res.status_code == 404
+        import ipdb
+        ipdb.set_trace()
+        assert res.data['id'] == str(product.id)
+
     def test_get_list(self):
         """Test that we can get a product."""
         products = factories.ProductFactory.create_batch(size=3)
