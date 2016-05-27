@@ -12,14 +12,6 @@ class ProductsSchema(BaseSchema):
     price = fields.Decimal(required=True, validate=not_empty, as_string=True)
     title = fields.String(required=True, validate=not_empty)
 
-    # self links
-    def get_top_level_links(self, data, many):
-        if many:
-            self_link = "/products/"
-        else:
-            self_link = "/products/{}".format(data['id'])
-        return {'self': self_link}
-
     class Meta:
         type_ = 'products'
         strict = True

@@ -11,5 +11,13 @@ def not_empty(data):
 class BaseSchema(Schema):
     """Base schema."""
 
+    def get_top_level_links(self, data, many):
+        """Set self links."""
+        if many:
+            self_link = '/{}/'.format(self.Meta.type_)
+        else:
+            self_link = '/{}/{}'.format(self.Meta.type_, data['id'])
+        return {'self': self_link}
+
     class Meta:
         strict = True
