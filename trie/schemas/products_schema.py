@@ -9,7 +9,7 @@ class ProductsSchema(BaseSchema):
     id = fields.UUID(dump_only=True)
     description = fields.String(required=True, validate=not_empty)
     image = fields.String(required=True, validate=not_empty)
-    price = fields.Decimal(required=True, validate=not_empty, as_string=True)
+    price = fields.Decimal(required=True, validate=not_empty, as_string=True, places=2)
     title = fields.String(required=True, validate=not_empty)
 
     class Meta:
