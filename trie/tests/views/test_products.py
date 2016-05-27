@@ -1,3 +1,5 @@
+import uuid
+
 from trie.models.product import Product
 from trie.schemas.products_schema import ProductsSchema
 from trie.tests import factories
@@ -12,19 +14,15 @@ class ProductTestCase(ViewTestCase):
         res = self.get(
             '/products/{}'.format(str(product.id)),
         )
-        assert res.data['id'] == str(product.id)
+        assert res.data['data']['id'] == str(product.id)
         assert res.status_code == 200
 
-    def test_get(self):
+    def test_get_404(self):
         """Test that we can get a product 404's."""
-        product = factories.ProductFactory()
         res = self.get(
-            '/products/{}'.format(str(product.id)),
+            '/products/{}'.format(str(uuid.uuid4())),
         )
         assert res.status_code == 404
-        import ipdb
-        ipdb.set_trace()
-        assert res.data['id'] == str(product.id)
 
     def test_get_list(self):
         """Test that we can get a product."""
@@ -41,25 +39,25 @@ class ProductTestCase(ViewTestCase):
 
     def test_post(self):
         """Test that we can create a new product."""
-        attributes = {
-            'title': 'title_test',
-            'description': 'description_test',
-            'price': 12345,
-            'image': 'https://www.image.com/test',
+        data = {
+            'data': {
+                'attributes': {
+                    'title': 'title_test',
+                    'description': 'description_test',
+                    'price': 12345,
+                    'image': 'https://www.image.com/test',
+                },
+                'type': 'products',
+            }
         }
         res = self.post(
             '/products/',
-            data={
-                'data': {
-                    'attributes': attributes
-                }
-            }
+            data=data,
         )
         schema = ProductsSchema()
         schema.validate(res.data)
-        attrs = schema.dump(attributes).data
-        for k, v in attrs.iteritems():
-            assert res.data[k] == v
+        for k, v in data['data']['attributes'].iteritems():
+            assert str(res.data['data']['attributes'][k]) == str(v)
         assert res.status_code == 201
 
     def test_delete(self):
@@ -77,17 +75,22 @@ class ProductTestCase(ViewTestCase):
 
     def test_patch(self):
         """Test that we can patch a product."""
-        attributes = {
-            'title': 'title_patch_test',
-        }
         product = factories.ProductFactory()
+        data = {
+            'data': {
+                'attributes': {
+                    'title': 'title_patch_test',
+                },
+                'type': 'products',
+                'id': str(product.id),
+            }
+        }
         res = self.patch(
             '/products/{}'.format(str(product.id)),
-            data={
-                'data': {
-                    'attributes': attributes
-                }
-            }
+            data=data
         )
         assert res.status_code == 200
-        assert res.data['title'] == attributes['title']
+        assert (
+            res.data['data']['attributes']['title'] ==
+            data['data']['attributes']['title']
+        )

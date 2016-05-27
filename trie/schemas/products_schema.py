@@ -1,4 +1,4 @@
-from marshmallow import fields
+from marshmallow_jsonapi import fields
 
 from trie.schemas.base import BaseSchema
 from trie.schemas.base import not_empty
