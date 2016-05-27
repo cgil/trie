@@ -22,3 +22,4 @@ class ProductsSchema(BaseSchema):
 
     class Meta:
         type_ = 'products'
+        strict = True

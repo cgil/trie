@@ -26,8 +26,8 @@ class ProductsListAPI(Resource):
     def post(self):
         raw_dict = request.get_json(force=True)
         try:
-            products_schema.validate(raw_dict)
             product_dict = raw_dict['data']['attributes']
+            products_schema.validate(product_dict)
             product = Product(
                 title=product_dict['title'],
                 description=product_dict['description'],
