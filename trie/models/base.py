@@ -1,5 +1,5 @@
 import datetime
-from uuid import uuid4
+import uuid
 
 from sqlalchemy import Column
 from sqlalchemy import DateTime
@@ -12,7 +12,7 @@ class Base(db.Model):
 
     __abstract__ = True
 
-    id = Column(UUIDType, default=str(uuid4()), primary_key=True)
+    id = Column(UUIDType, default=lambda: uuid.uuid4().hex, primary_key=True)
     created_at = Column(
         DateTime,
         server_default=db.func.now(),

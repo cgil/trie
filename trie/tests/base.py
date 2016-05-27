@@ -37,6 +37,7 @@ class ViewTestCase(BaseTestCase):
         self.client = self.app.test_client()
 
     def post(self, url, data=None):
+        """Perform a post request."""
         res = self.client.post(
             url,
             data=json.dumps(data),
@@ -52,4 +53,13 @@ class ViewTestCase(BaseTestCase):
     def delete(self, url):
         """Perform a delete request."""
         res = self.client.delete(url)
+        return ViewTestCaseResponse(res)
+
+    def patch(self, url, data=None):
+        """Perform a patch request."""
+        res = self.client.patch(
+            url,
+            data=json.dumps(data),
+            content_type='application/json'
+        )
         return ViewTestCaseResponse(res)

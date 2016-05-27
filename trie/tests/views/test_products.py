@@ -1,7 +1,7 @@
+from trie.models.product import Product
+from trie.schemas.products_schema import ProductsSchema
 from trie.tests import factories
 from trie.tests.base import ViewTestCase
-from trie.schemas.products_schema import ProductsSchema
-from trie.models.product import Product
 
 
 class ProductTestCase(ViewTestCase):
@@ -15,11 +15,24 @@ class ProductTestCase(ViewTestCase):
         assert res.data['id'] == str(product.id)
         assert res.status_code == 200
 
+    def test_get_list(self):
+        """Test that we can get a product."""
+        products = factories.ProductFactory.create_batch(size=3)
+        res = self.get(
+            '/products/',
+        )
+        assert res.status_code == 200
+        found = Product.query.all()
+        found = sorted(found, key=lambda p: p.id)
+        products = sorted(products, key=lambda p: p.id)
+        for i, f in enumerate(found):
+            assert found[i].id == products[i].id
+
     def test_post(self):
         """Test that we can create a new product."""
         attributes = {
-            'title': 'title',
-            'description': 'description',
+            'title': 'title_test',
+            'description': 'description_test',
             'price': 12345,
             'image': 'https://www.image.com/test',
         }
@@ -50,3 +63,20 @@ class ProductTestCase(ViewTestCase):
         assert found[0].deleted_at is not None
         assert res.status_code == 204
         assert not res.data
+
+    def test_patch(self):
+        """Test that we can patch a product."""
+        attributes = {
+            'title': 'title_patch_test',
+        }
+        product = factories.ProductFactory()
+        res = self.patch(
+            '/products/{}'.format(str(product.id)),
+            data={
+                'data': {
+                    'attributes': attributes
+                }
+            }
+        )
+        assert res.status_code == 200
+        assert res.data['title'] == attributes['title']

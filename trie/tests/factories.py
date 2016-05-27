@@ -1,8 +1,8 @@
 import logging
-from trie import db
 
 import factory
 
+from trie import db
 from trie.models.product import Product
 
 logging.getLogger('factory').setLevel(logging.ERROR)
