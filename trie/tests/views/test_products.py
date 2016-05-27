@@ -44,7 +44,7 @@ class ProductTestCase(ViewTestCase):
                 'attributes': {
                     'title': 'title_test',
                     'description': 'description_test',
-                    'price': 12345,
+                    'price': 123.45,
                     'image': 'https://www.image.com/test',
                 },
                 'type': 'products',
