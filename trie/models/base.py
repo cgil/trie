@@ -1,3 +1,4 @@
+import datetime
 from uuid import uuid4
 
 from sqlalchemy import Column
@@ -26,12 +27,20 @@ class Base(db.Model):
     )
 
     def save(self, resource):
+        """Save to the database."""
         db.session.add(resource)
-        return db.session.commit()
+        return self.update()
 
     def update(self):
+        """Updates the database records."""
         return db.session.commit()
 
-    def delete(self, resource):
+    def delete(self, resource, soft_delete=True):
+        """Delete a resource."""
+        # Soft delete the resource by updating the deleted_at field.
+        if soft_delete:
+            resource.deleted_at = datetime.datetime.utcnow()
+            return self.update()
+        # Otherwise, permanently delete a resource.
         db.session.delete(resource)
         return db.session.commit()

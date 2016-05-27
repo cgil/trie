@@ -10,7 +10,7 @@ class ViewTestCaseResponse(object):
     """Wraps a response object to easily extract and manipulate fields."""
 
     def __init__(self, response):
-        self.data = json.loads(response.data)
+        self.data = json.loads(response.get_data() or '{}')
         self.status_code = response.status_code
 
 
@@ -46,6 +46,10 @@ class ViewTestCase(BaseTestCase):
 
     def get(self, url):
         """Perform a get request."""
-        # Returns json
         res = self.client.get(url)
+        return ViewTestCaseResponse(res)
+
+    def delete(self, url):
+        """Perform a delete request."""
+        res = self.client.delete(url)
         return ViewTestCaseResponse(res)

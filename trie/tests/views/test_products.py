@@ -1,6 +1,7 @@
 from trie.tests import factories
 from trie.tests.base import ViewTestCase
 from trie.schemas.products_schema import ProductsSchema
+from trie.models.product import Product
 
 
 class ProductTestCase(ViewTestCase):
@@ -36,3 +37,16 @@ class ProductTestCase(ViewTestCase):
         for k, v in attrs.iteritems():
             assert res.data[k] == v
         assert res.status_code == 201
+
+    def test_delete(self):
+        """Test that we can delete a product."""
+        product = factories.ProductFactory()
+        assert len(Product.query.all()) == 1
+        res = self.delete(
+            '/products/{}'.format(str(product.id))
+        )
+        found = Product.query.all()
+        assert len(found) == 1
+        assert found[0].deleted_at is not None
+        assert res.status_code == 204
+        assert not res.data

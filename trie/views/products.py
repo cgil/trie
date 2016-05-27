@@ -55,7 +55,7 @@ class ProductsAPI(Resource):
         return result
 
     def delete(self, product_id):
-        product = Product.query.get_or_404(id)
+        product = Product.query.get_or_404(product_id)
         try:
             product.delete(product)
             response = make_response()
