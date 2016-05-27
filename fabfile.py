@@ -6,7 +6,6 @@ from fabric.api import task
 from fabric.colors import green
 from fabric.colors import red
 from fabric.context_managers import settings
-from flask.ext.script import Shell
 
 DEFAULT_ENV = 'development'
 
@@ -22,13 +21,7 @@ def clean():
 def shell(env=DEFAULT_ENV):
     """Run the shell in the environment."""
     os.environ['CONFIG_ENV'] = './config/%s.yaml' % env
-    from trie import db
-    from trie import create_app
-    app = create_app()
-    app.app_context().push()
-    Shell(
-        make_context=lambda: dict(app=app, db=db)
-    ).run(no_ipython=False, no_bpython=False)
+    local('python manage.py shell')
 
 
 @task
