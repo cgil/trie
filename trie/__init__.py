@@ -5,6 +5,7 @@ from flask import Response
 from flask import current_app
 from flask import json
 from flask import request
+from flask.ext.cors import CORS
 
 from trie.database import db
 from trie.login_manager import login_manager
@@ -63,6 +64,10 @@ def create_app():
     app.secret_key = config.get('secret_key')
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # Set up CORS
+    # TODO: Revisit in the future. Set up more granular access per view.
+    CORS(app)
 
     # Set up the database
     db.init_app(app)

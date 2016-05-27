@@ -20,6 +20,10 @@ Flask-Login==0.3.2
 
 # apis
 Flask-RESTful==0.3.5
+
+# CORS
+Flask-Cors==2.1.2
+
 # Schema validation
 marshmallow==2.7.3
 marshmallow-jsonapi==0.7.1
