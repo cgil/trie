@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from trie.models.product import Product
@@ -24,6 +25,15 @@ class ProductTestCase(ViewTestCase):
         )
         assert res.status_code == 404
 
+    def test_get_soft_deleted(self):
+        """Test that we can get a product."""
+        product = factories.ProductFactory()
+        product.deleted_at = datetime.datetime.utcnow()
+        res = self.get(
+            '/products/{}'.format(str(product.id)),
+        )
+        assert res.status_code == 404
+
     def test_get_list(self):
         """Test that we can get a product."""
         products = factories.ProductFactory.create_batch(size=3)
@@ -32,10 +42,22 @@ class ProductTestCase(ViewTestCase):
         )
         assert res.status_code == 200
         found = Product.query.all()
+        assert len(found) == 3
         found = sorted(found, key=lambda p: p.id)
         products = sorted(products, key=lambda p: p.id)
         for i, f in enumerate(found):
             assert found[i].id == products[i].id
+
+    def test_get_list_soft_deleted(self):
+        """Test that we can get a product."""
+        products = factories.ProductFactory.create_batch(size=3)
+        for product in products:
+            product.deleted_at = datetime.datetime.utcnow()
+        res = self.get(
+            '/products/',
+        )
+        assert res.status_code == 200
+        assert not res.data['data']
 
     def test_post(self):
         """Test that we can create a new product."""
