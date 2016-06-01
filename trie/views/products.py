@@ -35,7 +35,7 @@ class ProductsListAPI(Resource):
                 price=product_dict['price'],
             )
             product.save(product)
-            query = Product.query.get(product.id)
+            query = Product.get(product.id)
             result = products_schema.dump(query).data
             return result, 201
 
@@ -55,7 +55,7 @@ class ProductsAPI(Resource):
         return result
 
     def delete(self, product_id):
-        product = Product.query.get_or_404(product_id)
+        product = Product.get_or_404(product_id)
         try:
             product.delete(product)
             response = make_response()
@@ -67,7 +67,7 @@ class ProductsAPI(Resource):
                 return {'error': str(e)}, 401
 
     def patch(self, product_id):
-        product = Product.query.get_or_404(product_id)
+        product = Product.get_or_404(product_id)
         raw_dict = request.get_json(force=True)
         try:
             products_schema.validate(raw_dict, partial=True)
