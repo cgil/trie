@@ -1,6 +1,7 @@
 import datetime
 import uuid
 
+from flask import abort
 from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy_utils import UUIDType
@@ -44,3 +45,29 @@ class Base(db.Model):
         # Otherwise, permanently delete a resource.
         db.session.delete(resource)
         return db.session.commit()
+
+    @classmethod
+    def get_all(cls):
+        """Get all records."""
+        return cls.query.filter(
+            cls.deleted_at.is_(None)
+        ).all()
+
+    @classmethod
+    def get(cls, record_id):
+        """Get a record."""
+        return cls.query.filter(
+            cls.id == record_id
+        ).filter(
+            cls.deleted_at.is_(None)
+        ).first()
+
+    @classmethod
+    def get_or_404(cls, record_id):
+        """Get a record or 404."""
+        record = cls.query.filter(
+            cls.id == record_id
+        ).filter(
+            cls.deleted_at.is_(None)
+        ).first()
+        return record or abort(404)

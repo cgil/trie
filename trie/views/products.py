@@ -1,5 +1,4 @@
 from flask import Blueprint
-from flask import abort
 from flask import make_response
 from flask import request
 from flask_restful import Api
@@ -51,13 +50,7 @@ class ProductsListAPI(Resource):
 class ProductsAPI(Resource):
 
     def get(self, product_id):
-        product = Product.query.filter(
-            Product.deleted_at.is_(None)
-        ).filter(
-            Product.id == product_id
-        ).first()
-        if not product:
-            abort(404)
+        product = Product.get_or_404(product_id)
         result = products_schema.dump(product).data
         return result
 
