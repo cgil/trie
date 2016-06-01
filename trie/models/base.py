@@ -36,9 +36,10 @@ class Base(db.Model):
                 del kwargs[k]
         super(Base, self).__init__(**kwargs)
 
-    def columns(self):
+    @classmethod
+    def columns(cls):
         """Get all model columns."""
-        return [prop.key for prop in class_mapper(self.__class__).iterate_properties
+        return [prop.key for prop in class_mapper(cls).iterate_properties
                 if isinstance(prop, ColumnProperty)]
 
     def save(self, resource):

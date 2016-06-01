@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 
+from trie import db
 from trie.models.base import Base
 
 
@@ -16,3 +17,5 @@ class Store(Base):
     country_code = sa.Column(sa.String)
     currency = sa.Column(sa.String)
     phone = sa.Column(sa.String)
+
+    products = db.relationship('Product', backref='store', lazy='dynamic')

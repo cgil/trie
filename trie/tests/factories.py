@@ -20,20 +20,23 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
         """Overrides create strategy, commits on create"""
+        # FK constraints reference ids.
+        for k in kwargs:
+            if k.endswith('_id'):
+                kwargs[k] = getattr(kwargs[k], 'id')
         obj = model_class(*args, **kwargs)
         obj.save(obj)
         return obj
 
-
-class ProductFactory(BaseFactory):
-
-    class Meta:
-        model = Product
-
-    description = factory.Sequence(lambda n: 'descripton_{0}'.format(n))
-    image = factory.Sequence(lambda n: 'https://www.image.com/test_{0}.png'.format(n))
-    price = factory.Sequence(lambda n: 2000 + n)
-    title = factory.Sequence(lambda n: 'title_{0}'.format(n))
+    @classmethod
+    def stub(cls, **kwargs):
+        """Overrides stub strategy."""
+        stub = super(BaseFactory, cls).stub(**kwargs)
+        # FK constraints reference ids.
+        for k in cls._get_model_class().columns():
+            if k.endswith('_id'):
+                setattr(stub, k, getattr(stub, k).id)
+        return stub
 
 
 class StoreFactory(BaseFactory):
@@ -52,3 +55,16 @@ class StoreFactory(BaseFactory):
     country_code = factory.Faker('country_code')
     currency = factory.Faker('currency_code')
     phone = factory.Sequence(lambda n: '412400110{0}'.format(n))
+
+
+class ProductFactory(BaseFactory):
+
+    class Meta:
+        model = Product
+
+    description = factory.Sequence(lambda n: 'descripton_{0}'.format(n))
+    image = factory.Sequence(lambda n: 'https://www.image.com/test_{0}.png'.format(n))
+    price = factory.Sequence(lambda n: 2000 + n)
+    title = factory.Sequence(lambda n: 'title_{0}'.format(n))
+
+    store_id = factory.SubFactory(StoreFactory)

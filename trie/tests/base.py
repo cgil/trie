@@ -164,7 +164,7 @@ class CRUDTestCase(ViewTestCase):
         for k, v in stub.__dict__.iteritems():
             if k == 'price':
                 assert Decimal(res.data['data']['attributes'][k]) == Decimal(v)
-            else:
+            elif not k.endswith('_id'):
                 assert res.data['data']['attributes'][k] == str(v)
         assert res.status_code == 201
 
@@ -200,5 +200,5 @@ class CRUDTestCase(ViewTestCase):
         for k, v in stub.__dict__.iteritems():
             if k == 'price':
                 assert Decimal(res.data['data']['attributes'][k]) == Decimal(v)
-            else:
+            elif not k.endswith('_id'):
                 assert res.data['data']['attributes'][k] == str(v)
