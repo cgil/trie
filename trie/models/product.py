@@ -1,19 +1,11 @@
-from sqlalchemy import Column
-from sqlalchemy import Numeric
-from sqlalchemy import String
+import sqlalchemy as sa
 
 from trie.models.base import Base
 
 
 class Product(Base):
 
-    description = Column(String, nullable=False)
-    image = Column(String, nullable=False)
-    price = Column(Numeric, nullable=False)
-    title = Column(String, nullable=False)
-
-    def __init__(self, title=None, description=None, image=None, price=None):
-        self.description = description
-        self.image = image
-        self.price = price
-        self.title = title
+    description = sa.Column(sa.String, nullable=False)
+    image = sa.Column(sa.String, nullable=False)
+    price = sa.Column(sa.Numeric, nullable=False)
+    title = sa.Column(sa.String, nullable=False)

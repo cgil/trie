@@ -4,6 +4,8 @@ import uuid
 from flask import abort
 from sqlalchemy import Column
 from sqlalchemy import DateTime
+from sqlalchemy.orm import ColumnProperty
+from sqlalchemy.orm import class_mapper
 from sqlalchemy_utils import UUIDType
 
 from trie.database import db
@@ -26,6 +28,18 @@ class Base(db.Model):
         onupdate=db.func.now(),
         default=db.func.now()
     )
+
+    def __init__(self, **kwargs):
+        # Remove invalid keys.
+        for k in kwargs.iterkeys():
+            if k not in self.columns():
+                del kwargs[k]
+        super(Base, self).__init__(**kwargs)
+
+    def columns(self):
+        """Get all model columns."""
+        return [prop.key for prop in class_mapper(self.__class__).iterate_properties
+                if isinstance(prop, ColumnProperty)]
 
     def save(self, resource):
         """Save to the database."""
