@@ -77,6 +77,7 @@ class BaseAPI(Resource):
                 return {'error': str(e)}, 401
 
     def patch(self, id):
+        """Update one or more fields."""
         record = self.model.get_or_404(id)
         raw_dict = request.get_json(force=True)
         try:
