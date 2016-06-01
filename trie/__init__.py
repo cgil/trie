@@ -13,6 +13,7 @@ from trie.utils.configuration import config
 from trie.views.health import health
 from trie.views.home import home
 from trie.views.products import products_blueprint
+from trie.views.stores import stores_blueprint
 
 
 class ResponseJSON(Response):
@@ -79,4 +80,5 @@ def create_app():
     app.register_blueprint(health)
     app.register_blueprint(home)
     app.register_blueprint(products_blueprint)
+    app.register_blueprint(stores_blueprint)
     return app
