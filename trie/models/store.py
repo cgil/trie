@@ -7,6 +7,7 @@ class Store(Base):
 
     name = sa.Column(sa.String, nullable=False)
     tote_domain = sa.Column(sa.String, nullable=False, unique=True)
+    domain = sa.Column(sa.String)
     email = sa.Column(sa.String)
     address_1 = sa.Column(sa.String)
     city = sa.Column(sa.String)
