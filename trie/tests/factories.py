@@ -18,25 +18,23 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
         sqlalchemy_session = db.session
 
     @classmethod
-    def _create(cls, model_class, *args, **kwargs):
-        """Overrides create strategy, commits on create"""
-        # FK constraints reference ids.
-        for k in kwargs:
-            if k.endswith('_id'):
-                kwargs[k] = getattr(kwargs[k], 'id')
-        obj = model_class(*args, **kwargs)
-        obj.save(obj)
-        return obj
+    def _build(cls, model_class, *args, **kwargs):
+        for k in kwargs.keys():
+            if k in model_class.relationships():
+                rel_key = '{}_id'.format(k)
+                kwargs[rel_key] = str(kwargs[k].id)
+        return super(BaseFactory, cls)._build(model_class, *args, **kwargs)
 
     @classmethod
-    def stub(cls, **kwargs):
-        """Overrides stub strategy."""
-        stub = super(BaseFactory, cls).stub(**kwargs)
-        # FK constraints reference ids.
-        for k in cls._get_model_class().columns():
-            if k.endswith('_id'):
-                setattr(stub, k, getattr(stub, k).id)
-        return stub
+    def _create(cls, model_class, *args, **kwargs):
+        """Overrides create strategy, commits on create"""
+        for k in kwargs.keys():
+            if k in model_class.relationships():
+                rel_key = '{}_id'.format(k)
+                kwargs[rel_key] = str(kwargs[k].id)
+        obj = super(BaseFactory, cls)._create(model_class, *args, **kwargs)
+        obj.save(obj)
+        return obj
 
 
 class StoreFactory(BaseFactory):
@@ -67,4 +65,4 @@ class ProductFactory(BaseFactory):
     price = factory.Sequence(lambda n: 2000 + n)
     title = factory.Sequence(lambda n: 'title_{0}'.format(n))
 
-    store_id = factory.SubFactory(StoreFactory)
+    store = factory.SubFactory(StoreFactory)

@@ -10,6 +10,8 @@ from sqlalchemy_utils import UUIDType
 
 from trie.database import db
 
+PRIVATE_COLS = ['created_at', 'deleted_at', 'updated_at']
+
 
 class Base(db.Model):
 
@@ -31,16 +33,28 @@ class Base(db.Model):
 
     def __init__(self, **kwargs):
         # Remove invalid keys.
-        for k in kwargs.iterkeys():
+        for k in kwargs.keys():
             if k not in self.columns():
                 del kwargs[k]
         super(Base, self).__init__(**kwargs)
+
+    @classmethod
+    def relationships(cls):
+        """Get all model relationships."""
+        return cls.__mapper__.relationships.keys()
 
     @classmethod
     def columns(cls):
         """Get all model columns."""
         return [prop.key for prop in class_mapper(cls).iterate_properties
                 if isinstance(prop, ColumnProperty)]
+
+    def to_dict(self):
+        """Returns a dict from a record."""
+        return {
+            col: getattr(self, col) for col in self.columns()
+            if col not in PRIVATE_COLS
+        }
 
     def save(self, resource):
         """Save to the database."""

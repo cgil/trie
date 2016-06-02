@@ -2,6 +2,7 @@ from marshmallow_jsonapi import fields
 
 from trie.schemas.base import BaseSchema
 from trie.schemas.base import not_empty
+from trie.schemas.products_schema import ProductsSchema
 
 
 class StoresSchema(BaseSchema):
@@ -18,6 +19,11 @@ class StoresSchema(BaseSchema):
     country_code = fields.String()
     currency = fields.String()
     phone = fields.String()
+
+    products = fields.Nested(
+        ProductsSchema,
+        many=True,
+    )
 
     class Meta:
         type_ = 'stores'

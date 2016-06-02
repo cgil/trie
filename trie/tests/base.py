@@ -150,10 +150,10 @@ class CRUDTestCase(ViewTestCase):
 
     def _test_post(self):
         """Test that we can create a new record."""
-        stub = self.model_factory.stub()
+        attrs = self.model_factory.build().to_dict()
         data = {
             'data': {
-                'attributes': stub.__dict__,
+                'attributes': attrs,
                 'type': '{}'.format(self.url_prefix),
             }
         }
@@ -161,10 +161,10 @@ class CRUDTestCase(ViewTestCase):
             '/{}/'.format(self.url_prefix),
             data=data,
         )
-        for k, v in stub.__dict__.iteritems():
+        for k, v in attrs.iteritems():
             if k == 'price':
                 assert Decimal(res.data['data']['attributes'][k]) == Decimal(v)
-            elif not k.endswith('_id'):
+            elif k is not 'id':
                 assert res.data['data']['attributes'][k] == str(v)
         assert res.status_code == 201
 
@@ -184,10 +184,12 @@ class CRUDTestCase(ViewTestCase):
     def _test_patch(self):
         """Test that we can patch a record."""
         record = self.model_factory()
-        stub = self.model_factory.stub()
+        build_attrs = self.model_factory.build().to_dict()
+        del build_attrs['id']
+
         data = {
             'data': {
-                'attributes': stub.__dict__,
+                'attributes': build_attrs,
                 'type': '{}'.format(self.url_prefix),
                 'id': str(record.id),
             }
@@ -197,8 +199,8 @@ class CRUDTestCase(ViewTestCase):
             data=data
         )
         assert res.status_code == 200
-        for k, v in stub.__dict__.iteritems():
+        for k, v in build_attrs.iteritems():
             if k == 'price':
                 assert Decimal(res.data['data']['attributes'][k]) == Decimal(v)
-            elif not k.endswith('_id'):
+            else:
                 assert res.data['data']['attributes'][k] == str(v)
