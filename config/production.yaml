@@ -1,5 +1,14 @@
 ---
 debug: False
 
+sendgrid:
+  api_key: prod_sendgrid_api_key
+  default_from: support@totestore.com
+
+# TODO: Remove secret key.
+stripe:
+  secret_key: sk_live_SDUVqQEfhKTNCXUKajB59NKO
+  publishable_key: pk_live_InorHF5F9AWzp1UuBM8Xz41b
+
 # TODO: Remove secrets
 secret_key: jhbVYTgyvgHUByg6745SJs67s6GVC7dcsbd8

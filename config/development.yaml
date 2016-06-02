@@ -8,4 +8,12 @@ database:
   port: 5432
   name: trie_development
 
+sendgrid:
+  api_key: dev_sendgrid_api_key
+  default_from: support@totestore.com
+
+stripe:
+  secret_key: sk_test_Bi7qQ8cy3M4q730QLc6cqZN3
+  publishable_key: pk_test_SSTmhE8aocfnGsmEZrN9SEAM
+
 secret_key: trie

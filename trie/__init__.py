@@ -9,6 +9,7 @@ from flask.ext.cors import CORS
 
 from trie.database import db
 from trie.login_manager import login_manager
+from trie.sendgrid import sendgrid
 from trie.utils.configuration import config
 from trie.views.health import health
 from trie.views.home import home
@@ -75,6 +76,16 @@ def create_app():
 
     # Set up the user session
     login_manager.init_app(app)
+
+    # Set up SendGrid - emails
+    # TODO: REMOVE the secret key! This really shouldn't be here!
+    app.config['SENDGRID_API_KEY'] = config.get('api_key')
+    app.config['SENDGRID_DEFAULT_FROM'] = config.get('default_from')
+    sendgrid.init_app(app)
+
+    # Set up Stripe - checkout.
+    app.config['STRIPE_SECRET_KEY'] = config.get('stripe.secret_key')
+    app.config['STRIPE_PUBLISHABLE_KEY'] = config.get('stripe.publishable_key')
 
     # register blueprints
     app.register_blueprint(health)
