@@ -106,8 +106,7 @@ header {
   background-position: center 0;
   background-size: contain;
   display: inline-block;
-  width: 100%;
-  height: 696px; }
+  width: 100%; }
   #hero .slogan {
     max-width: 58.75rem;
     margin: 28% auto 0; }
