@@ -40,13 +40,15 @@ def upgrade():
         sa.Column('financial_status', sa.String(), nullable=False),
         sa.Column('fulfillment_status', sa.String()),
         sa.Column('total_price', sa.Numeric(), nullable=False),
-        sa.Column('store_id', UUIDType),
         sa.Column('shipping_address_city', sa.String()),
         sa.Column('shipping_address_country', sa.String()),
-        sa.Column('shipping_address_code', sa.String()),
+        sa.Column('shipping_address_country_code', sa.String()),
         sa.Column('shipping_address_1', sa.String()),
         sa.Column('shipping_address_zip', sa.String()),
         sa.Column('shipping_name', sa.String()),
+
+        sa.Column('member_id', UUIDType),
+        sa.Column('store_id', UUIDType),
     )
 
 

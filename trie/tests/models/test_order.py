@@ -21,7 +21,7 @@ class OrderTestCase(BaseTestCase):
             shipping_address_1='shipping address',
             shipping_address_zip='9876',
             shipping_address_city='Miami',
-            shipping_address_code='MIA',
+            shipping_address_country_code='MIA',
             shipping_address_country='USA',
             shipping_name='Person McPerson'
         )

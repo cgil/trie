@@ -91,7 +91,7 @@ class OrderFactory(BaseFactory):
     total_price = factory.Sequence(lambda n: 2000 + n)
     shipping_address_city = factory.Faker('city')
     shipping_address_country = factory.Faker('country')
-    shipping_address_code = factory.Faker('country_code')
+    shipping_address_country_code = factory.Faker('country_code')
     shipping_address_1 = factory.Faker('street_address')
     shipping_address_zip = factory.Faker('zipcode')
     shipping_name = factory.Faker('name')

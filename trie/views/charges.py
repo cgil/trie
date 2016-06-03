@@ -1,3 +1,4 @@
+from decimal import Decimal
 import uuid
 
 from flask import Blueprint
@@ -22,8 +23,6 @@ class ChargesListAPI(Resource):
 
     def post(self):
         """Create a new charge."""
-        import ipdb
-        ipdb.set_trace()
         raw_dict = request.get_json(force=True)
         stripe_customer = stripe.Customer.create(
             email=raw_dict['token']['email'],
@@ -48,11 +47,22 @@ class ChargesListAPI(Resource):
         order = Order(
             member_id=member.id,
             store_id=raw_dict['storeId'],
+            financial_status='pending',
+            total_price=0,
+            shipping_address_city=raw_dict['addresses']['shipping_address_city'],
+            shipping_address_country=raw_dict['addresses']['shipping_address_country'],
+            shipping_address_country_code=raw_dict['addresses']['shipping_address_country_code'],
+            shipping_address_1=raw_dict['addresses']['shipping_address_line1'],
+            shipping_address_zip=raw_dict['addresses']['shipping_address_zip'],
+            shipping_name=raw_dict['addresses']['shipping_name'],
         )
+        db.session.add(order)
+        db.session.flush()
 
         # Get all products in the order.
         basket = raw_dict['basket']
         order_items = []
+        total_price = Decimal(0)
         for item in basket:
             product = Product.get(item['id'])
             if not product:
@@ -67,10 +77,36 @@ class ChargesListAPI(Resource):
                     quantity=item['_quantity'],
                 )
             )
+            total_price += product.price * item['_quantity']
 
         # Charge the member.
+        try:
+            stripe.Charge.create(
+                customer=member.stripe_customer_id,
+                amount=total_price * 100,  # amount in cents, again
+                currency='usd',
+                description='Tote Store - purchased items.',
+                metadata={
+                    'order_id': order.id
+                }
+            )
+        except stripe.error.CardError as e:
+            # The card has been declined
+            db.session.rollback()
+            return {'error': str(e)}, 403
 
         # Store the order and order items.
+        order.financial_status = 'paid'
+        order.total_price = Decimal(total_price)
+        db.session.add(order)
+        for order_item in order_items:
+            db.session.add(order_item)
+
+
+        import ipdb
+        ipdb.set_trace()
+        # Finalize all transactions.
+        db.session.commit()
 
         # Send a confirmation email.
         return {}, 201

@@ -14,7 +14,7 @@ class OrdersSchema(BaseSchema):
     total_price = fields.Decimal(required=True, validate=not_empty, as_string=True, places=2)
     shipping_address_city = fields.String()
     shipping_address_country = fields.String()
-    shipping_address_code = fields.String()
+    shipping_address_country_code = fields.String()
     shipping_address_1 = fields.String()
     shipping_address_zip = fields.String()
     shipping_name = fields.String()

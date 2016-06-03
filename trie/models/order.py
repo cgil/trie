@@ -12,8 +12,8 @@ class Order(Base):
     total_price = sa.Column(sa.Numeric)
 
     shipping_address_city = sa.Column(sa.String)
+    shipping_address_country_code = sa.Column(sa.String)
     shipping_address_country = sa.Column(sa.String)
-    shipping_address_code = sa.Column(sa.String)
     shipping_address_1 = sa.Column(sa.String)
     shipping_address_zip = sa.Column(sa.String)
     shipping_name = sa.Column(sa.String)
