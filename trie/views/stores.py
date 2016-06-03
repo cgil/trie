@@ -1,6 +1,5 @@
 from flask import Blueprint
 from flask_restful import Api
-from flask_restful import Resource
 
 from trie.models.store import Store
 from trie.schemas.stores_schema import StoresSchema
@@ -24,18 +23,5 @@ class StoresAPI(BaseAPI):
     schema_model = StoresSchema
 
 
-class StoresMiscAPI(Resource):
-
-    model = Store
-    schema_model = StoresSchema
-
-    def get(self, id):
-        """Get a single store record."""
-        record = self.model.get_or_404(id)
-        result = self.schema.dump(record).data
-        return result
-
-
 api.add_resource(StoresListAPI, '/stores/')
 api.add_resource(StoresAPI, '/stores/<id>', '/<id>')
-api.add_resource(StoresMiscAPI, '/<id>')
