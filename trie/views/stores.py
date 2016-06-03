@@ -7,7 +7,7 @@ from trie.views.base import BaseAPI
 from trie.views.base import BaseListAPI
 
 
-stores_blueprint = Blueprint('stores', __name__)
+stores_blueprint = Blueprint('stores', __name__, url_prefix='/products')
 api = Api(stores_blueprint)
 
 
@@ -23,5 +23,5 @@ class StoresAPI(BaseAPI):
     schema_model = StoresSchema
 
 
-api.add_resource(StoresListAPI, '/stores/')
-api.add_resource(StoresAPI, '/stores/<id>', '/<id>')
+api.add_resource(StoresListAPI, '/')
+api.add_resource(StoresAPI, '/<id>')
