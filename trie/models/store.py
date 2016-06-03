@@ -6,6 +6,8 @@ from trie.models.base import Base
 
 class Store(Base):
 
+    """An in-app store."""
+
     name = sa.Column(sa.String, nullable=False)
     tote_domain = sa.Column(sa.String, nullable=False, unique=True)
     domain = sa.Column(sa.String)

@@ -30,3 +30,6 @@ marshmallow-jsonapi==0.7.1
 
 # sending emails
 Flask-SendGrid==0.1.0
+
+# checkout
+stripe==1.35.0

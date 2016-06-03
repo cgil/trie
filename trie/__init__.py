@@ -7,13 +7,16 @@ from flask import json
 from flask import request
 from flask.ext.cors import CORS
 
+from trie.checkout import stripe
 from trie.database import db
 from trie.login_manager import login_manager
 from trie.sendgrid import sendgrid
 from trie.utils.configuration import config
+from trie.views.charges import charges_blueprint
 from trie.views.health import health
 from trie.views.home import home
 from trie.views.members import members_blueprint
+from trie.views.order_items import order_items_blueprint
 from trie.views.orders import orders_blueprint
 from trie.views.products import products_blueprint
 from trie.views.stores import stores_blueprint
@@ -88,11 +91,14 @@ def create_app():
     # Set up Stripe - checkout.
     app.config['STRIPE_SECRET_KEY'] = config.get('stripe.secret_key')
     app.config['STRIPE_PUBLISHABLE_KEY'] = config.get('stripe.publishable_key')
+    stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
     # register blueprints
+    app.register_blueprint(charges_blueprint)
     app.register_blueprint(health)
     app.register_blueprint(home)
     app.register_blueprint(members_blueprint)
+    app.register_blueprint(order_items_blueprint)
     app.register_blueprint(orders_blueprint)
     app.register_blueprint(products_blueprint)
     app.register_blueprint(stores_blueprint)

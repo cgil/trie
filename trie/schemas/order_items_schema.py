@@ -2,22 +2,12 @@ from marshmallow_jsonapi import fields
 from marshmallow_jsonapi.flask import Relationship
 
 from trie.schemas.base import BaseSchema
-from trie.schemas.base import not_empty
 
 
-class OrdersSchema(BaseSchema):
+class OrderItemsSchema(BaseSchema):
 
     id = fields.UUID(dump_only=True)
-
-    financial_status = fields.String(required=True)
-    fulfillment_status = fields.String()
-    total_price = fields.Decimal(required=True, validate=not_empty, as_string=True, places=2)
-    shipping_address_city = fields.String()
-    shipping_address_country = fields.String()
-    shipping_address_code = fields.String()
-    shipping_address_1 = fields.String()
-    shipping_address_zip = fields.String()
-    shipping_name = fields.String()
+    quantity = fields.Int(required=True)
 
     store = Relationship(
         related_view='stores.storesapi',
@@ -37,6 +27,24 @@ class OrdersSchema(BaseSchema):
         required=True,
     )
 
+    order = Relationship(
+        related_view='orders.ordersapi',
+        related_view_kwargs={'id': '<id>'},
+        include_data=True,
+        type_='orders',
+        many=False,
+        required=True,
+    )
+
+    product = Relationship(
+        related_view='products.productsapi',
+        related_view_kwargs={'id': '<id>'},
+        include_data=True,
+        type_='products',
+        many=False,
+        required=True,
+    )
+
     class Meta:
-        type_ = 'orders'
+        type_ = 'order_items'
         strict = True

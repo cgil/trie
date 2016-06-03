@@ -18,6 +18,12 @@ class OrderTestCase(BaseTestCase):
             total_price=Decimal(123.55),
             member_id=member.id,
             store_id=store.id,
+            shipping_address_1='shipping address',
+            shipping_address_zip='9876',
+            shipping_address_city='Miami',
+            shipping_address_code='MIA',
+            shipping_address_country='USA',
+            shipping_name='Person McPerson'
         )
         order = Order(**attrs)
         order.save(order)

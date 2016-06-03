@@ -5,6 +5,7 @@ import factory
 from trie import db
 from trie.models.member import Member
 from trie.models.order import Order
+from trie.models.order_item import OrderItem
 from trie.models.product import Product
 from trie.models.store import Store
 
@@ -88,6 +89,24 @@ class OrderFactory(BaseFactory):
     financial_status = factory.Iterator(['paid', 'voided', 'refunded'])
     fulfillment_status = factory.Iterator(['fulfilled', 'partial'])
     total_price = factory.Sequence(lambda n: 2000 + n)
+    shipping_address_city = factory.Faker('city')
+    shipping_address_country = factory.Faker('country')
+    shipping_address_code = factory.Faker('country_code')
+    shipping_address_1 = factory.Faker('street_address')
+    shipping_address_zip = factory.Faker('zipcode')
+    shipping_name = factory.Faker('name')
 
     store = factory.SubFactory(StoreFactory)
     member = factory.SubFactory(MemberFactory)
+
+
+class OrderItemFactory(BaseFactory):
+
+    class Meta:
+        model = OrderItem
+
+    quantity = factory.Sequence(lambda n: n)
+    store = factory.SubFactory(StoreFactory)
+    member = factory.SubFactory(MemberFactory)
+    order = factory.SubFactory(OrderFactory)
+    product = factory.SubFactory(ProductFactory)

@@ -8,6 +8,8 @@ from trie.models.base import Base
 
 class Member(Base):
 
+    """A member of our platform."""
+
     email = Column(String, unique=True, nullable=False)
     password = Column(PasswordType(
         schemes=[
@@ -71,3 +73,12 @@ class Member(Base):
     def get_id(self):
         """Returns the id of this member."""
         return self.id
+
+    @classmethod
+    def get_by_email(cls, email):
+        """Returns a member by email."""
+        return cls.query.filter(
+            cls.email == email
+        ).filter(
+            cls.deleted_at.is_(None)
+        ).first()

@@ -7,7 +7,7 @@ from trie.views.base import BaseAPI
 from trie.views.base import BaseListAPI
 
 
-stores_blueprint = Blueprint('stores', __name__, url_prefix='/products')
+stores_blueprint = Blueprint('stores', __name__, url_prefix='/stores')
 api = Api(stores_blueprint)
 
 
