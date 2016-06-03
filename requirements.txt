@@ -29,4 +29,4 @@ marshmallow==2.7.3
 marshmallow-jsonapi==0.7.1
 
 # sending emails
-sendgrid==2.2.1
+Flask-SendGrid==0.1.0
