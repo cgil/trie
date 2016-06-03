@@ -2,6 +2,7 @@ from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy_utils import PasswordType
 
+from trie import db
 from trie.models.base import Base
 
 
@@ -13,10 +14,9 @@ class Member(Base):
             'sha256_crypt',
         ]
     ), nullable=False)
+    stripe_customer_id = Column(String)
 
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
+    orders = db.relationship('Order', backref='member', lazy='dynamic')
 
     def __repr__(self):
         return '<Member %r>' % self.email
@@ -28,6 +28,11 @@ class Member(Base):
     def __ne__(self, other):
         """Checks the inequality of two Member objects using `get_id`."""
         return not self.__eq__(other)
+
+    @property
+    def private_fields(self):
+        """Fields that should be private and never exposed."""
+        return ('created_at', 'updated_at', 'deleted_at', 'password')
 
     @property
     def is_authenticated(self):

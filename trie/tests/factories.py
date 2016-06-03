@@ -3,6 +3,8 @@ import logging
 import factory
 
 from trie import db
+from trie.models.member import Member
+from trie.models.order import Order
 from trie.models.product import Product
 from trie.models.store import Store
 
@@ -66,3 +68,26 @@ class ProductFactory(BaseFactory):
     title = factory.Sequence(lambda n: 'title_{0}'.format(n))
 
     store = factory.SubFactory(StoreFactory)
+
+
+class MemberFactory(BaseFactory):
+
+    class Meta:
+        model = Member
+
+    email = factory.Sequence(lambda n: 'name_{0}@domain.com'.format(n))
+    password = factory.Faker('password')
+    stripe_customer_id = factory.Faker('sha1')
+
+
+class OrderFactory(BaseFactory):
+
+    class Meta:
+        model = Order
+
+    financial_status = factory.Iterator(['paid', 'voided', 'refunded'])
+    fulfillment_status = factory.Iterator(['fulfilled', 'partial'])
+    total_price = factory.Sequence(lambda n: 2000 + n)
+
+    store = factory.SubFactory(StoreFactory)
+    member = factory.SubFactory(MemberFactory)

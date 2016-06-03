@@ -19,3 +19,4 @@ class Store(Base):
     phone = sa.Column(sa.String)
 
     products = db.relationship('Product', backref='store', lazy='dynamic')
+    orders = db.relationship('Order', backref='store', lazy='dynamic')

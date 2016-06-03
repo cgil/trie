@@ -12,4 +12,4 @@ class Product(Base):
     price = sa.Column(sa.Numeric, nullable=False)
     title = sa.Column(sa.String, nullable=False)
 
-    store_id = db.Column(UUIDType, db.ForeignKey('store.id'))
+    store_id = db.Column(UUIDType, db.ForeignKey('store.id'), nullable=False)

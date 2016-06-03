@@ -151,6 +151,7 @@ class CRUDTestCase(ViewTestCase):
     def _test_post(self):
         """Test that we can create a new record."""
         attrs = self.model_factory.build().to_dict()
+        del attrs['id']
         data = {
             'data': {
                 'attributes': attrs,
@@ -162,7 +163,7 @@ class CRUDTestCase(ViewTestCase):
             data=data,
         )
         for k, v in attrs.iteritems():
-            if k == 'price':
+            if k.endswith('price'):
                 assert Decimal(res.data['data']['attributes'][k]) == Decimal(v)
             elif k is not 'id':
                 assert res.data['data']['attributes'][k] == str(v)
@@ -200,7 +201,7 @@ class CRUDTestCase(ViewTestCase):
         )
         assert res.status_code == 200
         for k, v in build_attrs.iteritems():
-            if k == 'price':
+            if k.endswith('price'):
                 assert Decimal(res.data['data']['attributes'][k]) == Decimal(v)
             else:
                 assert res.data['data']['attributes'][k] == str(v)

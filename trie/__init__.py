@@ -13,6 +13,8 @@ from trie.sendgrid import sendgrid
 from trie.utils.configuration import config
 from trie.views.health import health
 from trie.views.home import home
+from trie.views.members import members_blueprint
+from trie.views.orders import orders_blueprint
 from trie.views.products import products_blueprint
 from trie.views.stores import stores_blueprint
 
@@ -90,6 +92,8 @@ def create_app():
     # register blueprints
     app.register_blueprint(health)
     app.register_blueprint(home)
+    app.register_blueprint(members_blueprint)
+    app.register_blueprint(orders_blueprint)
     app.register_blueprint(products_blueprint)
     app.register_blueprint(stores_blueprint)
     return app

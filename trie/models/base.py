@@ -10,8 +10,6 @@ from sqlalchemy_utils import UUIDType
 
 from trie.database import db
 
-PRIVATE_COLS = ['created_at', 'deleted_at', 'updated_at']
-
 
 class Base(db.Model):
 
@@ -38,6 +36,11 @@ class Base(db.Model):
                 del kwargs[k]
         super(Base, self).__init__(**kwargs)
 
+    @property
+    def private_fields(self):
+        """Fields that should be private and never exposed."""
+        return ('created_at', 'updated_at', 'deleted_at')
+
     @classmethod
     def relationships(cls):
         """Get all model relationships."""
@@ -53,7 +56,7 @@ class Base(db.Model):
         """Returns a dict from a record."""
         return {
             col: getattr(self, col) for col in self.columns()
-            if col not in PRIVATE_COLS
+            if col not in self.private_fields
         }
 
     def save(self, resource):

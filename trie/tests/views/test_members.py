@@ -1,20 +1,21 @@
+import copy
 from decimal import Decimal
 
-from trie.models.product import Product
+from trie.models.member import Member
 from trie.tests import factories
 from trie.tests.base import CRUDTestCase
 
 
-class ProductTestCase(CRUDTestCase):
+class MemberTestCase(CRUDTestCase):
 
     def setUp(self):
-        super(ProductTestCase, self).setUp()
-        self.model_factory = factories.ProductFactory
-        self.model = Product
-        self.url_prefix = 'products'
+        super(MemberTestCase, self).setUp()
+        self.model_factory = factories.MemberFactory
+        self.model = Member
+        self.url_prefix = 'members'
 
     def test_crud(self):
-        """Test products CRUD."""
+        """Test members CRUD."""
         self._test_crud()
 
     def _test_post(self):
@@ -22,15 +23,12 @@ class ProductTestCase(CRUDTestCase):
         store = factories.StoreFactory.create()
         attrs = self.model_factory.build(store=store).to_dict()
         del attrs['id']
+        post_attrs = copy.deepcopy(attrs)
+        post_attrs['password'] = 'fake-password'
         data = {
             'data': {
-                'attributes': attrs,
+                'attributes': post_attrs,
                 'type': '{}'.format(self.url_prefix),
-                'relationships': {
-                    'store': {
-                        'data': {'type': 'stores', 'id': str(store.id)}
-                    }
-                },
             }
         }
         res = self.post(
@@ -49,11 +47,12 @@ class ProductTestCase(CRUDTestCase):
         record = self.model_factory()
         attrs = self.model_factory.build().to_dict()
         del attrs['id']
-        del attrs['store_id']
+        patch_attrs = copy.deepcopy(attrs)
+        del attrs['stripe_customer_id']
 
         data = {
             'data': {
-                'attributes': attrs,
+                'attributes': patch_attrs,
                 'type': '{}'.format(self.url_prefix),
                 'id': str(record.id),
             }
