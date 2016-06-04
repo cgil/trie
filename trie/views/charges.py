@@ -86,20 +86,30 @@ class ChargesListAPI(Resource):
             'method': 'post',
         })
         # Create a new order for the member.
-        order = Order(
-            member_id=member.id,
-            store_id=raw_dict['storeId'],
-            financial_status='pending',
-            total_price=0,
-            shipping_address_city=raw_dict['addresses']['shipping_address_city'],
-            shipping_address_country=raw_dict['addresses']['shipping_address_country'],
-            shipping_address_country_code=raw_dict['addresses']['shipping_address_country_code'],
-            shipping_address_1=raw_dict['addresses']['shipping_address_line1'],
-            shipping_address_zip=raw_dict['addresses']['shipping_address_zip'],
-            shipping_name=raw_dict['addresses']['shipping_name'],
-        )
-        db.session.add(order)
-        db.session.flush()
+        try:
+            order = Order(
+                member_id=member.id,
+                store_id=raw_dict['storeId'],
+                financial_status='pending',
+                total_price=0,
+                shipping_address_city=raw_dict['addresses']['shipping_address_city'],
+                shipping_address_country=raw_dict['addresses']['shipping_address_country'],
+                shipping_address_country_code=raw_dict['addresses']['shipping_address_country_code'],
+                shipping_address_1=raw_dict['addresses']['shipping_address_line1'],
+                shipping_address_zip=raw_dict['addresses']['shipping_address_zip'],
+                shipping_name=raw_dict['addresses']['shipping_name'],
+            )
+            db.session.add(order)
+            db.session.flush()
+        except Exception as e:
+            logger.error({
+                'msg': 'Error creating a new order.',
+                'member_id': member.id,
+                'error': str(e),
+                'view': 'ChargesListAPI',
+                'method': 'post',
+            })
+            return {'error': str(e)}, 403
 
         logger.info({
             'msg': 'Creating order items.',
