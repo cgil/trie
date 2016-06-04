@@ -8,11 +8,13 @@ from flask_restful import Resource
 from sqlalchemy.exc import SQLAlchemyError
 
 from trie import db
+from trie import sendgrid
 from trie import stripe
 from trie.models.member import Member
 from trie.models.order import Order
 from trie.models.order_item import OrderItem
 from trie.models.product import Product
+from trie.utils.configuration import config
 
 
 charges_blueprint = Blueprint('charges', __name__, url_prefix='/charges')
@@ -102,13 +104,42 @@ class ChargesListAPI(Resource):
         for order_item in order_items:
             db.session.add(order_item)
 
-
-        import ipdb
-        ipdb.set_trace()
         # Finalize all transactions.
-        db.session.commit()
+        try:
+            db.session.commit()
+        except SQLAlchemyError as e:
+                db.session.rollback()
+                return {'error': str(e)}, 403
 
-        # Send a confirmation email.
+        try:
+            # Send a confirmation email.
+            sendgrid.send_email(
+                from_email=config.get('sendgrid.default_from'),
+                to=[{'email': member.email}],
+                subject='Tote Store - Purchase Confirmation.',
+                text=(
+                    'Thank you for your purchase! Order id: {}, total: ${}.'
+                    'For support contact us at support@totestore.com '.format(
+                        order.id, total_price)
+                ),
+            )
+        except Exception:
+            pass
+
+        try:
+            # Send email a reminder email to ourselves about this order.
+            sendgrid.send_email(
+                from_email=config.get('sendgrid.default_from'),
+                to=[{'email': config.get('sendgrid.internal_new_order_to')}],
+                subject='New Order!',
+                text=(
+                    'New Order! order_id: {}, member_id={}, store_id={}, total: ${}'.format(
+                        order.id, member.id, order.store_id, total_price)
+                ),
+            )
+        except Exception:
+            pass
+
         return {}, 201
 
 api.add_resource(ChargesListAPI, '/')

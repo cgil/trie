@@ -11,6 +11,7 @@ database:
 sendgrid:
   api_key: test_sendgrid_api_key
   default_from: support@totestore.com
+  internal_new_order_to: orders@totestore.com
 
 stripe:
   secret_key: stripe_secret_key

@@ -9,9 +9,11 @@ database:
   name: trie_development
 
 sendgrid:
-  api_key: dev_sendgrid_api_key
+  api_key: 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
   default_from: support@totestore.com
+  internal_new_order_to: orders@totestore.com
 
+# TODO: Change to live keys.
 stripe:
   secret_key: sk_test_Bi7qQ8cy3M4q730QLc6cqZN3
   publishable_key: pk_test_SSTmhE8aocfnGsmEZrN9SEAM

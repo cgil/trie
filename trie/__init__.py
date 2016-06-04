@@ -84,8 +84,8 @@ def create_app():
 
     # Set up SendGrid - emails
     # TODO: REMOVE the secret key! This really shouldn't be here!
-    app.config['SENDGRID_API_KEY'] = config.get('api_key')
-    app.config['SENDGRID_DEFAULT_FROM'] = config.get('default_from')
+    app.config['SENDGRID_API_KEY'] = config.get('sendgrid.api_key')
+    app.config['SENDGRID_DEFAULT_FROM'] = config.get('sendgrid.default_from')
     sendgrid.init_app(app)
 
     # Set up Stripe - checkout.
