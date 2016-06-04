@@ -39,10 +39,19 @@ class ChargesListAPI(Resource):
             'view': 'ChargesListAPI',
             'method': 'post',
         })
-        stripe_customer = stripe.Customer.create(
-            email=raw_dict['token']['email'],
-            card=raw_dict['token']['id'],
-        )
+        try:
+            stripe_customer = stripe.Customer.create(
+                email=raw_dict['token']['email'],
+                card=raw_dict['token']['id'],
+            )
+        except Exception as e:
+            logger.error({
+                'msg': 'Error creating Stripe Customer.',
+                'error': str(e),
+                'view': 'ChargesListAPI',
+                'method': 'post',
+            })
+
         member = Member.get_by_email(raw_dict['token']['email'])
         # Create a member if one doesn't exist.
         if not member:
