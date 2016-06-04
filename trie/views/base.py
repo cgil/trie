@@ -1,3 +1,5 @@
+import logging
+
 from flask import make_response
 from flask import request
 from flask_restful import Resource
@@ -5,6 +7,8 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
 from trie import db
+
+logger = logging.getLogger(__name__)
 
 
 class BaseListAPI(Resource):
@@ -21,12 +25,26 @@ class BaseListAPI(Resource):
 
     def get(self):
         """Get all records."""
+        logger.info({
+            'msg': 'Getting all records.',
+            'view': self.__class__.__name__,
+            'method': 'get',
+            'schema_model': self.schema_model.__name__,
+            'model': self.model.__name__,
+        })
         records = self.model.query.filter(self.model.deleted_at.is_(None)).all()
         results = self.schema.dump(records, many=True).data
         return results
 
     def post(self):
         """Create a new record."""
+        logger.info({
+            'msg': 'Creating a new record.',
+            'view': self.__class__.__name__,
+            'method': 'post',
+            'schema_model': self.schema_model.__name__,
+            'model': self.model.__name__,
+        })
         raw_dict = request.get_json(force=True)
         try:
             self.schema.validate(raw_dict)
@@ -44,10 +62,28 @@ class BaseListAPI(Resource):
             result = self.schema.dump(query).data
             return result, 201
 
-        except ValidationError as err:
-                return {'error': err.messages}, 403
+        except ValidationError as e:
+                logger.error({
+                    'msg': 'Error validating new record.',
+                    'view': self.__class__.__name__,
+                    'method': 'post',
+                    'schema_model': self.schema_model.__name__,
+                    'model': self.model.__name__,
+                    'raw_dict': raw_dict,
+                    'error': str(e)
+                })
+                return {'error': e.messages}, 403
 
         except SQLAlchemyError as e:
+                logger.error({
+                    'msg': 'Error creating new record.',
+                    'view': self.__class__.__name__,
+                    'method': 'post',
+                    'schema_model': self.schema_model.__name__,
+                    'model': self.model.__name__,
+                    'raw_dict': raw_dict,
+                    'error': str(e)
+                })
                 db.session.rollback()
                 return {'error': str(e)}, 403
 
@@ -66,12 +102,28 @@ class BaseAPI(Resource):
 
     def get(self, id):
         """Get a single record."""
+        logger.info({
+            'msg': 'Getting a record.',
+            'view': self.__class__.__name__,
+            'method': 'get',
+            'schema_model': self.schema_model.__name__,
+            'model': self.model.__name__,
+            'record_id': id,
+        })
         record = self.model.get_or_404(id)
         result = self.schema.dump(record).data
         return result
 
     def delete(self, id):
         """Delete a record."""
+        logger.info({
+            'msg': 'Deleting a record.',
+            'view': self.__class__.__name__,
+            'method': 'delete',
+            'schema_model': self.schema_model.__name__,
+            'model': self.model.__name__,
+            'record_id': id,
+        })
         record = self.model.get_or_404(id)
         try:
             record.delete(record)
@@ -80,11 +132,28 @@ class BaseAPI(Resource):
             return response
 
         except SQLAlchemyError as e:
+                logger.error({
+                    'msg': 'Error deleting a record.',
+                    'view': self.__class__.__name__,
+                    'method': 'delete',
+                    'schema_model': self.schema_model.__name__,
+                    'model': self.model.__name__,
+                    'record_id': id,
+                    'error': str(e),
+                })
                 db.session.rollback()
                 return {'error': str(e)}, 401
 
     def patch(self, id):
         """Update one or more fields."""
+        logger.info({
+            'msg': 'Patching a record.',
+            'view': self.__class__.__name__,
+            'method': 'patch',
+            'schema_model': self.schema_model.__name__,
+            'model': self.model.__name__,
+            'record_id': id,
+        })
         record = self.model.get_or_404(id)
         raw_dict = request.get_json(force=True)
         try:
@@ -102,9 +171,29 @@ class BaseAPI(Resource):
             record.update()
             return self.get(id)
 
-        except ValidationError as err:
-                return {'error': err.messages}, 401
+        except ValidationError as e:
+                logger.error({
+                    'msg': 'Error validating patching a record.',
+                    'view': self.__class__.__name__,
+                    'method': 'patch',
+                    'schema_model': self.schema_model.__name__,
+                    'model': self.model.__name__,
+                    'record_id': id,
+                    'raw_dict': raw_dict,
+                    'error': str(e),
+                })
+                return {'error': e.messages}, 401
 
         except SQLAlchemyError as e:
+                logger.error({
+                    'msg': 'Error patching a record.',
+                    'view': self.__class__.__name__,
+                    'method': 'patch',
+                    'schema_model': self.schema_model.__name__,
+                    'model': self.model.__name__,
+                    'record_id': id,
+                    'raw_dict': raw_dict,
+                    'error': str(e),
+                })
                 db.session.rollback()
                 return {'error': str(e)}, 401
