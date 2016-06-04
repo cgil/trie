@@ -39,7 +39,7 @@ def upgrade():
             default=sa.text('now()')
         ),
         sa.Column('name', sa.String(), nullable=False),
-        sa.Column('tote_domain', sa.String(), nullable=False),
+        sa.Column('tote_domain', sa.String()),
         sa.Column('domain', sa.String()),
         sa.Column('email', sa.String()),
         sa.Column('address_1', sa.String()),

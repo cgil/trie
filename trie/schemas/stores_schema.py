@@ -9,7 +9,7 @@ class StoresSchema(BaseSchema):
 
     id = fields.UUID(dump_only=True)
     name = fields.String(required=True, validate=not_empty)
-    tote_domain = fields.Url(required=True, validate=not_empty)
+    tote_domain = fields.Url()
     domain = fields.Url()
     email = fields.Email()
     address_1 = fields.String()

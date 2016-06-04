@@ -18,3 +18,5 @@ stripe:
   publishable_key: stripe_publishable_key
 
 secret_key: trie
+
+domain: 127.0.0.1:5000

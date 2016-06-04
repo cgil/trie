@@ -19,3 +19,5 @@ stripe:
   publishable_key: pk_test_SSTmhE8aocfnGsmEZrN9SEAM
 
 secret_key: trie
+
+domain: 127.0.0.1:5000
