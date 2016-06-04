@@ -87,17 +87,18 @@ class ChargesListAPI(Resource):
         })
         # Create a new order for the member.
         try:
+            addresses = raw_dict['addresses']
             order = Order(
                 member_id=member.id,
                 store_id=raw_dict['storeId'],
                 financial_status='pending',
                 total_price=0,
-                shipping_address_city=raw_dict['addresses']['shipping_address_city'],
-                shipping_address_country=raw_dict['addresses']['shipping_address_country'],
-                shipping_address_country_code=raw_dict['addresses']['shipping_address_country_code'],
-                shipping_address_1=raw_dict['addresses']['shipping_address_line1'],
-                shipping_address_zip=raw_dict['addresses']['shipping_address_zip'],
-                shipping_name=raw_dict['addresses']['shipping_name'],
+                shipping_address_city=addresses['shipping_address_city'],
+                shipping_address_country=addresses['shipping_address_country'],
+                shipping_address_country_code=addresses['shipping_address_country_code'],
+                shipping_address_1=addresses['shipping_address_line1'],
+                shipping_address_zip=addresses['shipping_address_zip'],
+                shipping_name=addresses['shipping_name'],
             )
             db.session.add(order)
             db.session.flush()
