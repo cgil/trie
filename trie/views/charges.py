@@ -1,5 +1,4 @@
 from decimal import Decimal
-import logging
 import uuid
 
 from flask import Blueprint
@@ -9,6 +8,7 @@ from flask_restful import Resource
 from sqlalchemy.exc import SQLAlchemyError
 
 from trie import db
+from trie import loggers
 from trie import sendgrid
 from trie import stripe
 from trie.models.member import Member
@@ -17,7 +17,7 @@ from trie.models.order_item import OrderItem
 from trie.models.product import Product
 from trie.utils.configuration import config
 
-logger = logging.getLogger(__name__)
+logger = loggers.get_logger(__name__)
 
 charges_blueprint = Blueprint('charges', __name__, url_prefix='/charges')
 api = Api(charges_blueprint)

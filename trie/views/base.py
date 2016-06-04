@@ -1,5 +1,3 @@
-import logging
-
 from flask import make_response
 from flask import request
 from flask_restful import Resource
@@ -7,8 +5,9 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
 from trie import db
+from trie import loggers
 
-logger = logging.getLogger(__name__)
+logger = loggers.get_logger(__name__)
 
 
 class BaseListAPI(Resource):
