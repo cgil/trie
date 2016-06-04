@@ -36,6 +36,13 @@ class Base(db.Model):
                 del kwargs[k]
         super(Base, self).__init__(**kwargs)
 
+    def update_relationship(self, relationship, rel_id):
+        """Update a relationship on the model."""
+        formatted_rel_name = relationship[:-1]
+        if relationship in self.relationships():
+            rel_id_name = '{}_id'.format(formatted_rel_name)
+            setattr(self, rel_id_name, rel_id)
+
     @property
     def private_fields(self):
         """Fields that should be private and never exposed."""

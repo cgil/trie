@@ -82,9 +82,15 @@ class BaseAPI(Resource):
         raw_dict = request.get_json(force=True)
         try:
             self.schema.validate(raw_dict, partial=True)
-            attrs = raw_dict['data']['attributes']
+            attrs = raw_dict['data'].get('attributes') or {}
             for key, value in attrs.items():
                 setattr(record, key, value)
+
+            relationships = raw_dict['data'].get('relationships') or []
+            if not isinstance(relationships, list):
+                relationships = [relationships]
+            for rel in relationships:
+                record.update_relationship(rel['data']['type'], rel['data']['id'])
 
             record.update()
             return self.get(id)
