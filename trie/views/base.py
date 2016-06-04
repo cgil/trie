@@ -30,7 +30,14 @@ class BaseListAPI(Resource):
         raw_dict = request.get_json(force=True)
         try:
             self.schema.validate(raw_dict)
-            attrs = raw_dict['data']['attributes']
+            attrs = raw_dict['data'].get('attributes') or {}
+            relationships = raw_dict['data'].get('relationships') or {}
+            rel_attrs = {}
+            for name, val in relationships.iteritems():
+                rel_name = '{}_id'.format(name)
+                rel_attrs[rel_name] = val['data']['id']
+            attrs.update(rel_attrs)
+
             record = self.model(**attrs)
             record.save(record)
             query = self.model.get(record.id)

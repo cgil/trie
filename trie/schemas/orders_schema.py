@@ -21,7 +21,7 @@ class OrdersSchema(BaseSchema):
 
     store = Relationship(
         related_view='stores.storesapi',
-        related_view_kwargs={'id': '<id>'},
+        related_view_kwargs={'id': '<store_id>'},
         include_data=True,
         type_='stores',
         many=False,
@@ -30,7 +30,7 @@ class OrdersSchema(BaseSchema):
 
     member = Relationship(
         related_view='members.membersapi',
-        related_view_kwargs={'id': '<id>'},
+        related_view_kwargs={'id': '<member_id>'},
         include_data=True,
         type_='members',
         many=False,

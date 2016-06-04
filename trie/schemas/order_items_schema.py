@@ -11,7 +11,7 @@ class OrderItemsSchema(BaseSchema):
 
     store = Relationship(
         related_view='stores.storesapi',
-        related_view_kwargs={'id': '<id>'},
+        related_view_kwargs={'id': '<store_id>'},
         include_data=True,
         type_='stores',
         many=False,
@@ -20,7 +20,7 @@ class OrderItemsSchema(BaseSchema):
 
     member = Relationship(
         related_view='members.membersapi',
-        related_view_kwargs={'id': '<id>'},
+        related_view_kwargs={'id': '<member_id>'},
         include_data=True,
         type_='members',
         many=False,
@@ -29,7 +29,7 @@ class OrderItemsSchema(BaseSchema):
 
     order = Relationship(
         related_view='orders.ordersapi',
-        related_view_kwargs={'id': '<id>'},
+        related_view_kwargs={'id': '<order_id>'},
         include_data=True,
         type_='orders',
         many=False,
@@ -38,7 +38,7 @@ class OrderItemsSchema(BaseSchema):
 
     product = Relationship(
         related_view='products.productsapi',
-        related_view_kwargs={'id': '<id>'},
+        related_view_kwargs={'id': '<product_id>'},
         include_data=True,
         type_='products',
         many=False,

@@ -15,7 +15,7 @@ class ProductsSchema(BaseSchema):
 
     store = Relationship(
         related_view='stores.storesapi',
-        related_view_kwargs={'id': '<id>'},
+        related_view_kwargs={'id': '<store_id>'},
         include_data=True,
         type_='stores',
         many=False,
