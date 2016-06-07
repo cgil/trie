@@ -102,4 +102,10 @@ def create_app():
     app.register_blueprint(orders_blueprint)
     app.register_blueprint(products_blueprint)
     app.register_blueprint(stores_blueprint)
+
+    @app.after_request
+    def add_header(response):
+        response.cache_control.max_age = 1000
+        return response
+
     return app
