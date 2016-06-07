@@ -151,7 +151,6 @@ class ChargesListAPI(Resource):
             'view': 'ChargesListAPI',
             'method': 'post',
         })
-
         # Charge the member.
         try:
             stripe.Charge.create(
@@ -163,7 +162,7 @@ class ChargesListAPI(Resource):
                     'order_id': order.id
                 }
             )
-        except stripe.error.CardError as e:
+        except (stripe.error.CardError, stripe.error.InvalidRequestError) as e:
             logger.error({
                 'msg': 'Stripe error.',
                 'member_id': member.id,
