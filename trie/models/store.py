@@ -20,5 +20,5 @@ class Store(Base):
     currency = sa.Column(sa.String)
     phone = sa.Column(sa.String)
 
-    products = db.relationship('Product', backref='store', lazy='dynamic')
+    products = db.relationship('Product', backref='store', lazy='joined')
     orders = db.relationship('Order', backref='store', lazy='dynamic')

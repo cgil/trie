@@ -2,12 +2,30 @@ from flask import make_response
 from flask import request
 from flask_restful import Resource
 from marshmallow import ValidationError
+from querystring_parser import parser
 from sqlalchemy.exc import SQLAlchemyError
 
 from trie import db
 from trie import loggers
 
 logger = loggers.get_logger(__name__)
+
+
+def format_params(obj):
+    """Formats the params dictionary."""
+    # Turns comma separated values into arrays.
+    for k in obj:
+        if isinstance(obj[k], dict):
+            format_params(obj[k])
+        else:
+            obj[k] = obj[k].split(',')
+
+
+def parse_query_string(query_string):
+    """Parses the query string."""
+    query_params = parser.parse(query_string)
+    format_params(query_params)
+    return query_params
 
 
 class BaseListAPI(Resource):
