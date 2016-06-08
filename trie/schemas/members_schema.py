@@ -12,6 +12,7 @@ class MembersSchema(BaseSchema):
     email = fields.String(required=True)
     password = fields.String(load_only=True, validate=validate.Length(4))
     stripe_customer_id = fields.String(load_only=True)
+    roles = fields.List(fields.String, load_only=True)
 
     orders = fields.Nested(
         OrdersSchema,
@@ -21,4 +22,4 @@ class MembersSchema(BaseSchema):
     class Meta:
         type_ = 'members'
         strict = True
-        exclude = ('password', 'stripe_customer_id')
+        exclude = ('password', 'stripe_customer_id', 'roles')

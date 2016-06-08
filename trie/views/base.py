@@ -1,6 +1,7 @@
 from flask import make_response
 from flask import request
 from flask_restful import Resource
+from flask_security.decorators import roles_accepted
 from marshmallow import ValidationError
 from querystring_parser import parser
 from sqlalchemy.exc import SQLAlchemyError

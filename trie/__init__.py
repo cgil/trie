@@ -8,13 +8,13 @@ from flask import request
 from flask.ext.cors import CORS
 from flask.ext.security import SQLAlchemyUserDatastore
 
-from trie.checkout import stripe
-from trie.database import db
-from trie.login_manager import login_manager
+from trie.lib.checkout import stripe
+from trie.lib.database import db
+from trie.lib.login_manager import login_manager
+from trie.lib.secure import security
+from trie.lib.sendgrid import sendgrid
 from trie.models.member import Member
 from trie.models.role import Role
-from trie.security import security
-from trie.sendgrid import sendgrid
 from trie.utils.configuration import config
 from trie.views.charges import charges_blueprint
 from trie.views.health import health
@@ -104,7 +104,10 @@ def create_app():
         'BA295880EAAB193DF0F98A91623ABA4FB1AE62948467ABC013C42C02ECBF4854168A4EBCE0'
         '25B32D24B8B435C425BB27788FA6D58090A74CF264BE8F123ED575'
     )
-    security.init_app(app, datastore=SQLAlchemyUserDatastore(db, Member, Role))
+    app.config['SECURITY_TRACKABLE'] = True
+    member_datastore = SQLAlchemyUserDatastore(db, Member, Role)
+    security.datastore = member_datastore
+    security.init_app(app, member_datastore)
 
     # register blueprints
     app.register_blueprint(charges_blueprint)
