@@ -48,7 +48,6 @@ class MemberTestCase(CRUDTestCase):
         attrs = self.model_factory.build().to_dict()
         del attrs['id']
         patch_attrs = copy.deepcopy(attrs)
-        del attrs['stripe_customer_id']
 
         data = {
             'data': {

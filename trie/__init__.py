@@ -6,10 +6,14 @@ from flask import current_app
 from flask import json
 from flask import request
 from flask.ext.cors import CORS
+from flask.ext.security import SQLAlchemyUserDatastore
 
 from trie.checkout import stripe
 from trie.database import db
 from trie.login_manager import login_manager
+from trie.models.member import Member
+from trie.models.role import Role
+from trie.security import security
 from trie.sendgrid import sendgrid
 from trie.utils.configuration import config
 from trie.views.charges import charges_blueprint
@@ -93,6 +97,14 @@ def create_app():
     app.config['STRIPE_SECRET_KEY'] = config.get('stripe.secret_key')
     app.config['STRIPE_PUBLISHABLE_KEY'] = config.get('stripe.publishable_key')
     stripe.api_key = app.config['STRIPE_SECRET_KEY']
+
+    # Set up Security
+    app.config['SECURITY_PASSWORD_HASH'] = 'sha512_crypt'
+    app.config['SECURITY_PASSWORD_SALT'] = (
+        'BA295880EAAB193DF0F98A91623ABA4FB1AE62948467ABC013C42C02ECBF4854168A4EBCE0'
+        '25B32D24B8B435C425BB27788FA6D58090A74CF264BE8F123ED575'
+    )
+    security.init_app(app, datastore=SQLAlchemyUserDatastore(db, Member, Role))
 
     # register blueprints
     app.register_blueprint(charges_blueprint)

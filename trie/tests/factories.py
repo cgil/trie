@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 import factory
@@ -80,6 +81,14 @@ class MemberFactory(BaseFactory):
     email = factory.Sequence(lambda n: 'name_{0}@domain.com'.format(n))
     password = factory.Faker('password')
     stripe_customer_id = factory.Faker('sha1')
+
+    active = True
+    confirmed_at = factory.LazyFunction(datetime.datetime.now)
+    current_login_at = factory.LazyFunction(datetime.datetime.now)
+    current_login_ip = factory.Faker('ipv4')
+    last_login_at = factory.LazyFunction(datetime.datetime.now)
+    last_login_ip = factory.Faker('ipv4')
+    login_count = factory.Sequence(lambda n: n)
 
 
 class OrderFactory(BaseFactory):
