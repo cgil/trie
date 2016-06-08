@@ -43,15 +43,16 @@ class Base(db.Model):
             rel_id_name = '{}_id'.format(formatted_rel_name)
             setattr(self, rel_id_name, rel_id)
 
-    @property
-    def private_fields(self):
+    @classmethod
+    def private_fields(cls):
         """Fields that should be private and never exposed."""
         return ('created_at', 'updated_at', 'deleted_at')
 
     @classmethod
     def relationships(cls):
         """Get all model relationships."""
-        return cls.__mapper__.relationships.keys()
+        return [rel for rel in cls.__mapper__.relationships.keys()
+                if rel not in cls.private_fields()]
 
     @classmethod
     def columns(cls):
@@ -63,7 +64,7 @@ class Base(db.Model):
         """Returns a dict from a record."""
         return {
             col: getattr(self, col) for col in self.columns()
-            if col not in self.private_fields
+            if col not in self.private_fields()
         }
 
     def save(self, resource):

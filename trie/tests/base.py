@@ -6,7 +6,9 @@ import uuid
 
 
 from trie import create_app
-from trie import db
+from trie.lib.database import db
+from trie.lib.secure import security
+from trie.tests import factories
 
 
 class ViewTestCaseResponse(object):
@@ -23,6 +25,7 @@ class BaseTestCase(unittest.TestCase):
         self.app = create_app()
         self.app.config['DEBUG'] = True
         self.app.config['TESTING'] = True
+        self.app.config['LOGIN_DISABLED'] = True
         self.ctx = self.app.app_context()
         self.ctx.push()
         db.create_all()
@@ -38,32 +41,46 @@ class ViewTestCase(BaseTestCase):
     def setUp(self):
         super(ViewTestCase, self).setUp()
         self.client = self.app.test_client()
+        role = security.datastore.find_or_create_role('test', description='testing role')
+        self.member = factories.MemberFactory(roles=[role], password='password')
+        res = self._login()
+        self.auth_token = res.data['response']['user']['authentication_token']
 
-    def post(self, url, data=None):
+    def _login(self, email=None, password=None):
+        """Helper to login and authenticate."""
+        email = email or self.member.email
+        password = password or 'password'
+        return self.post(
+            '/login', data={'email': email, 'password': password}, follow_redirects=False
+        )
+
+    def post(self, url, data=None, headers=None, **kwargs):
         """Perform a post request."""
         res = self.client.post(
             url,
             data=json.dumps(data),
-            content_type='application/json'
+            content_type='application/json',
+            **kwargs
         )
         return ViewTestCaseResponse(res)
 
-    def get(self, url):
+    def get(self, url, **kwargs):
         """Perform a get request."""
-        res = self.client.get(url)
+        res = self.client.get(url, **kwargs)
         return ViewTestCaseResponse(res)
 
-    def delete(self, url):
+    def delete(self, url, **kwargs):
         """Perform a delete request."""
-        res = self.client.delete(url)
+        res = self.client.delete(url, **kwargs)
         return ViewTestCaseResponse(res)
 
-    def patch(self, url, data=None):
+    def patch(self, url, data=None, **kwargs):
         """Perform a patch request."""
         res = self.client.patch(
             url,
             data=json.dumps(data),
-            content_type='application/json'
+            content_type='application/json',
+            **kwargs
         )
         return ViewTestCaseResponse(res)
 
@@ -97,6 +114,9 @@ class CRUDTestCase(ViewTestCase):
                 self.url_prefix,
                 str(record.id),
             ),
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         assert res.data['data']['id'] == str(record.id)
         assert res.status_code == 200
@@ -108,6 +128,9 @@ class CRUDTestCase(ViewTestCase):
                 self.url_prefix,
                 str(uuid.uuid4()),
             ),
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         assert res.status_code == 404
 
@@ -120,6 +143,9 @@ class CRUDTestCase(ViewTestCase):
                 self.url_prefix,
                 str(record.id)
             ),
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         assert res.status_code == 404
 
@@ -128,6 +154,9 @@ class CRUDTestCase(ViewTestCase):
         records = self.model_factory.create_batch(size=3)
         res = self.get(
             '/{}/'.format(self.url_prefix),
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         assert res.status_code == 200
         found = self.model.query.all()
@@ -144,6 +173,9 @@ class CRUDTestCase(ViewTestCase):
             record.deleted_at = datetime.datetime.utcnow()
         res = self.get(
             '/{}/'.format(self.url_prefix),
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         assert res.status_code == 200
         assert not res.data['data']
@@ -161,6 +193,9 @@ class CRUDTestCase(ViewTestCase):
         res = self.post(
             '/{}/'.format(self.url_prefix),
             data=data,
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         for k, v in attrs.iteritems():
             if k.endswith('price'):
@@ -174,7 +209,10 @@ class CRUDTestCase(ViewTestCase):
         record = self.model_factory()
         assert len(self.model.query.all()) == 1
         res = self.delete(
-            '/{}/{}'.format(self.url_prefix, str(record.id))
+            '/{}/{}'.format(self.url_prefix, str(record.id)),
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         found = self.model.query.all()
         assert len(found) == 1
@@ -197,7 +235,10 @@ class CRUDTestCase(ViewTestCase):
         }
         res = self.patch(
             '/{}/{}'.format(self.url_prefix, str(record.id)),
-            data=data
+            data=data,
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         assert res.status_code == 200
         for k, v in build_attrs.iteritems():

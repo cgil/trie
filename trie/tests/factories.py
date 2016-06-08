@@ -90,6 +90,8 @@ class MemberFactory(BaseFactory):
     last_login_ip = factory.Faker('ipv4')
     login_count = factory.Sequence(lambda n: n)
 
+    roles = factory.LazyAttribute(lambda _: [RoleFactory()])
+
 
 class OrderFactory(BaseFactory):
 

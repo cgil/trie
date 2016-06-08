@@ -22,5 +22,6 @@ class MembersAPI(BaseAPI):
     model = Member
     schema_model = MembersSchema
 
+
 api.add_resource(MembersListAPI, '/')
 api.add_resource(MembersAPI, '/<id>')

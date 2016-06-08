@@ -1,7 +1,7 @@
 from flask import make_response
 from flask import request
 from flask_restful import Resource
-from flask_security.decorators import roles_accepted
+from flask_security.decorators import auth_token_required
 from marshmallow import ValidationError
 from querystring_parser import parser
 from sqlalchemy.exc import SQLAlchemyError
@@ -41,6 +41,7 @@ class BaseListAPI(Resource):
         """Get an instance of a schema model."""
         return self.schema_model()
 
+    @auth_token_required
     def get(self):
         """Get all records."""
         logger.info({
@@ -54,6 +55,7 @@ class BaseListAPI(Resource):
         results = self.schema.dump(records, many=True).data
         return results
 
+    @auth_token_required
     def post(self):
         """Create a new record."""
         logger.info({
@@ -118,6 +120,7 @@ class BaseAPI(Resource):
         """Get an instance of a schema model."""
         return self.schema_model()
 
+    @auth_token_required
     def get(self, id):
         """Get a single record."""
         logger.info({
@@ -132,6 +135,7 @@ class BaseAPI(Resource):
         result = self.schema.dump(record).data
         return result
 
+    @auth_token_required
     def delete(self, id):
         """Delete a record."""
         logger.info({
@@ -162,6 +166,7 @@ class BaseAPI(Resource):
                 db.session.rollback()
                 return {'error': str(e)}, 401
 
+    @auth_token_required
     def patch(self, id):
         """Update one or more fields."""
         logger.info({

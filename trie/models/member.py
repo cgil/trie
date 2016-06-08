@@ -4,7 +4,6 @@ from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import Integer
 from sqlalchemy import String
-from sqlalchemy_utils import PasswordType
 from sqlalchemy_utils import UUIDType
 
 from trie.lib.database import db
@@ -13,8 +12,8 @@ from trie.models.base import Base
 
 roles_members = db.Table(
     'roles_members',
-    db.Column('member_id', UUIDType, db.ForeignKey('member.id')),
-    db.Column('role_id', UUIDType, db.ForeignKey('role.id'))
+    Column('member_id', UUIDType, db.ForeignKey('member.id')),
+    Column('role_id', UUIDType, db.ForeignKey('role.id'))
 )
 
 
@@ -23,13 +22,9 @@ class Member(Base, UserMixin):
     """A member of our platform."""
 
     email = Column(String, unique=True, nullable=False)
-    password = Column(PasswordType(
-        schemes=[
-            'sha512_crypt',
-        ]
-    ), nullable=False)
+    password = Column(String, nullable=False)
     stripe_customer_id = Column(String)
-    active = Column(Boolean)
+    active = Column(Boolean, default=True)
     confirmed_at = Column(DateTime)
     current_login_at = Column(DateTime)
     current_login_ip = Column(String)
@@ -49,25 +44,29 @@ class Member(Base, UserMixin):
         roles = kwargs.get('roles') or ['member']
         super(Member, self).__init__(**kwargs)
         for role in roles:
-            member_role = security.datastore.find_role(role)
+            if isinstance(role, str):
+                member_role = security.datastore.find_role(role)
+            else:
+                member_role = role
             security.datastore.add_role_to_user(self, member_role)
 
-    @property
-    def private_fields(self):
+    @classmethod
+    def private_fields(cls):
         """Fields that should be private and never exposed."""
         return (
-            'created_at',
-            'updated_at',
-            'deleted_at',
-            'password',
-            'stripe_customer_id',
             'active',
             'confirmed_at',
+            'created_at',
             'current_login_at',
             'current_login_ip',
+            'deleted_at',
             'last_login_at',
             'last_login_ip',
             'login_count',
+            'password',
+            'stripe_customer_id',
+            'updated_at',
+            'roles',
         )
 
     @classmethod

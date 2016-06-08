@@ -40,6 +40,9 @@ class OrderTestCase(CRUDTestCase):
         res = self.post(
             '/{}/'.format(self.url_prefix),
             data=data,
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         for k, v in attrs.iteritems():
             if k.endswith('price'):
@@ -65,7 +68,10 @@ class OrderTestCase(CRUDTestCase):
         }
         res = self.patch(
             '/{}/{}'.format(self.url_prefix, str(record.id)),
-            data=data
+            data=data,
+            headers={
+                'Authentication-Token': self.auth_token,
+            },
         )
         assert res.status_code == 200
         for k, v in attrs.iteritems():

@@ -10,7 +10,7 @@ from flask.ext.security import SQLAlchemyUserDatastore
 
 from trie.lib.checkout import stripe
 from trie.lib.database import db
-from trie.lib.login_manager import login_manager
+# from trie.lib.login_manager import login_manager
 from trie.lib.secure import security
 from trie.lib.sendgrid import sendgrid
 from trie.models.member import Member
@@ -85,7 +85,7 @@ def create_app():
     db.init_app(app)
 
     # Set up the user session
-    login_manager.init_app(app)
+    # login_manager.init_app(app)
 
     # Set up SendGrid - emails
     # TODO: REMOVE the secret key! This really shouldn't be here!
@@ -105,6 +105,8 @@ def create_app():
         '25B32D24B8B435C425BB27788FA6D58090A74CF264BE8F123ED575'
     )
     app.config['SECURITY_TRACKABLE'] = True
+    # TODO: Fix CSRF
+    app.config['WTF_CSRF_ENABLED'] = False
     member_datastore = SQLAlchemyUserDatastore(db, Member, Role)
     security.datastore = member_datastore
     security.init_app(app, member_datastore)
