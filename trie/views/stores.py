@@ -43,6 +43,7 @@ class StoresAPI(BaseAPI):
         result = self.schema.dump(record).data
 
         # Filter products in the result.
+        # TODO: Fix this - should not iterate on results, move to base, make generic.
         filter_products = query_params.get('filter', {}).get('product', [])
         if filter_products:
             products = result['data']['attributes']['products']['data']
