@@ -7,10 +7,8 @@ from sqlalchemy import String
 from sqlalchemy_utils import PasswordType
 from sqlalchemy_utils import UUIDType
 
-from trie import db
-import ipdb
-ipdb.set_trace()
-from trie import security
+from trie.lib.database import db
+from trie.lib.secure import security
 from trie.models.base import Base
 
 roles_members = db.Table(
@@ -48,10 +46,11 @@ class Member(Base, UserMixin):
         return '<Member %r>' % self.email
 
     def __init__(self, **kwargs):
-        member = super(Member, self).__init__(**kwargs)
-        member_role = security.datastore.find_role(name='member')
-        security.datastore.add_role_to_user(member, member_role)
-        return member
+        roles = kwargs.get('roles') or ['member']
+        super(Member, self).__init__(**kwargs)
+        for role in roles:
+            member_role = security.datastore.find_role(role)
+            security.datastore.add_role_to_user(self, member_role)
 
     @property
     def private_fields(self):

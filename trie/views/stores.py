@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import request
 from flask_restful import Api
 
-from trie import loggers
+from trie.lib import loggers
 from trie.models.store import Store
 from trie.schemas.stores_schema import StoresSchema
 from trie.views.base import BaseAPI

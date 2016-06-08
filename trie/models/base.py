@@ -8,7 +8,7 @@ from sqlalchemy.orm import ColumnProperty
 from sqlalchemy.orm import class_mapper
 from sqlalchemy_utils import UUIDType
 
-from trie.database import db
+from trie.lib.database import db
 
 
 class Base(db.Model):

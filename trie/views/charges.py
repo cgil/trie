@@ -7,10 +7,10 @@ from flask_restful import Api
 from flask_restful import Resource
 from sqlalchemy.exc import SQLAlchemyError
 
-from trie import db
-from trie import loggers
-from trie import sendgrid
-from trie import stripe
+from trie.lib import loggers
+from trie.lib.checkout import stripe
+from trie.lib.database import db
+from trie.lib.sendgrid import sendgrid
 from trie.models.member import Member
 from trie.models.order import Order
 from trie.models.order_item import OrderItem

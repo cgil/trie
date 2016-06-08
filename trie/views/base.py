@@ -6,8 +6,8 @@ from marshmallow import ValidationError
 from querystring_parser import parser
 from sqlalchemy.exc import SQLAlchemyError
 
-from trie import db
-from trie import loggers
+from trie.lib import loggers
+from trie.lib.database import db
 
 logger = loggers.get_logger(__name__)
 

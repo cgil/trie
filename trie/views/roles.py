@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restful import Api
 
-from trie import loggers
+from trie.lib import loggers
 from trie.models.role import Role
 from trie.schemas.roles_schema import RolesSchema
 from trie.views.base import BaseAPI
