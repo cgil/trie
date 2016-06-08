@@ -19,6 +19,7 @@ from trie.views.members import members_blueprint
 from trie.views.order_items import order_items_blueprint
 from trie.views.orders import orders_blueprint
 from trie.views.products import products_blueprint
+from trie.views.roles import roles_blueprint
 from trie.views.stores import stores_blueprint
 
 
@@ -101,6 +102,7 @@ def create_app():
     app.register_blueprint(order_items_blueprint)
     app.register_blueprint(orders_blueprint)
     app.register_blueprint(products_blueprint)
+    app.register_blueprint(roles_blueprint)
     app.register_blueprint(stores_blueprint)
 
     @app.after_request

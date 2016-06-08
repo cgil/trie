@@ -7,6 +7,7 @@ from trie.models.member import Member
 from trie.models.order import Order
 from trie.models.order_item import OrderItem
 from trie.models.product import Product
+from trie.models.role import Role
 from trie.models.store import Store
 
 logging.getLogger('factory').setLevel(logging.ERROR)
@@ -110,3 +111,12 @@ class OrderItemFactory(BaseFactory):
     member = factory.SubFactory(MemberFactory)
     order = factory.SubFactory(OrderFactory)
     product = factory.SubFactory(ProductFactory)
+
+
+class RoleFactory(BaseFactory):
+
+    class Meta:
+        model = Role
+
+    name = factory.Sequence(lambda n: 'name_{0}'.format(n))
+    description = factory.Sequence(lambda n: 'descripton_{0}'.format(n))
