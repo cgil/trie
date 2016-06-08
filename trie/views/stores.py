@@ -48,7 +48,7 @@ class StoresAPI(BaseAPI):
         if filter_products:
             products = result['data']['attributes']['products']['data']
             for product in list(products):
-                if product['id'] not in filter_products:
+                if product['id'].replace('-', '') not in filter_products:
                     products.remove(product)
         return result
 
