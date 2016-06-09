@@ -4,6 +4,7 @@ from decimal import Decimal
 from trie.models.member import Member
 from trie.tests import factories
 from trie.tests.base import CRUDTestCase
+from trie.utils.configuration import config
 
 
 class MemberTestCase(CRUDTestCase):
@@ -20,8 +21,9 @@ class MemberTestCase(CRUDTestCase):
 
     def _test_post(self):
         """Test that we can create a new record."""
-        store = factories.StoreFactory.create()
-        attrs = self.model_factory.build(store=store).to_dict()
+        factories.RoleFactory(name=config.get('roles.default_role'))
+        store = factories.StoreFactory()
+        attrs = self.model_factory.build(store=store)
         del attrs['id']
         post_attrs = copy.deepcopy(attrs)
         post_attrs['password'] = 'fake-password'
@@ -45,7 +47,7 @@ class MemberTestCase(CRUDTestCase):
     def _test_patch(self):
         """Test that we can patch a record."""
         record = self.model_factory()
-        attrs = self.model_factory.build().to_dict()
+        attrs = self.model_factory.build()
         del attrs['id']
         patch_attrs = copy.deepcopy(attrs)
 

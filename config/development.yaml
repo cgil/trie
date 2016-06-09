@@ -20,4 +20,13 @@ stripe:
 
 secret_key: trie
 
+security:
+  internal_auth_keys:
+    test: INTERNAL_AUTH_TOKEN
+  internal_auth_tokens:
+    test: tote-auth
+
+roles:
+  default_role: member
+
 domain: 127.0.0.1:5000

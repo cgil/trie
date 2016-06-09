@@ -10,7 +10,6 @@ from flask.ext.security import SQLAlchemyUserDatastore
 
 from trie.lib.checkout import stripe
 from trie.lib.database import db
-# from trie.lib.login_manager import login_manager
 from trie.lib.secure import security
 from trie.lib.sendgrid import sendgrid
 from trie.models.member import Member
@@ -83,9 +82,6 @@ def create_app():
 
     # Set up the database
     db.init_app(app)
-
-    # Set up the user session
-    # login_manager.init_app(app)
 
     # Set up SendGrid - emails
     # TODO: REMOVE the secret key! This really shouldn't be here!

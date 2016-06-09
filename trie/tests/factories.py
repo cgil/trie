@@ -2,8 +2,9 @@ import datetime
 import logging
 
 import factory
+from sqlalchemy.exc import InvalidRequestError
 
-from trie import db
+from trie.lib.database import db
 from trie.models.member import Member
 from trie.models.order import Order
 from trie.models.order_item import OrderItem
@@ -24,11 +25,21 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     @classmethod
     def _build(cls, model_class, *args, **kwargs):
+        """Returns a dictionary of a built object."""
         for k in kwargs.keys():
             if k in model_class.relationships():
                 rel_key = '{}_id'.format(k)
-                kwargs[rel_key] = str(kwargs[k].id)
-        return super(BaseFactory, cls)._build(model_class, *args, **kwargs)
+                try:
+                    kwargs[rel_key] = str(kwargs[k].id)
+                except AttributeError:
+                    pass
+        obj = super(BaseFactory, cls)._build(model_class, *args, **kwargs)
+        obj_dict = obj.to_dict()
+        try:
+            db.session.expunge(obj)
+        except InvalidRequestError:
+            pass
+        return obj_dict
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):

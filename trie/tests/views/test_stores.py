@@ -27,9 +27,6 @@ class StoreTestCase(CRUDTestCase):
                 str(store.id),
                 str(product.id),
             ),
-            headers={
-                'Authentication-Token': self.auth_token,
-            },
         )
         assert res.status_code == 200
         assert len(res.data['data']['attributes']['products']['data']) == 1

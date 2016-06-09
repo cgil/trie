@@ -17,4 +17,11 @@ stripe:
 # TODO: Remove secrets
 secret_key: jhbVYTgyvgHUByg6745SJs67s6GVC7dcsbd8
 
+security:
+  internal_auth_keys: {}
+  internal_auth_tokens: {}
+
+roles:
+  default_role: member
+
 domain: https://www.totestore.com

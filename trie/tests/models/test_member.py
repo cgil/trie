@@ -1,4 +1,5 @@
 from trie.models.member import Member
+from trie.tests import factories
 from trie.tests.base import BaseTestCase
 
 
@@ -6,6 +7,7 @@ class MemberTestCase(BaseTestCase):
 
     def test_member(self):
         """Test that we can initiate a member."""
+        factories.RoleFactory(name='member')
         attrs = dict(
             email='name@awesome.com',
             password='supercoolpassword',

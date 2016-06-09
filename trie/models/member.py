@@ -9,6 +9,7 @@ from sqlalchemy_utils import UUIDType
 from trie.lib.database import db
 from trie.lib.secure import security
 from trie.models.base import Base
+from trie.utils.configuration import config
 
 roles_members = db.Table(
     'roles_members',
@@ -41,8 +42,8 @@ class Member(Base, UserMixin):
         return '<Member %r>' % self.email
 
     def __init__(self, **kwargs):
-        roles = kwargs.get('roles') or ['member']
         super(Member, self).__init__(**kwargs)
+        roles = kwargs.get('roles') or [config.get('roles.default_role')]
         for role in roles:
             if isinstance(role, str):
                 member_role = security.datastore.find_role(role)

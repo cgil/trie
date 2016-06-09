@@ -21,7 +21,7 @@ class OrderTestCase(CRUDTestCase):
         """Test that we can create a new record."""
         store = factories.StoreFactory()
         member = factories.MemberFactory()
-        attrs = self.model_factory.build(store=store, member=member).to_dict()
+        attrs = self.model_factory.build(store=store, member=member)
         del attrs['id']
         data = {
             'data': {
@@ -40,9 +40,6 @@ class OrderTestCase(CRUDTestCase):
         res = self.post(
             '/{}/'.format(self.url_prefix),
             data=data,
-            headers={
-                'Authentication-Token': self.auth_token,
-            },
         )
         for k, v in attrs.iteritems():
             if k.endswith('price'):
@@ -54,7 +51,7 @@ class OrderTestCase(CRUDTestCase):
     def _test_patch(self):
         """Test that we can patch a record."""
         record = self.model_factory()
-        attrs = self.model_factory.build().to_dict()
+        attrs = self.model_factory.build()
         del attrs['id']
         del attrs['store_id']
         del attrs['member_id']
@@ -69,9 +66,6 @@ class OrderTestCase(CRUDTestCase):
         res = self.patch(
             '/{}/{}'.format(self.url_prefix, str(record.id)),
             data=data,
-            headers={
-                'Authentication-Token': self.auth_token,
-            },
         )
         assert res.status_code == 200
         for k, v in attrs.iteritems():
