@@ -82,6 +82,60 @@ class MembersAPI(BaseAPI):
     model = Member
     schema_model = MembersSchema
 
+    def patch(self, id):
+        """Update one or more fields."""
+        logger.info({
+            'msg': 'Patching a record.',
+            'view': self.__class__.__name__,
+            'method': 'patch',
+            'schema_model': self.schema_model.__name__,
+            'model': self.model.__name__,
+            'record_id': id,
+        })
+        record = self.model.get_or_404(id)
+        raw_dict = request.get_json(force=True)
+        try:
+            self.schema.validate(raw_dict, partial=True)
+            attrs = raw_dict['data'].get('attributes') or {}
+            for key, value in attrs.items():
+                setattr(record, key, value)
+
+            relationships = raw_dict['data'].get('relationships') or []
+            if not isinstance(relationships, list):
+                relationships = [relationships]
+            for rel in relationships:
+                record.update_relationship(rel['data']['type'], rel['data']['id'])
+
+            record.update()
+            return self.get(id)
+
+        except ValidationError as e:
+                logger.error({
+                    'msg': 'Error validating patching a record.',
+                    'view': self.__class__.__name__,
+                    'method': 'patch',
+                    'schema_model': self.schema_model.__name__,
+                    'model': self.model.__name__,
+                    'record_id': id,
+                    'raw_dict': raw_dict,
+                    'error': str(e),
+                })
+                return {'error': e.messages}, 401
+
+        except SQLAlchemyError as e:
+                logger.error({
+                    'msg': 'Error patching a record.',
+                    'view': self.__class__.__name__,
+                    'method': 'patch',
+                    'schema_model': self.schema_model.__name__,
+                    'model': self.model.__name__,
+                    'record_id': id,
+                    'raw_dict': raw_dict,
+                    'error': str(e),
+                })
+                db.session.rollback()
+                return {'error': str(e)}, 401
+
 
 api.add_resource(MembersListAPI, '/')
 api.add_resource(MembersAPI, '/<id>')
