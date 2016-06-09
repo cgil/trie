@@ -45,6 +45,7 @@ class StoresAPI(BaseAPI):
         # Filter products in the result.
         # TODO: Fix this - should not iterate on results, move to base, make generic.
         filter_products = query_params.get('filter', {}).get('product', [])
+        filter_products = [product.replace('-', '') for product in filter_products]
         if filter_products:
             products = result['data']['attributes']['products']['data']
             for product in list(products):
