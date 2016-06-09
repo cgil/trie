@@ -11,10 +11,12 @@ from trie.lib import loggers
 from trie.lib.checkout import stripe
 from trie.lib.database import db
 from trie.lib.sendgrid import sendgrid
+from trie.lib.templating import env
 from trie.models.member import Member
 from trie.models.order import Order
 from trie.models.order_item import OrderItem
 from trie.models.product import Product
+from trie.utils import currency
 from trie.utils.configuration import config
 
 logger = loggers.get_logger(__name__)
@@ -54,7 +56,6 @@ class ChargesListAPI(Resource):
             return {'error': str(e)}, 403
 
         member = Member.get_by_email(raw_dict['token']['email'])
-        # Create a member if one doesn't exist.
         if member:
             logger.info({
                 'msg': 'Member found, updating record..',
@@ -66,6 +67,7 @@ class ChargesListAPI(Resource):
             member.stripe_customer_id = stripe_customer.id
             member.save(member)
         else:
+            # Create a member if one doesn't exist.
             logger.info({
                 'msg': 'No member found, creating a new member.',
                 'member_email': raw_dict['token']['email'],
@@ -132,6 +134,7 @@ class ChargesListAPI(Resource):
         basket = raw_dict['basket']
         order_items = []
         total_price = Decimal(0)
+        email_products = []
         for item in basket:
             product = Product.get(item['id'])
             if not product:
@@ -152,6 +155,11 @@ class ChargesListAPI(Resource):
                     quantity=item['_quantity'],
                 )
             )
+            email_products.append({
+                'title': product.title,
+                'quantity': item['_quantity'],
+                'price': currency.to_fixed(product.price),
+            })
             total_price += product.price * item['_quantity']
 
         logger.info({
@@ -230,15 +238,16 @@ class ChargesListAPI(Resource):
                 'method': 'post',
             })
             # Send a confirmation email.
+            confirmation_email = env.get_template('confirmation.html').render(
+                products=email_products,
+                order_id=order.id,
+                total_price=currency.to_fixed(total_price),
+            )
             sendgrid.send_email(
                 from_email=config.get('sendgrid.default_from'),
                 to=[{'email': member.email}],
                 subject='Tote Store - Purchase Confirmation.',
-                text=(
-                    'Thank you for your purchase! Order id: {}, total: ${}.'
-                    'For support contact us at support@totestore.com '.format(
-                        order.id, total_price)
-                ),
+                html=confirmation_email,
             )
         except Exception:
             logger.error({
@@ -270,7 +279,11 @@ class ChargesListAPI(Resource):
                 subject='New Order!',
                 text=(
                     'New Order! order_id: {}, member_id={}, store_id={}, total: ${}'.format(
-                        order.id, member.id, order.store_id, total_price)
+                        order.id,
+                        member.id,
+                        order.store_id,
+                        currency.to_fixed(total_price)
+                    )
                 ),
             )
         except Exception:

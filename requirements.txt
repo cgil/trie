@@ -36,3 +36,6 @@ stripe==1.35.0
 
 # Parse multi-dimensional query strings
 querystring-parser==1.2.3
+
+# Templating Engine
+Jinja2==2.8
