@@ -55,7 +55,17 @@ class ChargesListAPI(Resource):
 
         member = Member.get_by_email(raw_dict['token']['email'])
         # Create a member if one doesn't exist.
-        if not member:
+        if member:
+            logger.info({
+                'msg': 'Member found, updating record..',
+                'member_email': raw_dict['token']['email'],
+                'stripe_customer_id': stripe_customer.id,
+                'view': 'ChargesListAPI',
+                'method': 'post',
+            })
+            member.stripe_customer_id = stripe_customer.id
+            member.save(member)
+        else:
             logger.info({
                 'msg': 'No member found, creating a new member.',
                 'member_email': raw_dict['token']['email'],
@@ -149,14 +159,14 @@ class ChargesListAPI(Resource):
             'member_id': member.id,
             'order_id': order.id,
             'total_price': total_price,
-            'stripe_customer_id': str(member.stripe_customer_id),
+            'stripe_customer_id': member.stripe_customer_id,
             'view': 'ChargesListAPI',
             'method': 'post',
         })
         # Charge the member.
         try:
             stripe.Charge.create(
-                customer=str(member.stripe_customer_id),
+                customer=member.stripe_customer_id,
                 amount=int(total_price * 100),  # amount in cents, again
                 currency='usd',
                 description='Tote Store - purchased items.',
