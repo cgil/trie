@@ -24,6 +24,7 @@ class MembersListAPI(BaseListAPI):
     model = Member
     schema_model = MembersSchema
 
+    @authenticate
     def post(self):
         """Create a new record."""
         logger.info({
