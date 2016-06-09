@@ -41,7 +41,6 @@ class BaseListAPI(Resource):
         """Get an instance of a schema model."""
         return self.schema_model()
 
-    @authenticate
     def get(self):
         """Get all records."""
         logger.info({
@@ -55,7 +54,6 @@ class BaseListAPI(Resource):
         results = self.schema.dump(records, many=True).data
         return results
 
-    @authenticate
     def post(self):
         """Create a new record."""
         logger.info({
@@ -120,7 +118,6 @@ class BaseAPI(Resource):
         """Get an instance of a schema model."""
         return self.schema_model()
 
-    @authenticate
     def get(self, id):
         """Get a single record."""
         logger.info({
@@ -135,7 +132,6 @@ class BaseAPI(Resource):
         result = self.schema.dump(record).data
         return result
 
-    @authenticate
     def delete(self, id):
         """Delete a record."""
         logger.info({
@@ -166,7 +162,6 @@ class BaseAPI(Resource):
                 db.session.rollback()
                 return {'error': str(e)}, 401
 
-    @authenticate
     def patch(self, id):
         """Update one or more fields."""
         logger.info({
