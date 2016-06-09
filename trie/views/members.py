@@ -107,7 +107,9 @@ class MembersAPI(BaseAPI):
                 record.update_relationship(rel['data']['type'], rel['data']['id'])
 
             record.update()
-            return self.get(id)
+            record = self.model.get_or_404(id)
+            result = self.schema.dump(record).data
+            return result
 
         except ValidationError as e:
                 logger.error({
