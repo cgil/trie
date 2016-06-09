@@ -55,6 +55,7 @@ class BaseListAPI(Resource):
         results = self.schema.dump(records, many=True).data
         return results
 
+    @authenticate
     def post(self):
         """Create a new record."""
         logger.info({
