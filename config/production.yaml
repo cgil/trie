@@ -20,6 +20,9 @@ secret_key: jhbVYTgyvgHUByg6745SJs67s6GVC7dcsbd8
 security:
   internal_auth_keys: {}
   internal_auth_tokens: {}
+  token_authentication_key: auth_token
+  token_authentication_header: Authentication-Token
+  token_max_age: 2592000  # 30 days
 
 roles:
   default_role: member

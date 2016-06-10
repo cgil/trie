@@ -1,4 +1,5 @@
 from flask.ext.security import UserMixin
+from flask.ext.security.utils import verify_password
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import DateTime
@@ -78,3 +79,11 @@ class Member(Base, UserMixin):
         ).filter(
             cls.deleted_at.is_(None)
         ).first()
+
+    @classmethod
+    def get_if_authenticates(cls, email, password):
+        """Checks if the user authenticates before getting."""
+        member = cls.get_by_email(email)
+        if member:
+            if verify_password(password, member.password):
+                return member

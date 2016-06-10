@@ -15,6 +15,7 @@ from trie.lib.sendgrid import sendgrid
 from trie.models.member import Member
 from trie.models.role import Role
 from trie.utils.configuration import config
+from trie.views.auth import auth_blueprint
 from trie.views.charges import charges_blueprint
 from trie.views.health import health
 from trie.views.home import home
@@ -103,11 +104,21 @@ def create_app():
     app.config['SECURITY_TRACKABLE'] = True
     # TODO: Fix CSRF
     app.config['WTF_CSRF_ENABLED'] = False
+    app.config['SECURITY_TOKEN_AUTHENTICATION_KEY'] = config.get(
+        'security.token_authentication_key'
+    )
+    app.config['SECURITY_TOKEN_AUTHENTICATION_HEADER'] = config.get(
+        'security.token_authentication_header'
+    )
+    app.config['SECURITY_TOKEN_MAX_AGE'] = config.get(
+        'security.token_max_age'
+    )
     member_datastore = SQLAlchemyUserDatastore(db, Member, Role)
     security.datastore = member_datastore
     security.init_app(app, member_datastore)
 
     # register blueprints
+    app.register_blueprint(auth_blueprint)
     app.register_blueprint(charges_blueprint)
     app.register_blueprint(health)
     app.register_blueprint(home)

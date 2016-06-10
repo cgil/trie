@@ -24,6 +24,9 @@ security:
     test: INTERNAL_AUTH_TOKEN
   internal_auth_tokens:
     test: tote-auth
+  token_authentication_key: auth_token
+  token_authentication_header: Authentication-Token
+  token_max_age: 2592000  # 30 days
 
 roles:
   default_role: member
