@@ -166,6 +166,7 @@ class BaseAPI(Resource):
                 db.session.rollback()
                 return {'error': str(e)}, 401
 
+    @authenticate
     def patch(self, id):
         """Update one or more fields."""
         logger.info({
