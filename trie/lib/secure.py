@@ -4,9 +4,12 @@ from flask import request
 from flask.ext.security.decorators import auth_token_required
 from flask.ext.security import Security
 
+from trie.lib import loggers
 from trie.utils.configuration import config
 
 security = Security()
+
+logger = loggers.get_logger(__name__)
 
 
 def _is_internal():
@@ -31,11 +34,23 @@ def authenticate(fn=None, **auth_kwargs):
     # Called with no optional arguments.
     @functools.wraps(fn)
     def decorated(*args, **kwargs):
-        if 'allow' in auth_kwargs and auth_kwargs['allow'] == 'all':
-            return fn(*args, **kwargs)
-        # Bypass auth if internal call.
-        if _is_internal():
-            return fn(*args, **kwargs)
+        logger.info({
+            'msg': 'Authenticating incoming request',
+            'args': args,
+            'kwargs': kwargs,
+            'headers': request.headers.to_list(),
+            'params': request.query_string,
+        })
         # Authenticate
-        return auth_token_required(fn)(*args, **kwargs)
+        auth_res = auth_token_required(fn)(*args, **kwargs)
+        successfully_authenticated = isinstance(auth_res, dict)
+        logger.info({
+            'msg': 'Authentication response',
+            'args': args,
+            'kwargs': kwargs,
+            'headers': request.headers.to_list(),
+            'params': request.query_string,
+            'auth_success': successfully_authenticated,
+        })
+        return auth_res
     return decorated
