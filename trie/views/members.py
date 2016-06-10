@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask import request
 from flask_restful import Api
+from flask_security.utils import encrypt_password
 from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -38,6 +39,10 @@ class MembersListAPI(BaseListAPI):
         try:
             self.schema.validate(raw_dict)
             attrs = raw_dict['data'].get('attributes') or {}
+
+            if 'password' in attrs:
+                attrs['password'] = encrypt_password(attrs['password'])
+
             relationships = raw_dict['data'].get('relationships') or {}
             rel_attrs = {}
             for name, val in relationships.iteritems():
@@ -98,6 +103,8 @@ class MembersAPI(BaseAPI):
             self.schema.validate(raw_dict, partial=True)
             attrs = raw_dict['data'].get('attributes') or {}
             for key, value in attrs.items():
+                if key == 'password':
+                    value = encrypt_password(value)
                 setattr(record, key, value)
 
             relationships = raw_dict['data'].get('relationships') or []
