@@ -40,17 +40,19 @@ class StoresAPI(BaseAPI):
             'query_params': query_params,
         })
         record = self.model.get_or_404(id)
-        result = self.schema.dump(record).data
 
         # Filter products in the result.
         # TODO: Fix this - should not iterate on results, move to base, make generic.
         filter_products = query_params.get('filter', {}).get('product', [])
         filter_products = [product.replace('-', '') for product in filter_products]
-        if filter_products:
-            products = result['data']['attributes']['products']['data']
-            for product in list(products):
-                if product['id'].replace('-', '') not in filter_products:
-                    products.remove(product)
+        for product in list(record.products):
+            if product.deleted_at:
+                record.products.remove(product)
+            elif filter_products:
+                if str(product.id).replace('-', '') not in filter_products:
+                    record.products.remove(product)
+        result = self.schema.dump(record).data
+
         return result
 
 
