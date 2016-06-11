@@ -1,6 +1,11 @@
 ---
 debug: False
 
+email:
+  username: admin@totestore.com
+  password: xGpb74NqrQrqBq#wnKAUzsFQ
+  default_sender: no-reply@totestore.com
+
 # TODO: Remove api key.
 sendgrid:
   api_key: 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

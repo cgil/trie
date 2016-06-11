@@ -10,6 +10,7 @@ from flask.ext.security import SQLAlchemyUserDatastore
 
 from trie.lib.checkout import stripe
 from trie.lib.database import db
+from trie.lib.mail import mailer
 from trie.lib.secure import security
 from trie.lib.sendgrid import sendgrid
 from trie.models.member import Member
@@ -116,6 +117,16 @@ def create_app():
     member_datastore = SQLAlchemyUserDatastore(db, Member, Role)
     security.datastore = member_datastore
     security.init_app(app, member_datastore)
+
+    # Set up mail client
+    app.config['MAIL_SERVER'] = 'smtp.zoho.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USERNAME'] = config.get('email.username')
+    app.config['MAIL_PASSWORD'] = config.get('email.password')
+    app.config['MAIL_DEFAULT_SENDER'] = config.get('email.default_sender')
+    app.config['MAIL_DEBUG'] = config.get('debug')
+    mailer.init_app(app)
 
     # register blueprints
     app.register_blueprint(auth_blueprint)

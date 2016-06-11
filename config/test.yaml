@@ -8,6 +8,11 @@ database:
   port: 5432
   name: trie_test
 
+email:
+  username: admin@totestore.com
+  password: xGpb74NqrQrqBq#wnKAUzsFQ
+  default_sender: no-reply@totestore.com
+
 sendgrid:
   api_key: test_sendgrid_api_key
   default_from: support@totestore.com

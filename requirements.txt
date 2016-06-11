@@ -39,3 +39,6 @@ querystring-parser==1.2.3
 
 # Templating Engine
 Jinja2==2.8
+
+# Flask Email
+Flask-Mail==0.9.1
