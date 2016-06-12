@@ -12,6 +12,7 @@ email:
   username: admin@totestore.com
   password: xGpb74NqrQrqBq#wnKAUzsFQ
   default_sender: no-reply@totestore.com
+  debug: False
 
 sendgrid:
   api_key: dev-fake-api-key

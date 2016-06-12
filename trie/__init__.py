@@ -125,7 +125,7 @@ def create_app():
     app.config['MAIL_USERNAME'] = config.get('email.username')
     app.config['MAIL_PASSWORD'] = config.get('email.password')
     app.config['MAIL_DEFAULT_SENDER'] = config.get('email.default_sender')
-    app.config['MAIL_DEBUG'] = config.get('debug')
+    app.config['MAIL_DEBUG'] = config.get('email.debug')
     mailer.init_app(app)
 
     # register blueprints
