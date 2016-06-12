@@ -40,18 +40,25 @@ send('apps-games.csv')
 
 import csv
 import os
+import time
 
+from tabulate import tabulate
+
+from trie.lib import loggers
 from trie.lib.mail import send_email
 from trie.lib.templating import env
 
 cwd = os.path.dirname(__file__)
+logger = loggers.get_logger(__name__)
 
 APP_NAME_KEY = 'app name'
 CONTACT_EMAIL_KEY = 'contact email'
 CONTACT_NAME_KEY = 'contact name'
 FIRST_CONTACT_EMAIL_SENT_KEY = 'first contact email sent'
 FIRST_CONTACT_EMAIL_TEMPLATE_NAME_KEY = 'first contact email template name'
-PERSONALIZED_TOTE_STORE = 'app tote store url'
+APP_TOTE_STORE_URL = 'app tote store url'
+
+
 
 
 def _get_csv_path(name):
@@ -97,6 +104,11 @@ def _get_first_contact_email_template_name(app):
     return app[FIRST_CONTACT_EMAIL_TEMPLATE_NAME_KEY]
 
 
+def _get_app_tote_store_url(app):
+    """Gets the tote store url for this app."""
+    return app[APP_TOTE_STORE_URL]
+
+
 def _did_send_first_contact_email(app):
     """Check if we already sent the first contact email."""
     first_contact = app[FIRST_CONTACT_EMAIL_SENT_KEY]
@@ -105,31 +117,87 @@ def _did_send_first_contact_email(app):
     return False
 
 
-def send(app_csv):
+def _print_summary(results):
+    """Prints a summary of the results."""
+    if not len(results) > 0:
+        print 'No results to show in summary.'
+        return
+
+    table = {}
+    for res in results:
+        for k, v in res.iteritems():
+            table.setdefault(k, []).append(v)
+    print tabulate(table, headers='keys', tablefmt="simple")
+
+
+def send(app_csv, verbose=True, dry_run=True):
     """
     Sends out emails to the apps in the provided csv.
     @param string app_csv: name of the CSV with apps to email. Stored in `trie/scripts/assets/`
+    @param boolean verbose: If True, prints out a summary of the emails sent.
+    @param dry_run boolean: If True, don't send emails, for debugging.
     """
+    results = []
     app_info = _csv_to_dict(app_csv)
     for app in app_info:
-        # If we already sent the first contact email, continue.
-        if _did_send_first_contact_email(app):
-            continue
-
         # Get all the app info needed for this request.
         app_name = _get_app_name(app)
         contact_first_name = _get_contact_first_name(app)
         email_address = _get_contact_email(app)
-
-        # Get the appropriate template to send.
-        email_template = _get_first_contact_email_template_name(app)
-        template = env.get_template(email_template)
-
-        # Render the template with app info.
-        content = template.render(
-            app_name=app_name,
-            contact_first_name=contact_first_name,
-        )
+        app_tote_store_url = _get_app_tote_store_url(app)
         subject = _get_email_subject(app_name)
-        # Set dry_run to False, to actually send the emails.
-        send_email(to=email_address, subject=subject, html=content, dry_run=True)
+
+        # If we already sent the first contact email, continue.
+        if _did_send_first_contact_email(app):
+            result = dict(
+                app_name=app_name,
+                contact_first_name=contact_first_name,
+                email_address=email_address,
+                app_tote_store_url=app_tote_store_url,
+                subject=subject,
+                status='skipped',
+                error=None,
+            )
+            logger.info(result)
+            results.append(result)
+            continue
+
+        try:
+            # Get the appropriate template to send.
+            email_template = _get_first_contact_email_template_name(app)
+            template = env.get_template(email_template)
+
+            # Render the template with app info.
+            content = template.render(
+                app_name=app_name,
+                contact_first_name=contact_first_name,
+                app_tote_store_url=app_tote_store_url,
+            )
+            send_email(to=email_address, subject=subject, html=content, dry_run=dry_run)
+            result = dict(
+                app_name=app_name,
+                contact_first_name=contact_first_name,
+                email_address=email_address,
+                app_tote_store_url=app_tote_store_url,
+                subject=subject,
+                status='success',
+                error=None,
+            )
+        except Exception as e:
+            result = dict(
+                app_name=app_name,
+                contact_first_name=contact_first_name,
+                email_address=email_address,
+                app_tote_store_url=app_tote_store_url,
+                subject=subject,
+                status='failure',
+                error=str(e),
+            )
+        logger.info(result)
+        results.append(result)
+
+        # Sleep momentarily to avoid dos'ing the server.
+        if not dry_run:
+            time.sleep(0.1)
+    if verbose:
+        _print_summary(results)
