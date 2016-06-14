@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 
 from trie import db
 from trie.forms.account_form import AccountForm
+from trie.lib.compress import compress
 from trie.models.member import Member
 
 home = Blueprint('home', __name__, template_folder='trie/templates')
@@ -21,6 +22,7 @@ def handle_authenticated_member(member):
 
 
 @home.route('/', methods=['GET', 'POST'])
+@compress
 def index():
     form = AccountForm(request.form)
     if form.validate_on_submit():
