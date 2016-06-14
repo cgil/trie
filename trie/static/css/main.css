@@ -101,7 +101,7 @@ header {
   background-color: #0274F3; }
 
 #hero {
-  background-image: url(../images/header.png);
+  background-image: url(https://s3.amazonaws.com/www.totestore.com/trie/public/assets/header.png);
   background-repeat: no-repeat;
   background-position: center 0;
   background-size: contain;
