@@ -36,12 +36,12 @@ $ fab shell
 
 
 import datetime
-import json
 import os
 import requests
 import time
 
 from trie.lib import loggers
+from trie.utils import io
 from trie.utils.convert import camel_case_to_snake_case
 
 
@@ -86,14 +86,8 @@ GENRES = {
 
 
 def _get_output_path(name):
-    """Get the path to a CSV by name."""
+    """Get the path to the output file."""
     return os.path.join(cwd, 'output/app_info', name)
-
-
-def _write_to_file(data, output_file):
-    """Write data to an output file as json."""
-    with open(output_file, 'w') as outfile:
-        json.dump(data, outfile)
 
 
 def _get_publisher_name(entry):
@@ -201,7 +195,7 @@ def collect(feed_type_key, genre_key, limit=20, output_file_name=None):
         output_file = _get_output_path(output_file_name)
         apps = dict(apps=apps)
 
-        _write_to_file(apps, output_file)
+        io.write_json_to_file(apps, output_file)
         logger.info('Finished collecting data for feed_type_type: {}, genre_key: {}'.format(
             feed_type_key,
             genre_key,

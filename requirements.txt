@@ -42,3 +42,7 @@ Jinja2==2.8
 
 # Flask Email
 Flask-Mail==0.9.1
+
+
+# Clearbit - email lookup api
+clearbit==0.1.4

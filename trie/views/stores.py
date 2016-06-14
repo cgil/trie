@@ -3,12 +3,12 @@ from flask import request
 from flask_restful import Api
 
 from trie.lib import loggers
+from trie.lib.compress import compress
 from trie.models.store import Store
 from trie.schemas.stores_schema import StoresSchema
 from trie.views.base import BaseAPI
 from trie.views.base import BaseListAPI
 from trie.views.base import parse_query_string
-from trie.lib.compress import compress
 
 
 stores_blueprint = Blueprint('stores', __name__, url_prefix='/stores')
