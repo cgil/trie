@@ -9,7 +9,7 @@ header{
 }
 
 #hero {
-    @include background-image('header');
+    background-image: url('https://s3.amazonaws.com/www.totestore.com/trie/public/assets/header.png');
     background: {
         repeat: no-repeat;
         position: center 0;
