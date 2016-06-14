@@ -59,8 +59,6 @@ FIRST_CONTACT_EMAIL_TEMPLATE_NAME_KEY = 'first contact email template name'
 APP_TOTE_STORE_URL = 'app tote store url'
 
 
-
-
 def _get_csv_path(name):
     """Get the path to a CSV by name."""
     return os.path.join(cwd, 'assets/', name)
@@ -133,7 +131,7 @@ def _print_summary(results):
 def send(app_csv, verbose=True, dry_run=True):
     """
     Sends out emails to the apps in the provided csv.
-    @param string app_csv: name of the CSV with apps to email. Stored in `trie/scripts/assets/`
+    @param string app_csv: CSV name with apps to email. Stored in `trie/scripts/assets/`
     @param boolean verbose: If True, prints out a summary of the emails sent.
     @param dry_run boolean: If True, don't send emails, for debugging.
     """

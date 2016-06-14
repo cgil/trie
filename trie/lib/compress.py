@@ -6,7 +6,8 @@ from flask import after_this_request, request
 
 
 def compress(f):
-    """Compresses the response using gzip."""
+    """Compresses the response."""
+
     @functools.wraps(f)
     def view_func(*args, **kwargs):
         @after_this_request

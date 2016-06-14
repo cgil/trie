@@ -4,6 +4,7 @@ from flask_restful import Api
 from flask_restful import Resource
 
 from trie.lib import loggers
+from trie.lib.compress import compress
 from trie.models.member import Member
 from trie.utils.configuration import config
 
@@ -16,6 +17,7 @@ logger = loggers.get_logger(__name__)
 
 class AuthAPI(Resource):
 
+    @compress
     def post(self):
         """Authenicate the user."""
         logger.info({

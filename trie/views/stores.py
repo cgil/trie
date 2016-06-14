@@ -8,6 +8,7 @@ from trie.schemas.stores_schema import StoresSchema
 from trie.views.base import BaseAPI
 from trie.views.base import BaseListAPI
 from trie.views.base import parse_query_string
+from trie.lib.compress import compress
 
 
 stores_blueprint = Blueprint('stores', __name__, url_prefix='/stores')
@@ -27,6 +28,7 @@ class StoresAPI(BaseAPI):
     model = Store
     schema_model = StoresSchema
 
+    @compress
     def get(self, id):
         """Get a single record."""
         query_params = parse_query_string(request.query_string)

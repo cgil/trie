@@ -34,6 +34,16 @@ def authenticate(fn=None, **auth_kwargs):
     # Called with no optional arguments.
     @functools.wraps(fn)
     def decorated(*args, **kwargs):
+        # Bypass if it's an internal request.
+        if _is_internal():
+            logger.info({
+                'msg': 'Bypassing auth, internal request.',
+                'args': args,
+                'kwargs': kwargs,
+                'headers': request.headers.to_list(),
+            })
+            return fn(*args, **kwargs)
+
         logger.info({
             'msg': 'Authenticating incoming request',
             'args': args,

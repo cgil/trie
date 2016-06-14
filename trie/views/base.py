@@ -6,6 +6,7 @@ from querystring_parser import parser
 from sqlalchemy.exc import SQLAlchemyError
 
 from trie.lib import loggers
+from trie.lib.compress import compress
 from trie.lib.database import db
 from trie.lib.secure import authenticate
 
@@ -36,12 +37,14 @@ class BaseListAPI(Resource):
     # Response model schema
     schema_model = None
 
+    # decorators applied to all methods.
+    method_decorators = [compress, authenticate]
+
     @property
     def schema(self):
         """Get an instance of a schema model."""
         return self.schema_model()
 
-    @authenticate
     def get(self):
         """Get all records."""
         logger.info({
@@ -55,7 +58,6 @@ class BaseListAPI(Resource):
         results = self.schema.dump(records, many=True).data
         return results
 
-    @authenticate
     def post(self):
         """Create a new record."""
         logger.info({
@@ -115,12 +117,14 @@ class BaseAPI(Resource):
     # Response model schema
     schema_model = None
 
+    # decorators applied to all methods.
+    method_decorators = [compress, authenticate]
+
     @property
     def schema(self):
         """Get an instance of a schema model."""
         return self.schema_model()
 
-    @authenticate
     def get(self, id):
         """Get a single record."""
         logger.info({
@@ -135,7 +139,6 @@ class BaseAPI(Resource):
         result = self.schema.dump(record).data
         return result
 
-    @authenticate
     def delete(self, id):
         """Delete a record."""
         logger.info({
@@ -166,7 +169,6 @@ class BaseAPI(Resource):
                 db.session.rollback()
                 return {'error': str(e)}, 401
 
-    @authenticate
     def patch(self, id):
         """Update one or more fields."""
         logger.info({

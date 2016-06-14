@@ -9,6 +9,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from trie.lib import loggers
 from trie.lib.checkout import stripe
+from trie.lib.compress import compress
 from trie.lib.database import db
 from trie.lib.sendgrid import sendgrid
 from trie.lib.templating import env
@@ -27,6 +28,7 @@ api = Api(charges_blueprint)
 
 class ChargesListAPI(Resource):
 
+    @compress
     def post(self):
         """Create a new charge."""
         logger.info({

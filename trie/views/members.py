@@ -6,6 +6,7 @@ from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
 from trie.lib import loggers
+from trie.lib.compress import compress
 from trie.lib.database import db
 from trie.lib.secure import authenticate
 from trie.models.member import Member
@@ -25,6 +26,7 @@ class MembersListAPI(BaseListAPI):
     model = Member
     schema_model = MembersSchema
 
+    @compress
     @authenticate
     def post(self):
         """Create a new record."""
