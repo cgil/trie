@@ -237,6 +237,8 @@ def collect(
         file_name,
         start_index=0,
         end_index=None,
+        feed_types=None,
+        genre_keys=None,
         dry_run=True
 ):
     """Suppliments the app info with email and company info """
@@ -259,6 +261,16 @@ def collect(
         # Continue if we already attempted to get the email for this app.
         if app.get('email_collection_processed'):
             continue
+
+        # Continue if app is not in specified feed_types.
+        if feed_types:
+            if app.get('app_origin', {}).get('feed_type') not in feed_types:
+                continue
+
+        # Continue if app is not in specified genres.
+        if genre_keys:
+            if app.get('app_origin', {}).get('genre_key') not in genre_keys:
+                continue
 
         try:
             company = _get_company(app, dry_run=dry_run)
