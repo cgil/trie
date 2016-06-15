@@ -33,7 +33,7 @@ def _load_clearbit_api_keys():
     global API_KEYS
     if not API_KEYS:
         file_path = os.path.join(cwd, 'assets/{}'.format(API_KEYS_FILE_NAME))
-        API_KEYS = io.get_json_from_file(file_path).get('keys', {})
+        API_KEYS = io.get_json_from_file(file_path) or {}
 
 
 def _get_apps(file_name):
@@ -70,6 +70,7 @@ def _invalidate_clearbit_api_key(api_key, api_type):
 
 def _make_contact_request(domain, seniority=None, titles=None, role=None, limit=1, email='false'):
     """Make a request to get contacts."""
+    _clearbit = None
     while True:
         try:
             # Attempt to make an api request.
