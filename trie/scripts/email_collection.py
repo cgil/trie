@@ -1,5 +1,4 @@
 import datetime
-import json
 import os
 
 import clearbit
@@ -19,13 +18,6 @@ class APIError(Exception):
     """API Error."""
 
 
-def _get_json_from_file(file_path):
-    """Gets json from a file."""
-    with open(file_path, 'r') as infile:
-        data = json.load(infile)
-    return data
-
-
 def _get_output_path(name):
     """Get the path to a CSV by name."""
     return os.path.join(cwd, OUTPUT_DIR, name)
@@ -41,13 +33,13 @@ def _load_clearbit_api_keys():
     global API_KEYS
     if not API_KEYS:
         file_path = os.path.join(cwd, 'assets/{}'.format(API_KEYS_FILE_NAME))
-        API_KEYS = _get_json_from_file(file_path).get('keys', {})
+        API_KEYS = io.get_json_from_file(file_path).get('keys', {})
 
 
 def _get_apps(file_name):
     """Gets the app info from a json file."""
     file_path = _get_app_info_data_file_path(file_name)
-    return _get_json_from_file(file_path)
+    return io.get_json_from_file(file_path)
 
 
 def _get_clearbit(api_type):
@@ -233,8 +225,6 @@ def collect(
 
     index = 0
     for index, app in enumerate(apps.get('apps', [])):
-        import ipdb
-        ipdb.set_trace()
         # Continue until we get to the given start index.
         if start_index > index:
             continue

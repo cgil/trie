@@ -104,7 +104,6 @@ def _get_publisher_site(entry):
     parsed = tldextract.extract(url)
     if parsed.domain and parsed.suffix:
         return '{}.{}'.format(parsed.domain, parsed.suffix)
-    return ''
 
 
 def _get_alternative_app_name(entry):
