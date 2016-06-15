@@ -40,6 +40,8 @@ import os
 import requests
 import time
 
+import tldextract
+
 from trie.lib import loggers
 from trie.utils import io
 from trie.utils.convert import camel_case_to_snake_case
@@ -98,18 +100,19 @@ def _get_publisher_name(entry):
 def _get_publisher_site(entry):
     """Gets the website for the publisher of the app."""
     bundle_id = entry['id']['attributes']['im:bundleId']  # com.site.app_name
-    parts = bundle_id.split('.')
-    if len(parts) > 1:
-        return '{}.{}'.format(parts[1], parts[0])
-    return bundle_id
+    url = '.'.join(bundle_id.split('.')[::-1])
+    parsed = tldextract.extract(url[::-1])
+    return '{}.{}'.format(parsed.domain, parsed.suffix)
 
 
 def _get_alternative_app_name(entry):
     """Gets an alternative app name to compare against."""
     bundle_id = entry['id']['attributes']['im:bundleId']  # com.site.app_name
-    parts = bundle_id.split('.')
-    if len(parts) > 0:
-        return parts[len(parts) - 1]
+    url = '.'.join(bundle_id.split('.')[::-1])
+    parsed = tldextract.extract(url[::-1])
+    if parsed.subdomain:
+        return parsed.subdomain
+    return parsed.domain
 
 
 def _get_app_category(entry):
