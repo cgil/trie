@@ -25,7 +25,7 @@ def _get_output_path(name):
 
 def _get_app_info_data_file_path(file_name):
     """Gets the app info file path for the given file name."""
-    return os.path.join(cwd, 'output/app_info/', file_name)
+    return os.path.join(cwd, 'output/app_handler/', file_name)
 
 
 def _load_clearbit_api_keys():
@@ -100,7 +100,8 @@ def _make_contact_request(domain, seniority=None, titles=None, role=None, limit=
                 clearbit_api_key=_clearbit.key,
                 error=e,
             ))
-            if e.response.status_code == 401:
+            status_code = e.response.status_code
+            if status_code == 401 or status_code == 402:
                 # Unauthorized. Current API key is spent for this api type.
                 _invalidate_clearbit_api_key(_clearbit.key, 'prospector')
             else:
@@ -130,7 +131,9 @@ def _make_company_request(domain, dry_run=True):
                 clearbit_api_key=_clearbit.key,
                 error=e,
             ))
-            if e.response.status_code == 401:
+            status_code = e.response.status_code
+            if status_code == 401 or status_code == 402:
+                # Unauthorized. Current API key is spent for this api type.
                 _invalidate_clearbit_api_key(_clearbit.key, 'company')
             else:
                 # Something else went terribly wrong.
@@ -224,7 +227,10 @@ def collect(
     _load_clearbit_api_keys()
 
     index = 0
-    for index, app in enumerate(apps.get('apps', [])):
+    last_index = 0
+    all_apps = apps.get('apps', [])
+    end_index = end_index or len(all_apps)
+    for index, app in enumerate(all_apps):
         # Continue until we get to the given start index.
         if start_index > index:
             continue
@@ -232,6 +238,10 @@ def collect(
         # Stop if we pass the end index.
         if end_index is not None and index > end_index:
             break
+
+        # Continue if we already attempted to get the email for this app.
+        if app.get('email_collection_processed'):
+            continue
 
         try:
             contacts = _get_contacts(app, dry_run=dry_run)
@@ -242,7 +252,7 @@ def collect(
                 last_app=app,
                 file_name=file_name,
                 index=index,
-                next_command_to_run='collect({}, start_index={})'.format(
+                next_command_to_run='collect("{}", start_index={})'.format(
                     file_name,
                     index,
                 )
@@ -250,7 +260,14 @@ def collect(
             break
         app['contacts'] = contacts
         app['company'] = company
+        app['email_collection_processed'] = True
         last_index = index
+        logger.info({
+            'msg': '{} / {} Finished getting contact information.'.format(
+                index, end_index,
+            ),
+            'percent': '{:.1%}'.format(index / end_index)
+        })
 
     file_name = '{}-{}__{}'.format(start_index, last_index, file_name)
     output_path = _get_output_path(file_name)
