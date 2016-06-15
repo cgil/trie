@@ -283,9 +283,18 @@ def collect(
             'msg': '{} / {} Finished getting contact information.'.format(
                 index, end_index,
             ),
-            'percent': '{:.1%}'.format(float(index) / end_index)
+            'progress': '{:.1%}'.format(float(index) / end_index)
         })
+        # Periodically update progress.
+        if index % 20 == 0:
+            _update_apps(start_index, last_index, file_name, apps)
 
+    # Update with final payload.
+    _update_apps(start_index, last_index, file_name, apps)
+
+
+def _update_apps(start_index, last_index, file_name, apps):
+    """Update apps payload."""
     file_name = '{}-{}__{}'.format(start_index, last_index, file_name)
     output_path = _get_output_path(file_name)
     io.write_json_to_file(apps, output_path)
