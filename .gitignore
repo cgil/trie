@@ -72,3 +72,7 @@ config.codekit
 
 # config
 config/profile_default
+
+# Output from scripts
+trie/scripts/output/
+trie/scripts/assets/
