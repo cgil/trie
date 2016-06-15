@@ -7,20 +7,20 @@ from trie.utils import io
 cwd = os.path.dirname(__file__)
 
 APP_INFO_PATH = os.path.join(cwd, 'output/app_info')
+FILTERED_OUTPUT_FILE_PATH = os.path.join(cwd, 'output/app_handler', 'clean_apps.json')
 
 
 def filter_only_usable_apps():
     """Filters all the apps from different categories into one usable list."""
     good_apps = {}
     for bundle in get_app_bundles():
-        import ipdb
-        ipdb.set_trace()
         for app in bundle.get('apps', []):
             app_id = app['app_id']
             if app_id not in good_apps:
                 if app['publisher_site']:
                     good_apps[app_id] = app
-    return good_apps
+
+    io.write_json_to_file(dict(apps=good_apps.values()), FILTERED_OUTPUT_FILE_PATH)
 
 
 def get_app_bundles():
