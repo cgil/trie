@@ -61,7 +61,7 @@ APP_TOTE_STORE_URL = 'app tote store url'
 
 def _get_csv_path(name):
     """Get the path to a CSV by name."""
-    return os.path.join(cwd, 'assets/', name)
+    return os.path.join(cwd, 'output/app_info', name)
 
 
 def _csv_to_dict(name):
@@ -128,7 +128,7 @@ def _print_summary(results):
     print tabulate(table, headers='keys', tablefmt="simple")
 
 
-def send(app_csv, verbose=True, dry_run=True):
+def send(app_csv='apps.csv', verbose=True, dry_run=True):
     """
     Sends out emails to the apps in the provided csv.
     @param string app_csv: CSV name with apps to email. Stored in `trie/scripts/assets/`
