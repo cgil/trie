@@ -261,8 +261,12 @@ def collect(
             continue
 
         try:
-            contacts = _get_contacts(app, dry_run=dry_run)
             company = _get_company(app, dry_run=dry_run)
+            # Only get contacts if we got the company.
+            if company:
+                contacts = _get_contacts(app, dry_run=dry_run)
+            else:
+                contacts = []
         except APIError:
             logger.info(dict(
                 msg='Pausing due to API Error. Need more api keys.',
