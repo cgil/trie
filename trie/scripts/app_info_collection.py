@@ -101,15 +101,17 @@ def _get_publisher_site(entry):
     """Gets the website for the publisher of the app."""
     bundle_id = entry['id']['attributes']['im:bundleId']  # com.site.app_name
     url = '.'.join(bundle_id.split('.')[::-1])
-    parsed = tldextract.extract(url[::-1])
-    return '{}.{}'.format(parsed.domain, parsed.suffix)
+    parsed = tldextract.extract(url)
+    if parsed.domain and parsed.suffix:
+        return '{}.{}'.format(parsed.domain, parsed.suffix)
+    return ''
 
 
 def _get_alternative_app_name(entry):
     """Gets an alternative app name to compare against."""
     bundle_id = entry['id']['attributes']['im:bundleId']  # com.site.app_name
     url = '.'.join(bundle_id.split('.')[::-1])
-    parsed = tldextract.extract(url[::-1])
+    parsed = tldextract.extract(url)
     if parsed.subdomain:
         return parsed.subdomain
     return parsed.domain
