@@ -11,6 +11,7 @@ cwd = os.path.dirname(__file__)
 logger = loggers.get_logger(__name__)
 
 API_KEYS = None
+API_KEYS_FILE_NAME = 'clearbit_api_keys.json'
 OUTPUT_DIR = 'output/email_collection'
 
 
@@ -35,11 +36,11 @@ def _get_app_info_data_file_path(file_name):
     return os.path.join(cwd, 'output/app_info/', file_name)
 
 
-def _load_clearbit_api_keys(api_keys_file_name):
+def _load_clearbit_api_keys():
     """Load the clearbit api keys."""
     global API_KEYS
     if not API_KEYS:
-        file_path = os.path.join(cwd, 'assets/{}'.format(api_keys_file_name))
+        file_path = os.path.join(cwd, 'assets/{}'.format(API_KEYS_FILE_NAME))
         API_KEYS = _get_json_from_file(file_path).get('keys', {})
 
 
@@ -71,6 +72,8 @@ def _invalidate_clearbit_api_key(api_key, api_type):
     """Invalidates an api key for an api type."""
     global API_KEYS
     API_KEYS[api_key][api_type] = str(datetime.datetime.utcnow())
+    file_path = os.path.join(cwd, 'assets/{}'.format(API_KEYS_FILE_NAME))
+    io.write_json_to_file(API_KEYS, file_path)
 
 
 def _make_contact_request(domain, seniority=None, titles=None, role=None, limit=1, email='false'):
@@ -99,14 +102,18 @@ def _make_contact_request(domain, seniority=None, titles=None, role=None, limit=
             # No API keys left.
             raise
         except Exception as e:
-            # Current API key is spent for this api type.
             logger.error(dict(
                 msg='Error getting contacts',
                 domain=domain,
                 clearbit_api_key=_clearbit.key,
                 error=e,
             ))
-            _invalidate_clearbit_api_key(_clearbit.key, 'prospector')
+            if e.response.status_code == 401:
+                # Unauthorized. Current API key is spent for this api type.
+                _invalidate_clearbit_api_key(_clearbit.key, 'prospector')
+            else:
+                # Something else went terribly wrong skip.
+                return []
 
 
 def _make_company_request(domain, dry_run=True):
@@ -131,7 +138,11 @@ def _make_company_request(domain, dry_run=True):
                 clearbit_api_key=_clearbit.key,
                 error=e,
             ))
-            _invalidate_clearbit_api_key(_clearbit.key, 'company')
+            if e.response.status_code == 401:
+                _invalidate_clearbit_api_key(_clearbit.key, 'company')
+            else:
+                # Something else went terribly wrong.
+                return {}
 
 
 def _get_company(app, dry_run=True):
@@ -177,6 +188,20 @@ def _get_contacts(app, dry_run=True):
             email=email,
         )
     if not people:
+        # Attempt to get directors.
+        people = _make_contact_request(
+            app['publisher_site'],
+            seniority='director',
+            email=email,
+        )
+    if not people:
+        # Attempt to get managers.
+        people = _make_contact_request(
+            app['publisher_site'],
+            seniority='manager',
+            email=email,
+        )
+    if not people:
         # Attempt to get anyone.
         people = _make_contact_request(
             app['publisher_site'],
@@ -198,17 +223,18 @@ def _get_contacts(app, dry_run=True):
 
 def collect(
         file_name,
-        api_keys_file_name='clearbit_api_keys.json',
         start_index=0,
         end_index=None,
         dry_run=True
 ):
     """Suppliments the app info with email and company info """
     apps = _get_apps(file_name)
-    _load_clearbit_api_keys(api_keys_file_name)
+    _load_clearbit_api_keys()
 
     index = 0
     for index, app in enumerate(apps.get('apps', [])):
+        import ipdb
+        ipdb.set_trace()
         # Continue until we get to the given start index.
         if start_index > index:
             continue
@@ -226,17 +252,16 @@ def collect(
                 last_app=app,
                 file_name=file_name,
                 index=index,
-                next_command_to_run='collect({}, {}, start_index={})'.format(
+                next_command_to_run='collect({}, start_index={})'.format(
                     file_name,
-                    api_keys_file_name,
                     index,
                 )
             ))
             break
         app['contacts'] = contacts
         app['company'] = company
+        last_index = index
 
-    apps = dict(apps=apps)
-    file_name = '{}-{}__{}'.format(start_index, index, file_name)
+    file_name = '{}-{}__{}'.format(start_index, last_index, file_name)
     output_path = _get_output_path(file_name)
     io.write_json_to_file(apps, output_path)
