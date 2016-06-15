@@ -146,6 +146,13 @@ def _get_company(app, dry_run=True):
     company = _make_company_request(app['publisher_site'], dry_run=dry_run)
     if 'pending' in company:
         company = {}
+    if not company:
+        # Failed to get company info.
+        logger.info({
+            'msg': 'Failed to get company info.',
+            'app': app,
+            'domain': app.get('publisher_site'),
+        })
 
     res = {}
     res['company_name'] = company.get('name')
@@ -203,6 +210,15 @@ def _get_contacts(app, dry_run=True):
             app['publisher_site'],
             email=email,
         )
+    if not people:
+        # We failed to get any contacts.
+        logger.info({
+            'msg': 'No contacts found.',
+            'domain': app.get('publisher_site'),
+            'app': app,
+        })
+        return []
+
     contacts = []
     for person in people:
         person = dict(person)
@@ -267,7 +283,7 @@ def collect(
             'msg': '{} / {} Finished getting contact information.'.format(
                 index, end_index,
             ),
-            'percent': '{:.1%}'.format(index / end_index)
+            'percent': '{:.1%}'.format(float(index) / end_index)
         })
 
     file_name = '{}-{}__{}'.format(start_index, last_index, file_name)
