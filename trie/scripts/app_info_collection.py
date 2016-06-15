@@ -164,6 +164,7 @@ def collect(feed_type_key, genre_key, limit=20, output_file_name=None):
     entries = data['feed']['entry']
     for entry in entries:
         try:
+            app_origin = dict(feed_type=feed_type_key, genre_key=genre_key)
             publisher_name = _get_publisher_name(entry)
             publisher_site = _get_publisher_site(entry)
             app_category = _get_app_category(entry)
@@ -177,6 +178,7 @@ def collect(feed_type_key, genre_key, limit=20, output_file_name=None):
                 app_name=app_name,
                 alternative_app_name=alternative_app_name,
                 app_id=app_id,
+                app_origin=app_origin,
             )
             apps.append(app)
         except Exception as e:
