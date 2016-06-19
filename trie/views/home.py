@@ -59,3 +59,8 @@ def loggedin():
 @home.route('/contact')
 def contact():
     return render_template('contact.html')
+
+
+@home.route('/new')
+def new_landing_page():
+    return render_template('new.html')
