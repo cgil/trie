@@ -6,9 +6,6 @@ apps to email.
 Email templates should be stored at:
     `trie/templates/`
 
-The CSV with app info should be of the format:
-https://docs.google.com/spreadsheets/d/1tMuxLtpFGo7kBCqaQSX3MAb1vMx25mJBqFWhEDE9pGk/edit#gid=1123007063
-
 The app's to email CSV should be store at:
     `trie/scripts/assets/`
 
@@ -18,9 +15,9 @@ environment yaml file, ex:
 ```
 # development.yaml
 email:
-    username: username@totestore.com
-    password: PASSWORD
-    default_sender: username@totestore.com  # or a group under your account such as no-reply
+    username:
+    password:
+    default_sender: # or a group under your account such as no-reply
 ```
 
 ## Sending emails using an app CSV:
