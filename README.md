@@ -5,6 +5,8 @@ You host one of our stores and we handle customer service, inventory management,
 
 A new way to monetize your app without depending on ads.
 
+![alt text](https://raw.githubusercontent.com/cgil/trie/master/trie/static/images/home_landing_page.png "Home screen image.")
+
 # Trie
 The backend for Tote handling logistics, payments, and customer data.
 
