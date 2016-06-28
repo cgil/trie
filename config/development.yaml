@@ -9,8 +9,8 @@ database:
   name: trie_development
 
 email:
-  username: admin@totestore.com
-  password: xGpb74NqrQrqBq#wnKAUzsFQ
+  username:
+  password:
   default_sender: no-reply@totestore.com
   debug: False
 
@@ -21,8 +21,8 @@ sendgrid:
 
 # TODO: Change to live keys.
 stripe:
-  secret_key: sk_test_Bi7qQ8cy3M4q730QLc6cqZN3
-  publishable_key: pk_test_SSTmhE8aocfnGsmEZrN9SEAM
+  secret_key:
+  publishable_key:
 
 secret_key: trie
 

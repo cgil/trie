@@ -9,8 +9,8 @@ database:
   name: trie_test
 
 email:
-  username: admin@totestore.com
-  password: xGpb74NqrQrqBq#wnKAUzsFQ
+  username:
+  password:
   default_sender: no-reply@totestore.com
   debug: True
 

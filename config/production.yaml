@@ -2,26 +2,24 @@
 debug: False
 
 email:
-  username: admin@totestore.com
-  password: xGpb74NqrQrqBq#wnKAUzsFQ
+  username:
+  password:
   default_sender: no-reply@totestore.com
   debug: False
 
 # TODO: Remove api key.
 sendgrid:
-  api_key: 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
-  default_from: support@totestore.com
-  internal_new_order_to: orders@totestore.com
+  api_key:
+  default_from:
+  internal_new_order_to:
 
 # TODO: Remove secret key. And stop using the test keys.
 stripe:
-  secret_key: sk_test_Bi7qQ8cy3M4q730QLc6cqZN3
-  publishable_key: pk_test_SSTmhE8aocfnGsmEZrN9SEAM
-  # secret_key: sk_live_SDUVqQEfhKTNCXUKajB59NKO
-  # publishable_key: pk_live_InorHF5F9AWzp1UuBM8Xz41b
+  secret_key:
+  publishable_key:
 
 # TODO: Remove secrets
-secret_key: jhbVYTgyvgHUByg6745SJs67s6GVC7dcsbd8
+secret_key:
 
 security:
   internal_auth_keys: {}
@@ -33,4 +31,4 @@ security:
 roles:
   default_role: member
 
-domain: https://www.totestore.com
+domain:
